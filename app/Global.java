@@ -24,13 +24,27 @@ public class Global extends GlobalSettings {
         	@Singleton
             @Provides
             public UserService getUserService(){
-        		return null;
+        		return new UserService() {
+				};
         	}
         	
         	@Singleton
             @Provides
             public AuthService getAuthService(){
-        		return null;
+        		return new AuthService() {
+					
+					@Override
+					public void logout() {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void login(String username, String password) {
+						// TODO Auto-generated method stub
+						
+					}
+				};
         	}
 
         });

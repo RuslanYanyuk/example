@@ -1,0 +1,33 @@
+<project basedir="." default="deploy-to-stage" name="">
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
+    <!--********************Run tests********************-->
+
+    <target name="apply-remote-properties">
+        <property environment="env"/>
+        <exec executable="bash" outputproperty="host.ip.address">
+            <arg value="-c"/>
+            <arg value="wget -qO- ${env.IP_LOOKUP_URL} > temp; cat temp;"/>
+        </exec>
+    </target>
+
+    <target name="apply-properties-tests" depends="apply-remote-properties">
+        <property name="no.formatted.output" value="-Dsbt.log.noformat=true"/>
+    </target>
+
+    <target name="list-params-tests" depends="apply-properties-tests">
+        <echo message="----- tests params ------"/>
+        <echo message="no.formatted.output">: ${no.formatted.output}</echo>
+    </target>
+
+    <target name="run-tests" depends="list-params-tests">
+        <exec executable="${local.play.home}/play">
+            <arg value="clean-all"/>
+        </exec>
+        <exec executable="bash" failonerror="true">
+            <arg value="-c"/>
+            <arg value="${local.play.home}/play ${no.formatted.output} test"/>
+        </exec>
+    </target>
+
+</project>
