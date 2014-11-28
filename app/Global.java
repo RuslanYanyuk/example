@@ -7,6 +7,8 @@ import com.google.inject.Singleton;
 import play.Application;
 import play.GlobalSettings;
 import usermgmt.services.AuthService;
+import usermgmt.services.StandardAuthService;
+import usermgmt.services.StandardUserService;
 import usermgmt.services.UserService;
 
 public class Global extends GlobalSettings {
@@ -24,27 +26,13 @@ public class Global extends GlobalSettings {
         	@Singleton
             @Provides
             public UserService getUserService(){
-        		return new UserService() {
-				};
+        		return new StandardUserService();
         	}
         	
         	@Singleton
             @Provides
             public AuthService getAuthService(){
-        		return new AuthService() {
-					
-					@Override
-					public void logout() {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					public void login(String username, String password) {
-						// TODO Auto-generated method stub
-						
-					}
-				};
+        		return new StandardAuthService();
         	}
 
         });
@@ -54,4 +42,5 @@ public class Global extends GlobalSettings {
     public <T> T getControllerInstance(Class<T> aClass) throws Exception {
         return injector.getInstance(aClass);
     }
+    
 }
