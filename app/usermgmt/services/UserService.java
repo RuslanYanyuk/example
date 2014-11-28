@@ -7,14 +7,14 @@ import usermgmt.formbeans.UserFormBean;
 
 public interface UserService {
 
-	List<SimpleUserFormBean> getAll();
+	List<? extends SimpleUserFormBean> getAll();
 	
-	SimpleUserFormBean get(String name);
+	SimpleUserFormBean get(String username);
 	
-	void create(UserFormBean userFormBean);
+	void create(UserFormBean bean);
 	
-	void update(String name, UserFormBean userFormBean);
+	void update(String username, UserFormBean bean);
 	
-	void delete(String name);
+	void delete(String username);
 	
 }

@@ -7,8 +7,8 @@ import com.google.inject.Singleton;
 import play.Application;
 import play.GlobalSettings;
 import usermgmt.services.AuthService;
-import usermgmt.services.StandardAuthService;
-import usermgmt.services.StandardUserService;
+import usermgmt.services.XiAuthService;
+import usermgmt.services.XiUserService;
 import usermgmt.services.UserService;
 
 public class Global extends GlobalSettings {
@@ -26,13 +26,13 @@ public class Global extends GlobalSettings {
         	@Singleton
             @Provides
             public UserService getUserService(){
-        		return new StandardUserService();
+        		return new XiUserService();
         	}
         	
         	@Singleton
             @Provides
             public AuthService getAuthService(){
-        		return new StandardAuthService();
+        		return new XiAuthService();
         	}
 
         });
