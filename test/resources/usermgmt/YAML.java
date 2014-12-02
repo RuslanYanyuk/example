@@ -1,10 +1,11 @@
 package resources.usermgmt;
 
-import java.io.File;
 import java.util.List;
 
+import com.avaje.ebean.Ebean;
+
 import play.libs.Yaml;
-import usermgmt.configuration.UsermgmtConfiguration;
+import usermgmt.utils.AdditionalConfiguration;
 
 public enum YAML {
 
@@ -18,7 +19,7 @@ public enum YAML {
 	
 	public void load(){
 		List<?> objects = (List<?>)Yaml.load(fileName);
-		UsermgmtConfiguration.getEbeanServer().save(objects);
+		Ebean.getServer(AdditionalConfiguration.EBEAN_SERVER.getValue()).save(objects);
 	}
 	
 	

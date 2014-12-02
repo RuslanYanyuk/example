@@ -8,11 +8,13 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
 
+import com.avaje.ebean.Ebean;
+
 import play.test.FakeApplication;
 import play.test.TestServer;
-import usermgmt.configuration.UsermgmtConfiguration;
 import usermgmt.models.AbstractModel;
 import usermgmt.models.User;
+import usermgmt.utils.AdditionalConfiguration;
 
 
 public abstract class AbstractTest {
@@ -64,9 +66,9 @@ public abstract class AbstractTest {
     }
 	
 	private static void clearEntities(Class<? extends AbstractModel> classValue){
-		Iterable<? extends AbstractModel> models = UsermgmtConfiguration.getEbeanServer().find(classValue).findList();
+		Iterable<? extends AbstractModel> models = Ebean.getServer(AdditionalConfiguration.EBEAN_SERVER.getValue()).find(classValue).findList();
         for (AbstractModel model : models) {
-        	UsermgmtConfiguration.getEbeanServer().delete(model);
+        	Ebean.getServer(AdditionalConfiguration.EBEAN_SERVER.getValue()).delete(model);
         }
 	}
 	
@@ -76,7 +78,7 @@ public abstract class AbstractTest {
 	}
 	
 	private static void alterTable(String tableName){
-		UsermgmtConfiguration.getEbeanServer().createSqlUpdate(String.format("ALTER TABLE %s AUTO_INCREMENT = 1", tableName)).execute();
+		Ebean.getServer(AdditionalConfiguration.EBEAN_SERVER.getValue()).createSqlUpdate(String.format("ALTER TABLE %s AUTO_INCREMENT = 1", tableName)).execute();
 	}
 	
 }

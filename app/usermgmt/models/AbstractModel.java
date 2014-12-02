@@ -1,13 +1,12 @@
 package usermgmt.models;
 
-import javax.inject.Inject;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import play.db.ebean.Model;
-import usermgmt.configuration.UsermgmtConfiguration;
+import usermgmt.utils.AdditionalConfiguration;
 
 
 @MappedSuperclass
@@ -19,17 +18,17 @@ public abstract class AbstractModel extends Model {
 	
 	@Override
 	public void save(){
-		super.save(UsermgmtConfiguration.EBEAN_SERVER_NAME);
+		super.save(AdditionalConfiguration.EBEAN_SERVER.getValue());
 	}
 	
 	@Override
 	public void update(){
-		super.update(UsermgmtConfiguration.EBEAN_SERVER_NAME);
+		super.update(AdditionalConfiguration.EBEAN_SERVER.getValue());
 	}
 	
 	@Override
 	public void delete(){
-		super.delete(UsermgmtConfiguration.EBEAN_SERVER_NAME);
+		super.delete(AdditionalConfiguration.EBEAN_SERVER.getValue());
 	}
 	
 }

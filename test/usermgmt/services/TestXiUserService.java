@@ -44,7 +44,7 @@ public class TestXiUserService extends AbstractTest {
 		
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(1);
-		checkUserBasedOnUserFormBean(users.get(0));
+		checkUserBasedOnUserFormBean(users.get(0), bean);
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class TestXiUserService extends AbstractTest {
 		UserFormBean bean = createUserFormBean();
 		service.update("user1Username", bean);
 		List<User> users = User.find.all();
-		checkUserBasedOnUserFormBean(users.get(0));
+		checkUserBasedOnUserFormBean(users.get(0), bean);
 	}
 	
 	@Test
@@ -64,6 +64,7 @@ public class TestXiUserService extends AbstractTest {
 		User firstUser = User.find.where().eq("username", "user1Username").findUnique();
 		assertThat(firstUser).isNotNull();
 		service.delete("user1Username");
+		users = User.find.all();
 		assertThat(users.size()).isEqualTo(3);
 		firstUser = User.find.where().eq("username", "user1Username").findUnique();
 		assertThat(firstUser).isNull();
@@ -73,11 +74,11 @@ public class TestXiUserService extends AbstractTest {
 		return new UserFormBean("username", "fullname", Role.ADMIN.toString(), "password");
 	}
 	
-	private void checkUserBasedOnUserFormBean(User user){
-		assertThat(user.username).isEqualTo("username");
-		assertThat(user.fullname).isEqualTo("fullname");
-		assertThat(user.role).isEqualTo(Role.ADMIN);
-		assertThat(user.password).isEqualTo("password");
+	private void checkUserBasedOnUserFormBean(User user, UserFormBean bean){
+		assertThat(user.username).isEqualTo(bean.username);
+		assertThat(user.fullname).isEqualTo(bean.fullname);
+		assertThat(user.role.toString()).isEqualTo(bean.role);
+		assertThat(user.password).isEqualTo(bean.password);
 	}
 	
 	private void checkFirstGeneralUser(SimpleUserFormBean formbean){

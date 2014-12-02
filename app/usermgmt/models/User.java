@@ -6,7 +6,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import play.data.validation.*;
-import usermgmt.configuration.UsermgmtConfiguration;
+import usermgmt.utils.AdditionalConfiguration;
 
 @Entity
 public class User extends AbstractModel {
@@ -34,6 +34,6 @@ public class User extends AbstractModel {
 		this.role = role;
 	}
 	
-	public static Finder<Long, User> find = new Finder<Long, User>(UsermgmtConfiguration.EBEAN_SERVER_NAME, Long.class, User.class);
+	public static Finder<Long, User> find = new Finder<Long, User>(AdditionalConfiguration.EBEAN_SERVER.getValue(), Long.class, User.class);
 	
 }
