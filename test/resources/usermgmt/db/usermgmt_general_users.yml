@@ -1,0 +1,23 @@
+- !!usermgmt.models.User
+  username: user1Username
+  fullname: user1Fullname
+  password: $2a$10$jyQzbaf0L46TtxQl/j8RvOZOLMm//qStOPjP1.ac6Oy8Del1I.B66
+  role: USER
+  
+- !!usermgmt.models.User
+  username: user2Username
+  fullname: user2Fullname
+  password: $2a$10$jyQzbaf0L46TtxQl/j8RvOZOLMm//qStOPjP1.ac6Oy8Del1I.B66
+  role: USER
+  
+- !!usermgmt.models.User
+  username: user3Username
+  fullname: user3Fullname
+  password: $2a$10$jyQzbaf0L46TtxQl/j8RvOZOLMm//qStOPjP1.ac6Oy8Del1I.B66
+  role: ADMIN
+
+- !!usermgmt.models.User
+  username: Admin
+  fullname: admin
+  password: $2a$10$WiA98lwh3eHWx8Rlh8bMKe89vKjycrH6XSgScKY4xPn7WJ7KbmIpu
+  role: ADMIN
