@@ -6,15 +6,12 @@ import com.google.inject.Singleton;
 
 import play.Application;
 import play.GlobalSettings;
-import usermgmt.services.AuthService;
-import usermgmt.services.XiAuthService;
-import usermgmt.services.XiUserService;
-import usermgmt.services.UserService;
+import usermgmt.services.*;
 
 public class Global extends GlobalSettings {
 
     private Injector injector;
-
+    
     @Override
     public void onStart(Application application) {
         injector = Guice.createInjector(new AbstractModule() {

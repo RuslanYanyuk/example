@@ -11,7 +11,9 @@ public class SimpleUserFormBean implements FormBean<User> {
     
     public String role;
 
-	public SimpleUserFormBean(String username, String fullname, String role) {
+    public SimpleUserFormBean(){}
+    
+	protected SimpleUserFormBean(String username, String fullname, String role) {
 		this.username = username;
 		this.fullname = fullname;
 		this.role = role;
@@ -22,6 +24,10 @@ public class SimpleUserFormBean implements FormBean<User> {
 		model.username = username;
         model.fullname = fullname;
         model.role = Role.valueOf(role);
+	}
+	
+	public static SimpleUserFormBean from(User model){
+		return new SimpleUserFormBean(model.username, model.fullname, model.role.toString());
 	}
 	
 }
