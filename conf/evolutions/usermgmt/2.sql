@@ -5,12 +5,12 @@
 
 create table user (
   id                        bigint auto_increment not null,
-  username                  varchar(255),
+  user_name                 varchar(255),
   password                  varchar(255),
-  fullname                  varchar(255),
+  full_name                 varchar(255),
   role                      varchar(5),
   constraint ck_user_role check (role in ('ADMIN','USER')),
-  constraint uq_user_username unique (username),
+  constraint uq_user_user_name unique (user_name),
   constraint pk_user primary key (id))
 ;
 

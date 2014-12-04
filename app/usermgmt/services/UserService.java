@@ -2,19 +2,19 @@ package usermgmt.services;
 
 import java.util.List;
 
-import usermgmt.formbeans.SimpleUserFormBean;
 import usermgmt.formbeans.UserFormBean;
+import usermgmt.formbeans.SecuredUserFormBean;
 
 public interface UserService {
 
-	List<? extends SimpleUserFormBean> getAll();
+	List<? extends UserFormBean> getAll();
 	
-	SimpleUserFormBean get(String username);
+	UserFormBean get(String userName);
 	
-	void create(UserFormBean bean);
+	void create(SecuredUserFormBean bean);
 	
-	void update(String username, UserFormBean bean);
+	void update(String userName, SecuredUserFormBean bean);
 	
-	void delete(String username);
+	void delete(String userName);
 	
 }

@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import resources.usermgmt.YAML;
 import usermgmt.AbstractTest;
-import usermgmt.formbeans.SimpleUserFormBean;
+import usermgmt.formbeans.SecuredUserFormBean;
 import usermgmt.formbeans.UserFormBean;
 import usermgmt.models.Role;
 import usermgmt.models.User;
@@ -20,89 +20,73 @@ public class TestXiUserService extends AbstractTest {
 	public void getAllUsers_ReturnsAllExistingUsers() throws Exception {
 		YAML.GENERAL_USERS.load();
 		
-		List<? extends SimpleUserFormBean> beans = service.getAll();
-		
+		List<? extends UserFormBean> beans = service.getAll();
 		assertThat(beans.size()).isEqualTo(4);
-		checkFirstGeneralUser(beans.get(0));
-		checkSecondGeneralUser(beans.get(1));
-		checkThirdGeneralUser(beans.get(2));
-		checkFourthGeneralUser(beans.get(3));
+		checkBean(beans.get(0), "user1Username", "user1Fullname", Role.USER);
+		checkBean(beans.get(1), "user2Username", "user2Fullname", Role.USER);
+		checkBean(beans.get(2), "user3Username", "user3Fullname", Role.ADMIN);
+		checkBean(beans.get(3), "Admin", "admin", Role.ADMIN);
 	}
 	
 	@Test
 	public void get_ReturnsFormBeanByUsername(){
 		YAML.GENERAL_USERS.load();
-		SimpleUserFormBean bean = service.get("user1Username");
+		
+		UserFormBean bean = service.get("user1Username");
 		assertThat(bean).isNotNull();
-		checkFirstGeneralUser(bean);
+		checkBean(bean, "user1Username", "user1Fullname", Role.USER);
 	}
 	
 	@Test
 	public void create_CreatesNewUser(){
-		UserFormBean bean = createUserFormBean();
+		SecuredUserFormBean bean = createUserFormBean("userName1", "fullName1", Role.ADMIN, "password1");
 		service.create(bean);
-		
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(1);
-		checkUserBasedOnUserFormBean(users.get(0), bean);
+		checkBean(bean, users.get(0));
 	}
 	
 	@Test
 	public void update_UpdatesExistedUser(){
 		YAML.GENERAL_USERS.load();
-		UserFormBean bean = createUserFormBean();
+		
+		SecuredUserFormBean bean = createUserFormBean("userName1", "fullName1", Role.ADMIN, "password1");
 		service.update("user1Username", bean);
 		List<User> users = User.find.all();
-		checkUserBasedOnUserFormBean(users.get(0), bean);
+		checkBean(bean, users.get(0));
 	}
 	
 	@Test
 	public void delete_RemovesUserByUsername(){
 		YAML.GENERAL_USERS.load();
+		
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(4);
-		User firstUser = User.find.where().eq("username", "user1Username").findUnique();
+		User firstUser = User.find.where().eq("userName", "user1Username").findUnique();
 		assertThat(firstUser).isNotNull();
 		service.delete("user1Username");
 		users = User.find.all();
 		assertThat(users.size()).isEqualTo(3);
-		firstUser = User.find.where().eq("username", "user1Username").findUnique();
+		firstUser = User.find.where().eq("userName", "user1Username").findUnique();
 		assertThat(firstUser).isNull();
 	}
 	
-	private UserFormBean createUserFormBean(){
-		return new UserFormBean("username", "fullname", Role.ADMIN.toString(), "password");
+	private SecuredUserFormBean createUserFormBean(String userName, String fullName, Role role, String password){
+		return new SecuredUserFormBean(userName, fullName, Role.ADMIN.toString(), password);
 	}
 	
-	private void checkUserBasedOnUserFormBean(User user, UserFormBean bean){
-		assertThat(user.username).isEqualTo(bean.username);
-		assertThat(user.fullname).isEqualTo(bean.fullname);
-		assertThat(user.role.toString()).isEqualTo(bean.role);
-		assertThat(user.password).isEqualTo(bean.password);
+	private void checkBean(SecuredUserFormBean bean, User user){
+		assertThat(bean.userName).isEqualTo(user.userName);
+		assertThat(bean.fullName).isEqualTo(user.fullName);
+		assertThat(bean.role).isEqualTo(user.role.toString());
+		assertThat(bean.password).isEqualTo(user.password);
 	}
 	
-	private void checkFirstGeneralUser(SimpleUserFormBean formbean){
-		assertThat(formbean.username).isEqualTo("user1Username");
-		assertThat(formbean.fullname).isEqualTo("user1Fullname");
-		assertThat(formbean.role).isEqualTo(Role.USER.toString());
-	}
-	
-	private void checkSecondGeneralUser(SimpleUserFormBean formbean){
-		assertThat(formbean.username).isEqualTo("user2Username");
-		assertThat(formbean.fullname).isEqualTo("user2Fullname");
-		assertThat(formbean.role).isEqualTo(Role.USER.toString());
-	}
-	
-	private void checkThirdGeneralUser(SimpleUserFormBean formbean){
-		assertThat(formbean.username).isEqualTo("user3Username");
-		assertThat(formbean.fullname).isEqualTo("user3Fullname");
-		assertThat(formbean.role).isEqualTo(Role.ADMIN.toString());
-	}
-	
-	private void checkFourthGeneralUser(SimpleUserFormBean formbean){
-		assertThat(formbean.username).isEqualTo("Admin");
-		assertThat(formbean.fullname).isEqualTo("admin");
-		assertThat(formbean.role).isEqualTo(Role.ADMIN.toString());
+	private void checkBean(UserFormBean bean,
+			String userName, String fullName, Role role){
+		assertThat(bean.userName).isEqualTo(userName);
+		assertThat(bean.fullName).isEqualTo(fullName);
+		assertThat(bean.role).isEqualTo(role.toString());
 	}
 	
 }

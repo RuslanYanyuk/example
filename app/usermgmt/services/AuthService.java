@@ -2,7 +2,7 @@ package usermgmt.services;
 
 public interface AuthService {
 
-	void login(String username, String password);
+	void login(String userName, String password);
 	
 	void logout();
 	

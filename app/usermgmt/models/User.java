@@ -13,13 +13,13 @@ public class User extends AbstractModel {
 
 	@Column(unique=true)
 	@Constraints.Required
-	public String username;
+	public String userName;
 	
 	@Constraints.Required
 	public String password;
 
 	@Constraints.Required
-	public String fullname;
+	public String fullName;
 	
 	@Constraints.Required
 	@Enumerated(EnumType.STRING)
@@ -27,9 +27,9 @@ public class User extends AbstractModel {
 	
 	public User() {	}
 	
-	public User(String username, String password, String fullname, Role role) {
-		this.username = username;
-		this.fullname = fullname;
+	public User(String userName, String password, String fullName, Role role) {
+		this.userName = userName;
+		this.fullName = fullName;
 		this.password = password;
 		this.role = role;
 	}

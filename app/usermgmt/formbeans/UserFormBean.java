@@ -1,20 +1,33 @@
 package usermgmt.formbeans;
 
+import usermgmt.models.Role;
 import usermgmt.models.User;
 
-public class UserFormBean extends SimpleUserFormBean {
+public class UserFormBean implements FormBean<User> {
 
-	public String password;
+	public String userName;
 	
-	public UserFormBean(String username, String fullname, String role, String password) {
-		super(username, fullname, role);
-		this.password = password;
+    public String fullName;
+    
+    public String role;
+
+    public UserFormBean(){}
+    
+	protected UserFormBean(String userName, String fullName, String role) {
+		this.userName = userName;
+		this.fullName = fullName;
+		this.role = role;
 	}
 
 	@Override
 	public void populateModelWithData(User model) {
-		super.populateModelWithData(model);
-		model.password = password;
+		model.userName = userName;
+        model.fullName = fullName;
+        model.role = Role.valueOf(role);
+	}
+	
+	public static UserFormBean from(User model){
+		return new UserFormBean(model.userName, model.fullName, model.role.toString());
 	}
 	
 }
