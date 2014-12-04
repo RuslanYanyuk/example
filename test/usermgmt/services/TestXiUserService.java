@@ -11,13 +11,14 @@ import usermgmt.formbeans.UserFormBean;
 import usermgmt.models.Role;
 import usermgmt.models.User;
 import static org.fest.assertions.Assertions.*;
+import static resources.usermgmt.Parameters.*;
 
 public class TestXiUserService extends AbstractTest {
 
-	private XiUserService service = new XiUserService();
+	private UserService service = new XiUserService();
 	
 	@Test
-	public void getAllUsers_ReturnsAllExistingUsers() throws Exception {
+	public void getAllUsers_ReturnsAllExistingUsers() {
 		YAML.GENERAL_USERS.load();
 		
 		List<? extends UserFormBean> beans = service.getAll();
@@ -29,16 +30,21 @@ public class TestXiUserService extends AbstractTest {
 	}
 	
 	@Test
-	public void get_ReturnsFormBeanByUsername(){
+	public void get_ReturnsFormBeanByUserName() throws UserNotFoundException {
 		YAML.GENERAL_USERS.load();
 		
-		UserFormBean bean = service.get("user1Username");
-		assertThat(bean).isNotNull();
-		checkBean(bean, "user1Username", "user1Fullname", Role.USER);
+		UserFormBean bean = service.get(FIRST_USER_NAME);
+		checkBean(bean, FIRST_USER_NAME, "user1Fullname", Role.USER);
+	}
+	
+	@Test(expected=UserNotFoundException.class)
+	public void get_ThrowsExceptionUnlessUserNameFound() throws UserNotFoundException {
+		YAML.GENERAL_USERS.load();
+		service.get(NOT_EXISTED_USER_NAME);
 	}
 	
 	@Test
-	public void create_CreatesNewUser(){
+	public void create_CreatesNewUser() throws UserNameAlreadyExistsException {
 		SecuredUserFormBean bean = createUserFormBean("userName1", "fullName1", Role.ADMIN, "password1");
 		service.create(bean);
 		List<User> users = User.find.all();
@@ -46,29 +52,85 @@ public class TestXiUserService extends AbstractTest {
 		checkBean(bean, users.get(0));
 	}
 	
+	@Test(expected=UserNameAlreadyExistsException.class)
+	public void create_ThrowsExceptionIfUserNameAlreadyExists() throws UserNameAlreadyExistsException {
+		YAML.GENERAL_USERS.load();
+		
+		SecuredUserFormBean bean = createUserFormBean("Admin", "fullName1", Role.ADMIN, "password1");
+		service.create(bean);
+	}
+	
 	@Test
-	public void update_UpdatesExistedUser(){
+	public void create_DoesNothingIfUserNameAlreadyExists() {
+		YAML.GENERAL_USERS.load();
+		
+		SecuredUserFormBean bean = createUserFormBean("Admin", "fullName1", Role.ADMIN, "password1");
+		try {
+			service.create(bean);
+		} catch (UserNameAlreadyExistsException e) {
+		}
+		assertThat(User.find.all().size()).isEqualTo(4);
+	}
+	
+	@Test
+	public void update_UpdatesExistedUser() throws UserNotFoundException, UserNameAlreadyExistsException {
 		YAML.GENERAL_USERS.load();
 		
 		SecuredUserFormBean bean = createUserFormBean("userName1", "fullName1", Role.ADMIN, "password1");
-		service.update("user1Username", bean);
+		service.update(FIRST_USER_NAME, bean);
 		List<User> users = User.find.all();
 		checkBean(bean, users.get(0));
 	}
 	
+	@Test(expected=UserNotFoundException.class)
+	public void update_ThrowsExceptionUnlessUserNameFound() throws UserNotFoundException, UserNameAlreadyExistsException {
+		YAML.GENERAL_USERS.load();
+		
+		SecuredUserFormBean bean = createUserFormBean("userName1", "fullName1", Role.ADMIN, "password1");
+		service.update(NOT_EXISTED_USER_NAME, bean);
+	}
+	
+	@Test(expected=UserNameAlreadyExistsException.class)
+	public void update_ThrowsExceptionIfUserNameAlreadyExists() throws UserNotFoundException, UserNameAlreadyExistsException {
+		YAML.GENERAL_USERS.load();
+		
+		SecuredUserFormBean bean = createUserFormBean("Admin", "fullName1", Role.ADMIN, "password1");
+		service.update(FIRST_USER_NAME, bean);
+	}
+	
 	@Test
-	public void delete_RemovesUserByUsername(){
+	public void update_DoesNothingIfUserNameAlreadyExists() throws UserNotFoundException {
+		YAML.GENERAL_USERS.load();
+		
+		SecuredUserFormBean bean = createUserFormBean("Admin", "fullName1", Role.ADMIN, "password1");
+		try {
+			service.update(FIRST_USER_NAME, bean);
+		} catch (UserNameAlreadyExistsException e) {
+		}
+		User user = User.find.all().get(0);
+		checkUser(user, FIRST_USER_NAME, "user1Fullname", Role.USER, "$2a$10$jyQzbaf0L46TtxQl/j8RvOZOLMm//qStOPjP1.ac6Oy8Del1I.B66");
+	}
+	
+	@Test
+	public void delete_RemovesUserByUsername() throws UserNotFoundException {
 		YAML.GENERAL_USERS.load();
 		
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(4);
-		User firstUser = User.find.where().eq("userName", "user1Username").findUnique();
+		User firstUser = User.find.where().eq("userName", FIRST_USER_NAME).findUnique();
 		assertThat(firstUser).isNotNull();
-		service.delete("user1Username");
+		service.delete(FIRST_USER_NAME);
 		users = User.find.all();
 		assertThat(users.size()).isEqualTo(3);
-		firstUser = User.find.where().eq("userName", "user1Username").findUnique();
+		firstUser = User.find.where().eq("userName", FIRST_USER_NAME).findUnique();
 		assertThat(firstUser).isNull();
+	}
+	
+	@Test(expected=UserNotFoundException.class)
+	public void delete_ThrowsExceptionUnlessUserNameFound() throws UserNotFoundException {
+		YAML.GENERAL_USERS.load();
+		
+		service.delete(NOT_EXISTED_USER_NAME);
 	}
 	
 	private SecuredUserFormBean createUserFormBean(String userName, String fullName, Role role, String password){
@@ -87,6 +149,14 @@ public class TestXiUserService extends AbstractTest {
 		assertThat(bean.userName).isEqualTo(userName);
 		assertThat(bean.fullName).isEqualTo(fullName);
 		assertThat(bean.role).isEqualTo(role.toString());
+	}
+	
+	private void checkUser(User user,
+			String userName, String fullName, Role role, String password){
+		assertThat(user.userName).isEqualTo(userName);
+		assertThat(user.fullName).isEqualTo(fullName);
+		assertThat(user.role).isEqualTo(role);
+		assertThat(user.password).isEqualTo(password);
 	}
 	
 }
