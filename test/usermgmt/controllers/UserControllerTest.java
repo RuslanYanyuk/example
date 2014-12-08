@@ -17,7 +17,7 @@ import static play.test.Helpers.*;
 import static usermgmt.Parameters.FIRST_USER_NAME;
 import static usermgmt.Parameters.NOT_EXISTED_USER_NAME;
 
-public class TestUserController extends AbstractTest {
+public class UserControllerTest extends AbstractTest {
 
 	@Test
 	public void getAll_ReturnsAllExistedUsers(){
@@ -75,13 +75,13 @@ public class TestUserController extends AbstractTest {
 	}
 	
 	@Test
-	public void create_ReturnsBadRequestIfUserNameAlreadyExists(){
+	public void create_ReturnsInternalServerErrorIfUserNameAlreadyExists(){
 		YAML.GENERAL_USERS.load();
 		
 		JsonNode node = createUserJsonNode("Admin", "fullName1", Role.ADMIN, "password1");
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.create(),
 				fakeRequest().withJsonBody(node).withSession("userName", FIRST_USER_NAME));
-		checkResponse(result, BAD_REQUEST);
+		checkResponse(result, INTERNAL_SERVER_ERROR);
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(4);
 	}
@@ -119,13 +119,13 @@ public class TestUserController extends AbstractTest {
 	}
 	
 	@Test
-	public void update_ReturnsBadRequestIfUserNameAlreadyExists(){
+	public void update_ReturnsInternalServerErrorIfUserNameAlreadyExists(){
 		YAML.GENERAL_USERS.load();
 		
 		JsonNode node = createUserJsonNode("Admin", "fullName1", Role.ADMIN, "password1");
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME),
                 fakeRequest().withJsonBody(node).withSession("userName", FIRST_USER_NAME));
-		checkResponse(result, BAD_REQUEST);
+		checkResponse(result, INTERNAL_SERVER_ERROR);
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(4);
 		User user = users.get(0);

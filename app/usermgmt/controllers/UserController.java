@@ -11,8 +11,8 @@ import play.libs.Json;
 import play.mvc.*;
 import usermgmt.formbeans.UserFormBean;
 import usermgmt.formbeans.SecuredUserFormBean;
-import usermgmt.services.UserNameAlreadyExistsException;
-import usermgmt.services.UserNotFoundException;
+import usermgmt.services.AlreadyExistsException;
+import usermgmt.services.NotFoundException;
 import usermgmt.services.UserService;
 import usermgmt.services.XiUserService;
 import usermgmt.utils.Secured;
@@ -31,7 +31,7 @@ public class UserController extends Controller {
 		UserFormBean bean;
 		try {
 			bean = service.get(userName);
-		} catch (UserNotFoundException e) {
+		} catch (NotFoundException e) {
 			return notFound();
 		}
         return ok(Json.toJson(bean));
@@ -45,8 +45,8 @@ public class UserController extends Controller {
 		}
 		try {
 			bean = service.create(getFormBeanFromRequest(node));
-		} catch (UserNameAlreadyExistsException e) {
-			return badRequest();
+		} catch (AlreadyExistsException e) {
+			return internalServerError();
 		}
         return ok(Json.toJson(bean));
     }
@@ -59,10 +59,10 @@ public class UserController extends Controller {
 		}
 		try {
 			bean = service.update(userName, getFormBeanFromRequest(node));
-		} catch (UserNotFoundException e) {
+		} catch (NotFoundException e) {
 			return notFound();
-		} catch (UserNameAlreadyExistsException e) {
-			return badRequest();
+		} catch (AlreadyExistsException e) {
+			return internalServerError();
 		}
         return ok(Json.toJson(bean));
     }
@@ -70,7 +70,7 @@ public class UserController extends Controller {
 	public Result delete(String userName) {
 		try {
 			service.delete(userName);
-		} catch (UserNotFoundException e) {
+		} catch (NotFoundException e) {
 			return notFound();
 		}
 		return ok();

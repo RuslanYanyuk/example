@@ -20,12 +20,12 @@ public class XiUserService implements UserService {
 	}
 
 	@Override
-	public UserFormBean get(String userName) throws UserNotFoundException {
+	public UserFormBean get(String userName) throws NotFoundException {
 		return UserFormBean.from(findUserByUserName(userName));
 	}
 
 	@Override
-	public UserFormBean create(SecuredUserFormBean bean) throws UserNameAlreadyExistsException {
+	public UserFormBean create(SecuredUserFormBean bean) throws AlreadyExistsException {
 		validateUserName(bean.userName);
 		User newUser = new User();
 		bean.populateModelWithData(newUser);
@@ -34,7 +34,7 @@ public class XiUserService implements UserService {
 	}
 
 	@Override
-	public UserFormBean update(String userName, SecuredUserFormBean bean) throws UserNotFoundException, UserNameAlreadyExistsException {
+	public UserFormBean update(String userName, SecuredUserFormBean bean) throws NotFoundException, AlreadyExistsException {
 		if (!userName.equals(bean.userName)){
 			validateUserName(bean.userName);
 		}
@@ -45,22 +45,22 @@ public class XiUserService implements UserService {
 	}
 
 	@Override
-	public void delete(String userName) throws UserNotFoundException {
+	public void delete(String userName) throws NotFoundException {
 		findUserByUserName(userName).delete();
 	}
 
-	private User findUserByUserName(String userName) throws UserNotFoundException {
+	private User findUserByUserName(String userName) throws NotFoundException {
 		User result = User.find.where().eq("userName", userName).findUnique();// throws exception if found more than 1
 		if (result == null){
-			throw new UserNotFoundException(
+			throw new NotFoundException(
 					String.format("User entity with user name %s doesn't exist.", userName));
 		}
 		return result;
 	}
 	
-	private void validateUserName(String userName) throws UserNameAlreadyExistsException{
+	private void validateUserName(String userName) throws AlreadyExistsException {
 		if (User.find.where().eq("userName", userName).findUnique() != null) {
-			throw new UserNameAlreadyExistsException(
+			throw new AlreadyExistsException(
 					String.format("User name %s already exist.", userName));
 		}
 	}

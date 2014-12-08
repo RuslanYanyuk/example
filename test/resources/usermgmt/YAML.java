@@ -22,6 +22,4 @@ public enum YAML {
 		Ebean.getServer(AdditionalConfiguration.EBEAN_SERVER.getValue()).save(objects);
 	}
 	
-	
-	
 }

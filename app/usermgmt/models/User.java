@@ -5,23 +5,18 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import play.data.validation.*;
 import usermgmt.utils.AdditionalConfiguration;
 
 @Entity
 public class User extends AbstractModel {
 
 	@Column(unique=true)
-	@Constraints.Required
 	public String userName;
 	
-	@Constraints.Required
 	public String password;
 
-	@Constraints.Required
 	public String fullName;
 	
-	@Constraints.Required
 	@Enumerated(EnumType.STRING)
 	public Role role;
 	

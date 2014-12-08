@@ -9,12 +9,12 @@ public interface UserService {
 
 	List<? extends UserFormBean> getAll();
 	
-	UserFormBean get(String userName) throws UserNotFoundException;
+	UserFormBean get(String userName) throws NotFoundException;
 	
-	UserFormBean create(SecuredUserFormBean bean) throws UserNameAlreadyExistsException;
+	UserFormBean create(SecuredUserFormBean bean) throws AlreadyExistsException;
 	
-	UserFormBean update(String userName, SecuredUserFormBean bean) throws UserNameAlreadyExistsException, UserNotFoundException;
+	UserFormBean update(String userName, SecuredUserFormBean bean) throws AlreadyExistsException, NotFoundException;
 	
-	void delete(String userName) throws UserNotFoundException;
+	void delete(String userName) throws NotFoundException;
 	
 }
