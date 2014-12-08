@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.junit.Test;
 
-import resources.usermgmt.YAML;
 import usermgmt.AbstractTest;
+import usermgmt.YAML;
 import usermgmt.formbeans.SecuredUserFormBean;
 import usermgmt.formbeans.UserFormBean;
 import usermgmt.models.Role;
 import usermgmt.models.User;
 import static org.fest.assertions.Assertions.*;
-import static resources.usermgmt.Parameters.*;
+import static usermgmt.Parameters.*;
 
 public class TestXiUserService extends AbstractTest {
 

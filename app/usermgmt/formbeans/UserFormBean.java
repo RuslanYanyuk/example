@@ -13,7 +13,7 @@ public class UserFormBean implements FormBean<User> {
 
     public UserFormBean(){}
     
-	protected UserFormBean(String userName, String fullName, String role) {
+	public UserFormBean(String userName, String fullName, String role) {
 		this.userName = userName;
 		this.fullName = fullName;
 		this.role = role;

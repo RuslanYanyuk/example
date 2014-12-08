@@ -1,13 +1,13 @@
 package usermgmt.services;
 
+import usermgmt.formbeans.LoginFormBean;
+import usermgmt.models.User;
+
 public class XiAuthService implements AuthService {
 
 	@Override
-	public void login(String userName, String password) {
-	}
-
-	@Override
-	public void logout() {
+	public boolean isCorrectPassword(User user, LoginFormBean loginFormBean) {
+		return user != null && user.password.equals(loginFormBean.password);
 	}
 
 }

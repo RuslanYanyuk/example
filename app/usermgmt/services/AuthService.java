@@ -1,9 +1,9 @@
 package usermgmt.services;
 
+import usermgmt.formbeans.LoginFormBean;
+import usermgmt.models.User;
+
 public interface AuthService {
 
-	void login(String userName, String password);
-	
-	void logout();
-	
+	boolean isCorrectPassword(User user, LoginFormBean loginFormBean);
 }

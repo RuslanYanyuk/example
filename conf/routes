@@ -3,8 +3,8 @@
 # ~~~~
 
 # Home page
-GET     /login              		@usermgmt.controllers.AuthController.loginForm()
 POST	/login				@usermgmt.controllers.AuthController.login()
+GET     /login              		@usermgmt.controllers.AuthController.loginForm()
 GET	/logout				@usermgmt.controllers.AuthController.logout()
 
 GET	/users				@usermgmt.controllers.UserController.getAll()

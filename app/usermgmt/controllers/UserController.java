@@ -15,7 +15,9 @@ import usermgmt.services.UserNameAlreadyExistsException;
 import usermgmt.services.UserNotFoundException;
 import usermgmt.services.UserService;
 import usermgmt.services.XiUserService;
+import usermgmt.utils.Secured;
 
+@Security.Authenticated(Secured.class)
 public class UserController extends Controller {
 	
 	private UserService service = new XiUserService();

@@ -1,4 +1,4 @@
-package resources.usermgmt;
+package usermgmt;
 
 import java.util.List;
 
