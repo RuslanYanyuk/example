@@ -73,10 +73,20 @@ public class XiUserServiceTest extends AbstractTest {
 	}
 	
 	@Test
-	public void update_UpdatesExistedUser() throws NotFoundException, AlreadyExistsException {
+	public void update_UpdatesExistedUserWithUpdatingUserName() throws NotFoundException, AlreadyExistsException {
 		YAML.GENERAL_USERS.load();
 		
 		SecuredUserFormBean bean = createUserFormBean("userName1", "fullName1", Role.ADMIN, "password1");
+		service.update(FIRST_USER_NAME, bean);
+		List<User> users = User.find.all();
+		checkBean(bean, users.get(0));
+	}
+	
+	@Test
+	public void update_UpdatesExistedUserWithoutUpdatingUserName() throws NotFoundException, AlreadyExistsException {
+		YAML.GENERAL_USERS.load();
+		
+		SecuredUserFormBean bean = createUserFormBean(FIRST_USER_NAME, "fullName1", Role.ADMIN, "password1");
 		service.update(FIRST_USER_NAME, bean);
 		List<User> users = User.find.all();
 		checkBean(bean, users.get(0));

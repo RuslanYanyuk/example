@@ -87,7 +87,7 @@ public class UserControllerTest extends AbstractTest {
 	}
 	
 	@Test
-	public void update_UpdatesExistedUser(){
+	public void update_UpdatesExistedUserWithUpdatingUserName(){
 		YAML.GENERAL_USERS.load();
 		
 		JsonNode node = createUserJsonNode("userName1", "fullName1", Role.ADMIN, "password1");
@@ -98,6 +98,20 @@ public class UserControllerTest extends AbstractTest {
 		assertThat(users.size()).isEqualTo(4);
 		User user = users.get(0);
 		checkUser(user, "userName1", "fullName1", Role.ADMIN, "password1");
+	}
+	
+	@Test
+	public void update_UpdatesExistedUserWithoutUpdatingUserName(){
+		YAML.GENERAL_USERS.load();
+		
+		JsonNode node = createUserJsonNode(FIRST_USER_NAME, "fullName1", Role.ADMIN, "password1");
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME),
+                fakeRequest().withJsonBody(node).withSession("userName", FIRST_USER_NAME));
+		checkResponse(result, OK);
+		List<User> users = User.find.all();
+		assertThat(users.size()).isEqualTo(4);
+		User user = users.get(0);
+		checkUser(user, FIRST_USER_NAME, "fullName1", Role.ADMIN, "password1");
 	}
 	
 	@Test
