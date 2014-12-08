@@ -1,23 +1,23 @@
 - !!usermgmt.models.User
   userName: user1Username
   fullName: user1Fullname
-  password: $2a$10$jyQzbaf0L46TtxQl/j8RvOZOLMm//qStOPjP1.ac6Oy8Del1I.B66
+  passwordHash: $2a$10$JgOf9dAOI76N.GvUgWhfw.FJ6.E8VjWzBFSpptUaI0Q03yYenlfvG
   role: USER
   
 - !!usermgmt.models.User
   userName: user2Username
   fullName: user2Fullname
-  password: $2a$10$jyQzbaf0L46TtxQl/j8RvOZOLMm//qStOPjP1.ac6Oy8Del1I.B66
+  passwordHash: $2a$10$JgOf9dAOI76N.GvUgWhfw.FJ6.E8VjWzBFSpptUaI0Q03yYenlfvG
   role: USER
   
 - !!usermgmt.models.User
   userName: user3Username
   fullName: user3Fullname
-  password: $2a$10$jyQzbaf0L46TtxQl/j8RvOZOLMm//qStOPjP1.ac6Oy8Del1I.B66
+  passwordHash: $2a$10$JgOf9dAOI76N.GvUgWhfw.FJ6.E8VjWzBFSpptUaI0Q03yYenlfvG
   role: ADMIN
 
 - !!usermgmt.models.User
   userName: Admin
   fullName: admin
-  password: $2a$10$WiA98lwh3eHWx8Rlh8bMKe89vKjycrH6XSgScKY4xPn7WJ7KbmIpu
+  passwordHash: $2a$10$JgOf9dAOI76N.GvUgWhfw.FJ6.E8VjWzBFSpptUaI0Q03yYenlfvG
   role: ADMIN

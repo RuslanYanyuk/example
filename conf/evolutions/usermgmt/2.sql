@@ -6,7 +6,7 @@
 create table user (
   id                        bigint auto_increment not null,
   user_name                 varchar(255),
-  password                  varchar(255),
+  password_hash             varchar(255),
   full_name                 varchar(255),
   role                      varchar(5),
   constraint ck_user_role check (role in ('ADMIN','USER')),

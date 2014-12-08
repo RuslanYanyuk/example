@@ -1,5 +1,6 @@
 package usermgmt.formbeans;
 
+import org.mindrot.jbcrypt.BCrypt;
 import usermgmt.models.User;
 
 public class SecuredUserFormBean extends UserFormBean {
@@ -16,7 +17,7 @@ public class SecuredUserFormBean extends UserFormBean {
 	@Override
 	public void populateModelWithData(User model) {
 		super.populateModelWithData(model);
-		model.password = password;
+		model.passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
 	}
 	
 }

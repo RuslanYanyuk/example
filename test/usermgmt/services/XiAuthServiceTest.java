@@ -9,14 +9,12 @@ import usermgmt.models.User;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static usermgmt.Parameters.FIRST_USER_NAME;
-import static usermgmt.Parameters.FIRST_USER_PASSWORD;
-import static usermgmt.Parameters.INCORRECT_PASSWORD;
+import static usermgmt.Parameters.*;
 
 
 public class XiAuthServiceTest extends AbstractTest{
     private XiAuthService service = new XiAuthService();
-    User user = new User(FIRST_USER_NAME, FIRST_USER_PASSWORD, null , null);
+    User user = new User(FIRST_USER_NAME, FIRST_USER_PASSWORD_HASH, null , null);
 
     @Override
     @Before

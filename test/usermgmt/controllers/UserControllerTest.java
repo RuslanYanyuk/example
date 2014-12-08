@@ -74,16 +74,14 @@ public class UserControllerTest extends AbstractTest {
 	
 	@Test
 	public void create_CreatesNewUser(){
-		YAML.GENERAL_USERS.load();
-		
-		JsonNode node = createUserJsonNode("userName1", "fullName1", Role.ADMIN, "password1");
+		JsonNode node = createUserJsonNode(FIRST_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_PASSWORD);
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.create(),
                 fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, OK);
 		List<User> users = User.find.all();
-		assertThat(users.size()).isEqualTo(5);
-		User user = users.get(4);
-		checkUser(user, "userName1", "fullName1", Role.ADMIN, "password1");
+		assertThat(users.size()).isEqualTo(1);
+		User user = users.get(0);
+		checkUser(user, FIRST_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_PASSWORD);
 	}
 	
 	@Test
@@ -99,7 +97,7 @@ public class UserControllerTest extends AbstractTest {
 	public void create_ReturnsInternalServerErrorIfUserNameAlreadyExists(){
 		YAML.GENERAL_USERS.load();
 		
-		JsonNode node = createUserJsonNode("Admin", "fullName1", Role.ADMIN, "password1");
+		JsonNode node = createUserJsonNode(ADMIN_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_PASSWORD);
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.create(),
 				fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, INTERNAL_SERVER_ERROR);
@@ -120,14 +118,14 @@ public class UserControllerTest extends AbstractTest {
 	public void update_UpdatesExistedUserWithUpdatingUserName(){
 		YAML.GENERAL_USERS.load();
 		
-		JsonNode node = createUserJsonNode("userName1", "fullName1", Role.ADMIN, "password1");
+		JsonNode node = createUserJsonNode(FIRST_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME),
                 fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, OK);
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(4);
 		User user = users.get(0);
-		checkUser(user, "userName1", "fullName1", Role.ADMIN, "password1");
+		checkUser(user, FIRST_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 	}
 	
 	@Test
@@ -147,7 +145,7 @@ public class UserControllerTest extends AbstractTest {
 	@Test
 	public void update_ReturnsNotFoundUnlessUserNameExists(){
 		YAML.GENERAL_USERS.load();
-		JsonNode node = createUserJsonNode("usermame1", "fullName1", Role.ADMIN, "password1");
+		JsonNode node = createUserJsonNode(NOT_EXISTED_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(NOT_EXISTED_USER_NAME),
 				fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
@@ -158,8 +156,7 @@ public class UserControllerTest extends AbstractTest {
 	public void update_ReturnsBadRequestIfRequestIsEmpty(){
 		YAML.GENERAL_USERS.load();
 		
-		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME),
-				fakeRequest().withSession("userName", ADMIN_USER_NAME));
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME), fakeRequest().withSession("userName", FIRST_USER_NAME));
 		checkResponse(result, BAD_REQUEST);
 	}
 	
@@ -167,7 +164,7 @@ public class UserControllerTest extends AbstractTest {
 	public void update_ReturnsInternalServerErrorIfUserNameAlreadyExists(){
 		YAML.GENERAL_USERS.load();
 		
-		JsonNode node = createUserJsonNode("Admin", "fullName1", Role.ADMIN, "password1");
+		JsonNode node = createUserJsonNode(ADMIN_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME),
                 fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, INTERNAL_SERVER_ERROR);
@@ -231,7 +228,7 @@ public class UserControllerTest extends AbstractTest {
 		assertThat(user.userName).isEqualTo(userName);
 		assertThat(user.fullName).isEqualTo(fullName);
 		assertThat(user.role).isEqualTo(role);
-		assertThat(user.password).isEqualTo(password);
+		assertTrue(BCrypt.checkpw(password, user.passwordHash));
 	}
 	
 	private JsonNode createUserJsonNode(String userName, String fullName, Role role, String password){

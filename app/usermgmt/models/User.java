@@ -13,7 +13,7 @@ public class User extends AbstractModel {
 	@Column(unique=true)
 	public String userName;
 	
-	public String password;
+	public String passwordHash;
 
 	public String fullName;
 	
@@ -22,10 +22,10 @@ public class User extends AbstractModel {
 	
 	public User() {	}
 	
-	public User(String userName, String password, String fullName, Role role) {
+	public User(String userName, String passwordHash, String fullName, Role role) {
 		this.userName = userName;
 		this.fullName = fullName;
-		this.password = password;
+		this.passwordHash = passwordHash;
 		this.role = role;
 	}
 	

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import org.mindrot.jbcrypt.BCrypt;
 import usermgmt.AbstractTest;
 import usermgmt.YAML;
 import usermgmt.formbeans.SecuredUserFormBean;
@@ -11,6 +12,7 @@ import usermgmt.formbeans.UserFormBean;
 import usermgmt.models.Role;
 import usermgmt.models.User;
 import static org.fest.assertions.Assertions.*;
+import static org.junit.Assert.assertTrue;
 import static usermgmt.Parameters.*;
 
 public class XiUserServiceTest extends AbstractTest {
@@ -45,7 +47,7 @@ public class XiUserServiceTest extends AbstractTest {
 	
 	@Test
 	public void create_CreatesNewUser() throws AlreadyExistsException {
-		SecuredUserFormBean bean = createUserFormBean("userName1", "fullName1", Role.ADMIN, "password1");
+		SecuredUserFormBean bean = createUserFormBean("userName1", "fullName1", Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		service.create(bean);
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(1);
@@ -56,7 +58,7 @@ public class XiUserServiceTest extends AbstractTest {
 	public void create_ThrowsExceptionIfUserNameAlreadyExists() throws AlreadyExistsException {
 		YAML.GENERAL_USERS.load();
 		
-		SecuredUserFormBean bean = createUserFormBean("Admin", "fullName1", Role.ADMIN, "password1");
+		SecuredUserFormBean bean = createUserFormBean("Admin", "fullName1", Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		service.create(bean);
 	}
 	
@@ -64,7 +66,7 @@ public class XiUserServiceTest extends AbstractTest {
 	public void create_DoesNothingIfUserNameAlreadyExists() {
 		YAML.GENERAL_USERS.load();
 		
-		SecuredUserFormBean bean = createUserFormBean("Admin", "fullName1", Role.ADMIN, "password1");
+		SecuredUserFormBean bean = createUserFormBean("Admin", "fullName1", Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		try {
 			service.create(bean);
 		} catch (AlreadyExistsException e) {
@@ -76,7 +78,7 @@ public class XiUserServiceTest extends AbstractTest {
 	public void update_UpdatesExistedUserWithUpdatingUserName() throws NotFoundException, AlreadyExistsException {
 		YAML.GENERAL_USERS.load();
 		
-		SecuredUserFormBean bean = createUserFormBean("userName1", "fullName1", Role.ADMIN, "password1");
+		SecuredUserFormBean bean = createUserFormBean("userName1", "fullName1", Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		service.update(FIRST_USER_NAME, bean);
 		List<User> users = User.find.all();
 		checkBean(bean, users.get(0));
@@ -96,7 +98,7 @@ public class XiUserServiceTest extends AbstractTest {
 	public void update_ThrowsExceptionUnlessUserNameFound() throws NotFoundException, AlreadyExistsException {
 		YAML.GENERAL_USERS.load();
 		
-		SecuredUserFormBean bean = createUserFormBean("userName1", "fullName1", Role.ADMIN, "password1");
+		SecuredUserFormBean bean = createUserFormBean("userName1", "fullName1", Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		service.update(NOT_EXISTED_USER_NAME, bean);
 	}
 	
@@ -104,7 +106,7 @@ public class XiUserServiceTest extends AbstractTest {
 	public void update_ThrowsExceptionIfUserNameAlreadyExists() throws NotFoundException, AlreadyExistsException {
 		YAML.GENERAL_USERS.load();
 		
-		SecuredUserFormBean bean = createUserFormBean("Admin", "fullName1", Role.ADMIN, "password1");
+		SecuredUserFormBean bean = createUserFormBean("Admin", "fullName1", Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		service.update(FIRST_USER_NAME, bean);
 	}
 	
@@ -112,13 +114,13 @@ public class XiUserServiceTest extends AbstractTest {
 	public void update_DoesNothingIfUserNameAlreadyExists() throws NotFoundException {
 		YAML.GENERAL_USERS.load();
 		
-		SecuredUserFormBean bean = createUserFormBean("Admin", "fullName1", Role.ADMIN, "password1");
+		SecuredUserFormBean bean = createUserFormBean("Admin", "fullName1", Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		try {
 			service.update(FIRST_USER_NAME, bean);
 		} catch (AlreadyExistsException e) {
 		}
 		User user = User.find.all().get(0);
-		checkUser(user, FIRST_USER_NAME, "user1Fullname", Role.USER, "$2a$10$jyQzbaf0L46TtxQl/j8RvOZOLMm//qStOPjP1.ac6Oy8Del1I.B66");
+		checkUser(user, FIRST_USER_NAME, "user1Fullname", Role.USER, FIRST_USER_PASSWORD);
 	}
 	
 	@Test
@@ -151,22 +153,20 @@ public class XiUserServiceTest extends AbstractTest {
 		assertThat(bean.userName).isEqualTo(user.userName);
 		assertThat(bean.fullName).isEqualTo(user.fullName);
 		assertThat(bean.role).isEqualTo(user.role.toString());
-		assertThat(bean.password).isEqualTo(user.password);
+		assertTrue(BCrypt.checkpw(bean.password, user.passwordHash));
 	}
 	
-	private void checkBean(UserFormBean bean,
-			String userName, String fullName, Role role){
+	private void checkBean(UserFormBean bean, String userName, String fullName, Role role){
 		assertThat(bean.userName).isEqualTo(userName);
 		assertThat(bean.fullName).isEqualTo(fullName);
 		assertThat(bean.role).isEqualTo(role.toString());
 	}
 	
-	private void checkUser(User user,
-			String userName, String fullName, Role role, String password){
+	private void checkUser(User user, String userName, String fullName, Role role, String password){
 		assertThat(user.userName).isEqualTo(userName);
 		assertThat(user.fullName).isEqualTo(fullName);
 		assertThat(user.role).isEqualTo(role);
-		assertThat(user.password).isEqualTo(password);
+		assertTrue(BCrypt.checkpw(password, user.passwordHash));
 	}
 	
 }
