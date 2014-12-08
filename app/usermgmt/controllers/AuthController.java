@@ -9,7 +9,6 @@ import usermgmt.models.User;
 import usermgmt.services.AuthService;
 import usermgmt.services.XiAuthService;
 import views.html.*;
-
 import static play.data.Form.form;
 
 public class AuthController extends Controller {
@@ -17,7 +16,7 @@ public class AuthController extends Controller {
     private AuthService authService = new XiAuthService();
 
     public Result loginForm() {
-        return ok(login.render());
+        return ok(login.render(form(LoginFormBean.class)));
     }
 
     public Result login() {
