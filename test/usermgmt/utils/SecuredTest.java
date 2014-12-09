@@ -11,10 +11,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static play.mvc.Http.Status.SEE_OTHER;
 import static play.test.Helpers.*;
-import static play.test.Helpers.redirectLocation;
-import static usermgmt.Parameters.FIRST_USER_FULLNAME;
-import static usermgmt.Parameters.FIRST_USER_NAME;
-import static usermgmt.Parameters.FIRST_USER_ROLE;
+import static usermgmt.Parameters.*;
 
 public class SecuredTest extends AbstractTest{
 
@@ -35,7 +32,7 @@ public class SecuredTest extends AbstractTest{
         UserFormBean expectedUserFormBean = new UserFormBean(FIRST_USER_NAME, FIRST_USER_FULLNAME, FIRST_USER_ROLE);
 
         Result result = callAction(usermgmt.controllers.routes.ref.UserController.get(FIRST_USER_NAME),
-                fakeRequest().withSession("userName", FIRST_USER_NAME));
+                fakeRequest().withSession("userName", ADMIN_USER_NAME));
 
         assertThat(status(result), is(OK));
         assertThat(contentAsString(result), is(Json.toJson(expectedUserFormBean).toString()));

@@ -6,7 +6,6 @@ import play.mvc.Http.Context;
 import play.mvc.SimpleResult;
 import usermgmt.models.Role;
 import usermgmt.models.User;
-import usermgmt.services.NotFoundException;
 import be.objectify.deadbolt.java.AbstractDeadboltHandler;
 import be.objectify.deadbolt.java.DeadboltHandler;
 import be.objectify.deadbolt.java.DynamicResourceHandler;
@@ -19,15 +18,18 @@ public class AccessHandler extends AbstractDeadboltHandler implements DynamicRes
 	
 	@Override
     public boolean isAllowed(String name, String meta, DeadboltHandler deadboltHandler, Http.Context context) {
-		boolean result = false;
-		if (name.equals(Role.ADMIN.name())){
-			String userName = Context.current().session().get("userName");
-			User user = User.findUserByUserName(userName);
-			if (user != null && user.role == Role.ADMIN){
-				result = true;
-			}
+		String userName = Context.current().session().get("userName");
+		if (userName == null){
+			return true;
+		} else {
+			//if (name.equals(Role.ADMIN.name())){
+				User user = User.findUserByUserName(userName);
+				if (user != null && user.role == Role.ADMIN){
+					return true;
+				}
+			//}
+			return false;
 		}
-        return result;
     }
 
     @Override

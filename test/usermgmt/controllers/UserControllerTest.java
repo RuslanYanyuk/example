@@ -35,6 +35,15 @@ public class UserControllerTest extends AbstractTest {
 	}
 	
 	@Test
+	public void getAll_ReturnsUnauthorizedIfNoPermissions(){
+		YAML.GENERAL_USERS.load();
+		
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.getAll(),
+				fakeRequest().withSession("userName", FIRST_USER_NAME));
+		checkResponse(result, UNAUTHORIZED);
+	}
+	
+	@Test
 	public void get_ReturnsUserByUserNameIfExists(){
 		YAML.GENERAL_USERS.load();
 		
@@ -52,6 +61,15 @@ public class UserControllerTest extends AbstractTest {
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.get(NOT_EXISTED_USER_NAME),
 				fakeRequest().withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, NOT_FOUND);
+	}
+	
+	@Test
+	public void get_ReturnsUnauthorizedIfNoPermissions(){
+		YAML.GENERAL_USERS.load();
+		
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.get(""),
+				fakeRequest().withSession("userName", FIRST_USER_NAME));
+		checkResponse(result, UNAUTHORIZED);
 	}
 	
 	@Test

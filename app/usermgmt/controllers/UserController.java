@@ -23,11 +23,13 @@ public class UserController extends Controller {
 	
 	private UserService service = new XiUserService();
 	
+	@Dynamic(value = "ADMIN")
 	public Result getAll() {
 		List<? extends UserFormBean> beans = service.getAll();
         return ok(Json.toJson(beans));
     }
 	
+	@Dynamic(value = "ADMIN")
 	public Result get(String userName) {
 		UserFormBean bean;
 		try {
