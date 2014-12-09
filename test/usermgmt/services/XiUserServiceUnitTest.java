@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.Test;
 
 import org.mindrot.jbcrypt.BCrypt;
-import usermgmt.AbstractTest;
+import usermgmt.AbstractUnitTest;
 import usermgmt.YAML;
 import usermgmt.formbeans.SecuredUserFormBean;
 import usermgmt.formbeans.UserFormBean;
@@ -15,7 +15,7 @@ import static org.fest.assertions.Assertions.*;
 import static org.junit.Assert.assertTrue;
 import static usermgmt.Parameters.*;
 
-public class XiUserServiceTest extends AbstractTest {
+public class XiUserServiceUnitTest extends AbstractUnitTest {
 
 	private UserService service = new XiUserService();
 	

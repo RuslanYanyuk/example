@@ -3,7 +3,7 @@ package usermgmt.utils;
 import org.junit.Test;
 import play.libs.Json;
 import play.mvc.Result;
-import usermgmt.AbstractTest;
+import usermgmt.AbstractUnitTest;
 import usermgmt.YAML;
 import usermgmt.formbeans.UserFormBean;
 
@@ -13,7 +13,7 @@ import static play.mvc.Http.Status.SEE_OTHER;
 import static play.test.Helpers.*;
 import static usermgmt.Parameters.*;
 
-public class SecuredTest extends AbstractTest{
+public class SecuredUnitTest extends AbstractUnitTest {
 
     @Test
     public void noAccessToUserControllerForNotLoggedInUser() {

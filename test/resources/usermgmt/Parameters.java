@@ -10,7 +10,7 @@ public interface Parameters {
 	String FIRST_USER_UPDATED_PASSWORD = "password1";
 	String ADMIN_USER_NAME = "Admin";
 	String NOT_EXISTED_USER_NAME = "notExistedUsername";
+	String NEW_USER_NAME = "newUser";
 	String INCORRECT_PASSWORD = "incorrect";
-	String ADMIN_USER_NAME = "Admin";
-	
+
 }

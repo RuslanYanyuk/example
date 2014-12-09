@@ -3,9 +3,10 @@ package usermgmt.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+import org.mindrot.jbcrypt.BCrypt;
 import play.mvc.Result;
 import usermgmt.YAML;
-import usermgmt.AbstractTest;
+import usermgmt.AbstractUnitTest;
 import usermgmt.formbeans.SecuredUserFormBean;
 import usermgmt.models.Role;
 import usermgmt.models.User;
@@ -13,10 +14,11 @@ import usermgmt.models.User;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 import static play.test.Helpers.*;
 import static usermgmt.Parameters.*;
 
-public class UserControllerTest extends AbstractTest {
+public class UserControllerUnitTest extends AbstractUnitTest {
 
 	@Test
 	public void getAll_ReturnsAllExistedUsers(){
@@ -71,19 +73,21 @@ public class UserControllerTest extends AbstractTest {
 				fakeRequest().withSession("userName", FIRST_USER_NAME));
 		checkResponse(result, UNAUTHORIZED);
 	}
-	
+
 	@Test
 	public void create_CreatesNewUser(){
-		JsonNode node = createUserJsonNode(FIRST_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_PASSWORD);
+		YAML.GENERAL_USERS.load();
+
+		JsonNode node = createUserJsonNode(NEW_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_PASSWORD);
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.create(),
                 fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, OK);
 		List<User> users = User.find.all();
-		assertThat(users.size()).isEqualTo(1);
-		User user = users.get(0);
-		checkUser(user, FIRST_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_PASSWORD);
+		assertThat(users.size()).isEqualTo(5);
+		User user = users.get(4);
+		checkUser(user, NEW_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_PASSWORD);
 	}
-	
+
 	@Test
 	public void create_ReturnsBadRequestIfRequestIsEmpty(){
 		YAML.GENERAL_USERS.load();
@@ -113,7 +117,7 @@ public class UserControllerTest extends AbstractTest {
                 fakeRequest().withSession("userName", FIRST_USER_NAME));
 		checkResponse(result, UNAUTHORIZED);
 	}
-	
+
 	@Test
 	public void update_UpdatesExistedUserWithUpdatingUserName(){
 		YAML.GENERAL_USERS.load();
@@ -156,7 +160,7 @@ public class UserControllerTest extends AbstractTest {
 	public void update_ReturnsBadRequestIfRequestIsEmpty(){
 		YAML.GENERAL_USERS.load();
 		
-		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME), fakeRequest().withSession("userName", FIRST_USER_NAME));
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME), fakeRequest().withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, BAD_REQUEST);
 	}
 	

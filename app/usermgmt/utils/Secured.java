@@ -15,6 +15,7 @@ public class Secured extends Authenticator {
 
     @Override
     public Result onUnauthorized(Context ctx) {
+        ctx.session().put("redirect", ctx.request().uri());
         return redirect(usermgmt.controllers.routes.AuthController.loginForm());
     }
 }

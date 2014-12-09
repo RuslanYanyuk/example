@@ -1,6 +1,7 @@
 package usermgmt;
 
 import static play.test.Helpers.*;
+import static usermgmt.TestHelper.createFakeApplication;
 
 import org.junit.After;
 import org.junit.Before;
@@ -9,7 +10,7 @@ import play.test.FakeApplication;
 import usermgmt.utils.AdditionalConfiguration;
 
 
-public abstract class AbstractTest {
+public abstract class AbstractUnitTest {
 	
 	private FakeApplication fakeApplication;
 	
@@ -23,10 +24,5 @@ public abstract class AbstractTest {
 	public void tearDown(){
 		stop(fakeApplication);
 	}
-	
-	protected FakeApplication createFakeApplication(){
-		return fakeApplication(inMemoryDatabase(AdditionalConfiguration.EBEAN_SERVER.getValue()));
-	}
-	
-	
+
 }

@@ -7,7 +7,8 @@ import usermgmt.models.User;
 public class XiAuthService implements AuthService {
 
 	@Override
-	public boolean isCorrectPassword(User user, LoginFormBean loginFormBean) {
+	public boolean isCorrectPassword(LoginFormBean loginFormBean) {
+		User user = User.find.where().eq("userName", loginFormBean.userName).findUnique();
 		return user != null && BCrypt.checkpw(loginFormBean.password, user.passwordHash);
 	}
 

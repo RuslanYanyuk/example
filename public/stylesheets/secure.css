@@ -9,11 +9,6 @@ html, body {
     text-align: center;
 }
 
-#login-form h1 {
-    font-weight: bold;
-    color: #111;
-}
-
 #login-form form {
     border: 10px solid #ccc;
     background: #fff;
@@ -25,11 +20,7 @@ html, body {
     margin: 3px;
 }
 
-#username-field {
-    margin-top: 10px !important;
-}
-
-#username-field label, #password-field label {
+label {
     display: block;
     width: 150px;
     float: left;
@@ -39,31 +30,16 @@ html, body {
     font-size: 15px;
 }
 
-#username-field input {
+input[type=text], input[type=password] {
     width: 200px;
     font-size: 13px;
 }
 
-#password-field input {
-    width: 150px;
-    font-size: 13px;
-}
-
-#remember-field input {
+input[type=submit] {
     margin-left: 155px;
 }
 
-#remember-field {
-    font-size: 12px;
-    color: #666;
-}
-
-#signin-field input {
-    margin-left: 155px;
-    margin-top: 10px;
-}
-
-#login-form .error, #login-form .success  {
+.error, .success  {
     color: #fff;
     font-size: 12px;
     text-align: center;
@@ -71,10 +47,10 @@ html, body {
     padding: 5px;
 }
 
-#login-form .error {
-    background: #c00 !important;
+.error {
+    background: #c00;
 }
 
-#login-form .success {
-    background: #008800 !important;
+.success {
+    background: #008800;
 }
