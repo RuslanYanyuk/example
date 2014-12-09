@@ -14,8 +14,7 @@ import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.*;
-import static usermgmt.Parameters.FIRST_USER_NAME;
-import static usermgmt.Parameters.NOT_EXISTED_USER_NAME;
+import static usermgmt.Parameters.*;
 
 public class UserControllerTest extends AbstractTest {
 
@@ -23,7 +22,8 @@ public class UserControllerTest extends AbstractTest {
 	public void getAll_ReturnsAllExistedUsers(){
 		YAML.GENERAL_USERS.load();
 		
-		Result result = callAction(usermgmt.controllers.routes.ref.UserController.getAll(), fakeRequest().withSession("userName", FIRST_USER_NAME));
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.getAll(),
+				fakeRequest().withSession("userName", ADMIN_USER_NAME));
 		checkJsonResponse(result, OK);
 		String expectedResponse = "["
 				+ "{\"userName\":\"user1Username\",\"fullName\":\"user1Fullname\",\"role\":\"USER\"},"
@@ -38,7 +38,8 @@ public class UserControllerTest extends AbstractTest {
 	public void get_ReturnsUserByUserNameIfExists(){
 		YAML.GENERAL_USERS.load();
 		
-		Result result = callAction(usermgmt.controllers.routes.ref.UserController.get(FIRST_USER_NAME), fakeRequest().withSession("userName", FIRST_USER_NAME));
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.get(FIRST_USER_NAME),
+				fakeRequest().withSession("userName", ADMIN_USER_NAME));
 		checkJsonResponse(result, OK);
 		String expectedResponse = "{\"userName\":\"user1Username\",\"fullName\":\"user1Fullname\",\"role\":\"USER\"}";
 		assertThat(contentAsString(result)).isEqualTo(expectedResponse);
@@ -48,7 +49,8 @@ public class UserControllerTest extends AbstractTest {
 	public void get_ReturnsNotFoundUnlessUserNameExists(){
 		YAML.GENERAL_USERS.load();
 		
-		Result result = callAction(usermgmt.controllers.routes.ref.UserController.get(NOT_EXISTED_USER_NAME), fakeRequest().withSession("userName", FIRST_USER_NAME));
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.get(NOT_EXISTED_USER_NAME),
+				fakeRequest().withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, NOT_FOUND);
 	}
 	
@@ -58,7 +60,7 @@ public class UserControllerTest extends AbstractTest {
 		
 		JsonNode node = createUserJsonNode("userName1", "fullName1", Role.ADMIN, "password1");
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.create(),
-                fakeRequest().withJsonBody(node).withSession("userName", FIRST_USER_NAME));
+                fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, OK);
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(5);
@@ -70,7 +72,8 @@ public class UserControllerTest extends AbstractTest {
 	public void create_ReturnsBadRequestIfRequestIsEmpty(){
 		YAML.GENERAL_USERS.load();
 		
-		Result result = callAction(usermgmt.controllers.routes.ref.UserController.create(), fakeRequest().withSession("userName", FIRST_USER_NAME));
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.create(),
+				fakeRequest().withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, BAD_REQUEST);
 	}
 	
@@ -80,10 +83,19 @@ public class UserControllerTest extends AbstractTest {
 		
 		JsonNode node = createUserJsonNode("Admin", "fullName1", Role.ADMIN, "password1");
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.create(),
-				fakeRequest().withJsonBody(node).withSession("userName", FIRST_USER_NAME));
+				fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, INTERNAL_SERVER_ERROR);
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(4);
+	}
+	
+	@Test
+	public void create_ReturnsUnauthorizedIfNoPermissions(){
+		YAML.GENERAL_USERS.load();
+		
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.create(),
+                fakeRequest().withSession("userName", FIRST_USER_NAME));
+		checkResponse(result, UNAUTHORIZED);
 	}
 	
 	@Test
@@ -92,7 +104,7 @@ public class UserControllerTest extends AbstractTest {
 		
 		JsonNode node = createUserJsonNode("userName1", "fullName1", Role.ADMIN, "password1");
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME),
-                fakeRequest().withJsonBody(node).withSession("userName", FIRST_USER_NAME));
+                fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, OK);
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(4);
@@ -106,7 +118,7 @@ public class UserControllerTest extends AbstractTest {
 		
 		JsonNode node = createUserJsonNode(FIRST_USER_NAME, "fullName1", Role.ADMIN, "password1");
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME),
-                fakeRequest().withJsonBody(node).withSession("userName", FIRST_USER_NAME));
+                fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, OK);
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(4);
@@ -120,7 +132,7 @@ public class UserControllerTest extends AbstractTest {
 		JsonNode node = createUserJsonNode("usermame1", "fullName1", Role.ADMIN, "password1");
 		
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(NOT_EXISTED_USER_NAME),
-				fakeRequest().withJsonBody(node).withSession("userName", FIRST_USER_NAME));
+				fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, NOT_FOUND);
 	}
 	
@@ -128,7 +140,8 @@ public class UserControllerTest extends AbstractTest {
 	public void update_ReturnsBadRequestIfRequestIsEmpty(){
 		YAML.GENERAL_USERS.load();
 		
-		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME), fakeRequest().withSession("userName", FIRST_USER_NAME));
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME),
+				fakeRequest().withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, BAD_REQUEST);
 	}
 	
@@ -138,19 +151,29 @@ public class UserControllerTest extends AbstractTest {
 		
 		JsonNode node = createUserJsonNode("Admin", "fullName1", Role.ADMIN, "password1");
 		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(FIRST_USER_NAME),
-                fakeRequest().withJsonBody(node).withSession("userName", FIRST_USER_NAME));
+                fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, INTERNAL_SERVER_ERROR);
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(4);
 		User user = users.get(0);
-		checkUser(user, "user1Username", "user1Fullname", Role.USER, "$2a$10$jyQzbaf0L46TtxQl/j8RvOZOLMm//qStOPjP1.ac6Oy8Del1I.B66");
+		checkUser(user, FIRST_USER_NAME, FIRST_USER_FULLNAME, Role.USER, FIRST_USER_PASSWORD);
+	}
+	
+	@Test
+	public void update_ReturnsUnauthorizedIfNoPermissions(){
+		YAML.GENERAL_USERS.load();
+		
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.update(""),
+                fakeRequest().withSession("userName", FIRST_USER_NAME));
+		checkResponse(result, UNAUTHORIZED);		
 	}
 	
 	@Test
 	public void delete_RemovesExistedUser(){
 		YAML.GENERAL_USERS.load();
 		
-		Result result = callAction(usermgmt.controllers.routes.ref.UserController.delete(FIRST_USER_NAME), fakeRequest().withSession("userName", FIRST_USER_NAME));
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.delete(FIRST_USER_NAME),
+				fakeRequest().withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, OK);
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(3);
@@ -162,8 +185,18 @@ public class UserControllerTest extends AbstractTest {
 	public void delete_ReturnsNotFoundUnlessUserNameExists(){
 		YAML.GENERAL_USERS.load();
 		
-		Result result = callAction(usermgmt.controllers.routes.ref.UserController.delete(NOT_EXISTED_USER_NAME), fakeRequest().withSession("userName", FIRST_USER_NAME));
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.delete(NOT_EXISTED_USER_NAME),
+				fakeRequest().withSession("userName", ADMIN_USER_NAME));
 		checkResponse(result, NOT_FOUND);
+	}
+	
+	@Test
+	public void delete_ReturnsUnauthorizedIfNoPermissions(){
+		YAML.GENERAL_USERS.load();
+		
+		Result result = callAction(usermgmt.controllers.routes.ref.UserController.delete(""),
+				fakeRequest().withSession("userName", FIRST_USER_NAME));
+		checkResponse(result, UNAUTHORIZED);
 	}
 	
 	private void checkResponse(Result result, int status){

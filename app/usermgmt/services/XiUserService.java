@@ -50,12 +50,12 @@ public class XiUserService implements UserService {
 	}
 
 	private User findUserByUserName(String userName) throws NotFoundException {
-		User result = User.find.where().eq("userName", userName).findUnique();// throws exception if found more than 1
-		if (result == null){
+		User user = User.findUserByUserName(userName);
+		if (user == null){
 			throw new NotFoundException(
 					String.format("User entity with user name %s doesn't exist.", userName));
 		}
-		return result;
+		return user;
 	}
 	
 	private void validateUserName(String userName) throws AlreadyExistsException {

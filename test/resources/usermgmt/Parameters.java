@@ -8,4 +8,6 @@ public interface Parameters {
 	String FIRST_USER_PASSWORD = "$2a$10$jyQzbaf0L46TtxQl/j8RvOZOLMm//qStOPjP1.ac6Oy8Del1I.B66";
 	String NOT_EXISTED_USER_NAME = "notExistedUsername";
 	String INCORRECT_PASSWORD = "incorrect";
+	String ADMIN_USER_NAME = "Admin";
+	
 }

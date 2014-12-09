@@ -31,4 +31,9 @@ public class User extends AbstractModel {
 	
 	public static Finder<Long, User> find = new Finder<Long, User>(AdditionalConfiguration.EBEAN_SERVER.getValue(), Long.class, User.class);
 	
+	public static User findUserByUserName(String userName) {
+		User user = User.find.where().eq("userName", userName).findUnique();// throws exception if found more than 1
+		return user;
+	}
+	
 }

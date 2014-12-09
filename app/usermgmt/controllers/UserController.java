@@ -16,6 +16,7 @@ import usermgmt.services.NotFoundException;
 import usermgmt.services.UserService;
 import usermgmt.services.XiUserService;
 import usermgmt.utils.Secured;
+import be.objectify.deadbolt.java.actions.*;
 
 @Security.Authenticated(Secured.class)
 public class UserController extends Controller {
@@ -37,6 +38,7 @@ public class UserController extends Controller {
         return ok(Json.toJson(bean));
     }
 	
+	@Dynamic(value = "ADMIN")
 	public Result create() {
 		UserFormBean bean;
 		JsonNode node = request().body().asJson();
@@ -51,6 +53,7 @@ public class UserController extends Controller {
         return ok(Json.toJson(bean));
     }
 	
+	@Dynamic(value = "ADMIN")
 	public Result update(String userName) {
 		UserFormBean bean;
 		JsonNode node = request().body().asJson();
@@ -67,6 +70,7 @@ public class UserController extends Controller {
         return ok(Json.toJson(bean));
     }
 	
+	@Dynamic(value = "ADMIN")
 	public Result delete(String userName) {
 		try {
 			service.delete(userName);
