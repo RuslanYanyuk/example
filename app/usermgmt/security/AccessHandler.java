@@ -22,13 +22,9 @@ public class AccessHandler extends AbstractDeadboltHandler implements DynamicRes
 		boolean result = false;
 		if (name.equals(Role.ADMIN.name())){
 			String userName = Context.current().session().get("userName");
-			try {
-				User user = User.findUserByUserName(userName);
-				if (user.role == Role.ADMIN){
-					result = true;
-				}
-			} catch (NotFoundException e) {
-				e.printStackTrace();
+			User user = User.findUserByUserName(userName);
+			if (user != null && user.role == Role.ADMIN){
+				result = true;
 			}
 		}
         return result;
