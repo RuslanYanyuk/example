@@ -28,7 +28,7 @@ public class AbstractUITest extends FluentTest{
 
     @Override
     public WebDriver getDefaultDriver() {
-        return new HtmlUnitDriver();
+        return new HtmlUnitDriver(true);
     }
 
     public TestBrowser getBrowser() {

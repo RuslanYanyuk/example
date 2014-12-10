@@ -5,7 +5,8 @@
 # Home page
 POST    /login				    @usermgmt.controllers.AuthController.login()
 GET     /login                  @usermgmt.controllers.AuthController.loginForm()
-GET     /logout				    @usermgmt.controllers.AuthController.logout()
+GET     /logout				    @usermgmt.controllers.AuthController.logoutForm()
+POST    /logout				    @usermgmt.controllers.AuthController.logout()
 
 GET     /users				    @usermgmt.controllers.UserController.getAll()
 GET	    /users/:username		@usermgmt.controllers.UserController.get(username: String)

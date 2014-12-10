@@ -11,6 +11,8 @@ public class LoginPage implements FluentTestConstants{
     private static final String LOGIN_FORM = "#login-form";
     private static final String ERROR = ".error";
     private static final String SUCCESS = ".success";
+    private static final String ERROR_TEXT = "Invalid username or password!";
+    private static final String SUCCESS_TEXT = "You've been logged out";
 
 
     public LoginPage(Fluent browser) {
@@ -26,12 +28,12 @@ public class LoginPage implements FluentTestConstants{
         return this;
     }
 
-    public boolean hasError(String errorText) {
-        return browser.findFirst(ERROR).getText().equals(errorText);
+    public boolean hasError() {
+        return browser.findFirst(ERROR).getText().equals(ERROR_TEXT);
     }
 
-    public boolean hasSuccess(String successText) {
-        return browser.findFirst(SUCCESS).getText().equals(successText);
+    public boolean hasSuccess() {
+        return browser.findFirst(SUCCESS).getText().equals(SUCCESS_TEXT);
     }
 
     public LoginPage waitForLoginForm() {

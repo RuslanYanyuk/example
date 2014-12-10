@@ -99,6 +99,19 @@ public class AuthControllerUnitTest extends AbstractUnitTest {
     }
 
     @Test
+    public void logoutForm_renderLogoutPage() {
+        Result result = callAction(
+                usermgmt.controllers.routes.ref.AuthController.logoutForm(),
+                fakeRequest().withSession("userName", FIRST_USER_NAME)
+        );
+
+        assertThat(status(result), is(OK));
+        assertThat(contentType(result), is("text/html"));
+        assertTrue(contentAsString(result).contains("logout"));
+        assertNull(session(result).get("userName"));
+    }
+
+    @Test
     public void logout() {
         YAML.GENERAL_USERS.load();
 

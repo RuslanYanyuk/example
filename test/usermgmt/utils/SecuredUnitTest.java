@@ -1,5 +1,6 @@
 package usermgmt.utils;
 
+import org.junit.Before;
 import org.junit.Test;
 import play.libs.Json;
 import play.mvc.Result;
@@ -15,10 +16,16 @@ import static usermgmt.Parameters.*;
 
 public class SecuredUnitTest extends AbstractUnitTest {
 
-    @Test
-    public void noAccessToUserControllerForNotLoggedInUser() {
+    @Override
+    @Before
+    public void setUp() {
+        super.setUp();
         YAML.GENERAL_USERS.load();
 
+    }
+
+    @Test
+    public void noAccessToUserControllerForNotLoggedInUser() {
         Result result = callAction(usermgmt.controllers.routes.ref.UserController.get(FIRST_USER_NAME));
 
         assertThat(status(result), is(SEE_OTHER));
@@ -28,7 +35,6 @@ public class SecuredUnitTest extends AbstractUnitTest {
 
     @Test
     public void accessToUserControllerForLoggedInUser() {
-        YAML.GENERAL_USERS.load();
         UserFormBean expectedUserFormBean = new UserFormBean(FIRST_USER_NAME, FIRST_USER_FULLNAME, FIRST_USER_ROLE);
 
         Result result = callAction(usermgmt.controllers.routes.ref.UserController.get(FIRST_USER_NAME),
@@ -36,5 +42,22 @@ public class SecuredUnitTest extends AbstractUnitTest {
 
         assertThat(status(result), is(OK));
         assertThat(contentAsString(result), is(Json.toJson(expectedUserFormBean).toString()));
+    }
+
+    @Test
+    public void noAccessToLogoutForm() {
+        Result result = callAction(usermgmt.controllers.routes.ref.AuthController.logoutForm());
+
+        assertThat(status(result), is(SEE_OTHER));
+        assertThat(contentAsString(result), is(""));
+        assertThat(redirectLocation(result), is("/login"));
+    }
+
+    @Test
+    public void accessToLogoutForm() {
+        Result result = callAction(usermgmt.controllers.routes.ref.AuthController.logoutForm(),
+                fakeRequest().withSession("userName", ADMIN_USER_NAME));
+
+        assertThat(status(result), is(OK));
     }
 }
