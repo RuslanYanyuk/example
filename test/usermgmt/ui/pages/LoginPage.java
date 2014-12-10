@@ -17,12 +17,13 @@ public class LoginPage implements FluentTestConstants{
         this.browser = browser;
     }
 
-    public void login(String userName, String password) {
+    public LoginPage login(String userName, String password) {
         browser.goTo(LOGIN_URL);
         waitForLoginForm();
         browser.fill(USER_NAME_FIELD).with(userName);
         browser.fill(PASSWORD_FIELD).with(password);
         browser.submit(SUBMIT_BUTTON);
+        return this;
     }
 
     public boolean hasError(String errorText) {
@@ -33,8 +34,9 @@ public class LoginPage implements FluentTestConstants{
         return browser.findFirst(SUCCESS).getText().equals(successText);
     }
 
-    public void waitForLoginForm() {
+    public LoginPage waitForLoginForm() {
         browser.await().atMost(WAIT_TIME, TIME_UNIT).until(LOGIN_FORM).isPresent();
+        return this;
     }
 
 }
