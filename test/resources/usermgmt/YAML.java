@@ -5,7 +5,7 @@ import java.util.List;
 import com.avaje.ebean.Ebean;
 
 import play.libs.Yaml;
-import usermgmt.utils.AdditionalConfiguration;
+import utils.usermgmt.AdditionalConfiguration;
 
 public enum YAML {
 

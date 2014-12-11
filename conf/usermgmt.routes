@@ -1,0 +1,18 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+POST          /login                  @controllers.usermgmt.AuthController.login()
+GET           /login                  @controllers.usermgmt.AuthController.loginForm()
+GET           /logout                 @controllers.usermgmt.AuthController.logoutForm()
+POST          /logout                 @controllers.usermgmt.AuthController.logout()
+
+GET           /users                  @controllers.usermgmt.UserController.getAll()
+GET           /users/:username        @controllers.usermgmt.UserController.get(username: String)
+POST          /users                  @controllers.usermgmt.UserController.create()
+PUT           /users/:username        @controllers.usermgmt.UserController.update(username: String)
+DELETE        /users/:username        @controllers.usermgmt.UserController.delete(username: String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET           /usermgmtassets/*file           controllers.usermgmt.Assets.at(path="/public/usermgmt", file)
