@@ -17,22 +17,20 @@ public class LogoutPageTest extends AbstractUITest implements FluentTestConstant
     public void logout_SuccessLogoutAndRedirect() {
         YAML.GENERAL_USERS.load();
 
-        LoginPage loginPage = new LoginPage(getBrowser());
-        loginPage.login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
+        login(ADMIN_USER_NAME, ADMIN_PASSWORD);
 
         LogoutPage logoutPage = new LogoutPage(getBrowser());
         logoutPage.load().logout();
 
         assertThat(url()).isEqualTo(LOGIN_URL);
-        assertTrue(loginPage.hasSuccess());
+        assertTrue(new LoginPage(getBrowser()).hasSuccess());
     }
 
     @Test
     public void logout_RedirectToIndex() {
         YAML.GENERAL_USERS.load();
 
-        LoginPage loginPage = new LoginPage(getBrowser());
-        loginPage.login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
+        login(ADMIN_USER_NAME, ADMIN_PASSWORD);
 
         LogoutPage logoutPage = new LogoutPage(getBrowser());
         logoutPage.load().redirectToRoot();

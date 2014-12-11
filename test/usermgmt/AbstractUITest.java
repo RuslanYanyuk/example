@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import play.test.TestBrowser;
 import play.test.TestServer;
+import usermgmt.ui.pages.LoginPage;
 
 import static play.test.Helpers.*;
 import static usermgmt.TestHelper.createFakeApplication;
@@ -33,6 +34,11 @@ public class AbstractUITest extends FluentTest{
 
     public TestBrowser getBrowser() {
         return testBrowser(getDriver());
+    }
+
+    public void login(String userName, String password) {
+        LoginPage loginPage = new LoginPage(getBrowser());
+        loginPage.login(userName, password);
     }
 
 }
