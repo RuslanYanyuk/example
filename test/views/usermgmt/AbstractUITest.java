@@ -36,9 +36,4 @@ public class AbstractUITest extends FluentTest{
         return testBrowser(getDriver());
     }
 
-    public void login(String userName, String password) {
-        LoginPage loginPage = new LoginPage(getBrowser());
-        loginPage.login(userName, password);
-    }
-
 }

@@ -4,15 +4,12 @@ import org.junit.Before;
 import org.junit.Test;
 import usermgmt.YAML;
 import views.usermgmt.AbstractUITest;
-import views.usermgmt.ui.pages.FluentTestConstants;
-import views.usermgmt.ui.pages.LoginPage;
-import views.usermgmt.ui.pages.LogoutPage;
+import views.usermgmt.ui.pages.*;
 
-import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import static usermgmt.Parameters.*;
 
-public class LoginPageTest extends AbstractUITest implements FluentTestConstants {
+public class LoginPageTest extends AbstractUITest{
 
     @Override
     @Before
@@ -23,43 +20,43 @@ public class LoginPageTest extends AbstractUITest implements FluentTestConstants
 
     @Test
     public void login_existingUserCanLogin() {
-        LoginPage loginPage = new LoginPage(getBrowser());
-        loginPage.login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
+        IndexPage indexPage = loginAndGoTo(FIRST_USER_NAME, FIRST_USER_PASSWORD, IndexPage.class);
 
-        assertThat(url()).isEqualTo(INDEX_URL);
+        assertTrue(indexPage.isAt());
     }
 
     @Test
     public void login_showMessageOnError() {
-        LoginPage loginPage = new LoginPage(getBrowser());
-        loginPage.login(FIRST_USER_NAME, INCORRECT_PASSWORD).waitForLoginForm();
+        LoginPage loginPage = loginAndGoTo(FIRST_USER_NAME, INCORRECT_PASSWORD, LoginPage.class);
 
         assertTrue(loginPage.hasError());
     }
 
     @Test
     public void login_userWillBeRedirectedToRequestPage() {
-        goTo(GET_ALL_USERS_URL);
+        goTo(UsersPage.URL);
         LoginPage loginPage = new LoginPage(getBrowser());
-        loginPage.waitForLoginForm();
-        assertThat(url()).isEqualTo(LOGIN_URL);
 
-        loginPage.login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
+        assertTrue(loginPage.isAt());
 
-        assertThat(url()).isEqualTo(GET_ALL_USERS_URL);
+        UsersPage usersPage = loginPage.loginAndGoTo(FIRST_USER_NAME, FIRST_USER_PASSWORD, UsersPage.class);
+
+        assertTrue(usersPage.isAt());
     }
 
     @Test
     public void login_showMessageOnSuccessLogout() {
         LoginPage loginPage = new LoginPage(getBrowser());
-        loginPage.login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
+        LogoutPage logoutPage = loginPage.loginAndGoTo(FIRST_USER_NAME, FIRST_USER_PASSWORD, LogoutPage.class);
 
-        assertThat(url()).isEqualTo(INDEX_URL);
-
-        new LogoutPage(getBrowser()).load().logout();
-        loginPage.waitForLoginForm();
+        logoutPage.logout();
 
         assertTrue(loginPage.hasSuccess());
+    }
+
+    private <T extends Page> T loginAndGoTo(String userName, String password, Class<T> redirectPageClass) {
+        LoginPage loginPage = new LoginPage(getBrowser());
+        return loginPage.loginAndGoTo(userName, password, redirectPageClass);
     }
 
 }

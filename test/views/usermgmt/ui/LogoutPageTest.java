@@ -2,7 +2,7 @@ package views.usermgmt.ui;
 
 import org.junit.Test;
 import usermgmt.YAML;
-import views.usermgmt.ui.pages.FluentTestConstants;
+import views.usermgmt.ui.pages.IndexPage;
 import views.usermgmt.ui.pages.LoginPage;
 import views.usermgmt.AbstractUITest;
 import views.usermgmt.ui.pages.LogoutPage;
@@ -12,40 +12,38 @@ import static org.junit.Assert.assertTrue;
 import static usermgmt.Parameters.ADMIN_PASSWORD;
 import static usermgmt.Parameters.ADMIN_USER_NAME;
 
-public class LogoutPageTest extends AbstractUITest implements FluentTestConstants{
+public class LogoutPageTest extends AbstractUITest{
 
     @Test
     public void logout_SuccessLogoutAndRedirect() {
         YAML.GENERAL_USERS.load();
 
-        login(ADMIN_USER_NAME, ADMIN_PASSWORD);
+        LoginPage loginPage = getLogoutPage().logout();
 
-        LogoutPage logoutPage = new LogoutPage(getBrowser());
-        logoutPage.load().logout();
-
-        assertThat(url()).isEqualTo(LOGIN_URL);
-        assertTrue(new LoginPage(getBrowser()).hasSuccess());
+        assertTrue(loginPage.isAt());
+        assertTrue(loginPage.hasSuccess());
     }
 
     @Test
     public void logout_RedirectToIndex() {
         YAML.GENERAL_USERS.load();
 
-        login(ADMIN_USER_NAME, ADMIN_PASSWORD);
+        IndexPage indexPage = getLogoutPage().redirectToRoot();
 
-        LogoutPage logoutPage = new LogoutPage(getBrowser());
-        logoutPage.load().redirectToRoot();
-
-        assertThat(url()).isEqualTo(INDEX_URL);
+        assertTrue(indexPage.isAt());
     }
 
     @Test
     public void logout_noFormIfNotLogged() {
         YAML.GENERAL_USERS.load();
 
-        goTo(LOGOUT_URL);
+        goTo(LogoutPage.URL);
 
-        assertThat(url()).isEqualTo(LOGIN_URL);
+        assertThat(url()).isEqualTo(LoginPage.URL);
+    }
+
+    private LogoutPage getLogoutPage() {
+        return new LoginPage(getBrowser()).loginAndGoTo(ADMIN_USER_NAME, ADMIN_PASSWORD, LogoutPage.class);
     }
 
 }
