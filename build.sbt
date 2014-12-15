@@ -1,5 +1,7 @@
 name := "usermgmt"
 
+organization := "co.wds"
+
 version := "1.0-SNAPSHOT"
 
 libraryDependencies ++= Seq(
