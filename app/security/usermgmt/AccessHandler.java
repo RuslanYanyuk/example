@@ -3,7 +3,7 @@ package security.usermgmt;
 import play.libs.F.Promise;
 import play.mvc.Http;
 import play.mvc.Http.Context;
-import play.mvc.SimpleResult;
+import play.mvc.Result;
 import models.usermgmt.Role;
 import models.usermgmt.User;
 import be.objectify.deadbolt.java.AbstractDeadboltHandler;
@@ -36,7 +36,7 @@ public class AccessHandler extends AbstractDeadboltHandler implements DynamicRes
     }
 
 	@Override
-	public Promise<SimpleResult> beforeAuthCheck(Context arg0) {
+	public Promise<Result> beforeAuthCheck(Context arg0) {
 		// returning null means that everything is OK.  Return a real result if you want a redirect to a login page or
         // somewhere else
 		return null;
