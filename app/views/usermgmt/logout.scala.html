@@ -4,7 +4,6 @@
     <head>
         <title>Logout</title>
     	<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/logout.css")">
-		<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
     </head>
     <body>
        <div id="logout">
@@ -14,7 +13,7 @@
 			   </p>
 
 			   <div>
-				   <input type="submit" value="Yes, please" onclick="$('form').submit();">
+				   <input type="submit" value="Yes, please" onclick="document.forms[0].submit();">
 				   <input type="button" value="No, take me back" onclick="location.href = '/';">
 			   </div>
 		   </form>
