@@ -49,7 +49,7 @@ public class LoginPage implements Page{
         return browser.findFirst(SUCCESS).getText().equals(SUCCESS_TEXT);
     }
 
-    private void login(String userName, String password) {
+    public void login(String userName, String password) {
         browser.goTo(URL);
         waitForLoginForm();
         browser.fill(USER_NAME_FIELD).with(userName);

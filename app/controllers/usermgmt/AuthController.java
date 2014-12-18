@@ -14,6 +14,7 @@ import static play.data.Form.form;
 public class AuthController extends Controller {
 
     public static final String INDEX_PAGE = "/";
+    public static final String LOGOUT_PAGE = "/logout";
 
     public Result loginForm() {
         return ok(login.render(form(LoginFormBean.class)));
@@ -25,6 +26,9 @@ public class AuthController extends Controller {
             return badRequest(login.render(loginForm));
         }
         String redirectUrl = session().get("redirect");
+        if (redirectUrl != null && redirectUrl.equals(LOGOUT_PAGE)){
+        	redirectUrl = null;
+        }
 
         session().clear();
         session().put("userName", loginForm.get().userName);
