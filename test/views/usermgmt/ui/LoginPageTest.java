@@ -33,13 +33,16 @@ public class LoginPageTest extends AbstractUITest{
     }
 
     @Test
-    public void login_userWillBeRedirectedToRequestPage() {
-        goTo(UsersPage.URL);
-        LoginPage loginPage = new LoginPage(getBrowser());
+    public void login_redirectsToRequestPage() {
 
+        LoginPage loginPage = new LoginPage(getBrowser());
+        UsersPage usersPage = new UsersPage(getBrowser());
+        
+        usersPage.load();
+        
         assertTrue(loginPage.isAt());
 
-        UsersPage usersPage = loginPage.loginAndGoTo(FIRST_USER_NAME, FIRST_USER_PASSWORD, UsersPage.class);
+        loginPage.login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
 
         assertTrue(usersPage.isAt());
     }
