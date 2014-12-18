@@ -22,6 +22,7 @@ public class LoginPage implements Page{
 
     @Override
     public  LoginPage load() {
+    	browser.goTo(URL);
         return this;
     }
 
@@ -50,7 +51,7 @@ public class LoginPage implements Page{
     }
 
     public void login(String userName, String password) {
-        browser.goTo(URL);
+        load();
         waitForLoginForm();
         browser.fill(USER_NAME_FIELD).with(userName);
         browser.fill(PASSWORD_FIELD).with(password);

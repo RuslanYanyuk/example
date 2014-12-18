@@ -27,7 +27,8 @@ public class LoginPageTest extends AbstractUITest{
 
     @Test
     public void login_showMessageOnError() {
-        LoginPage loginPage = loginAndGoTo(FIRST_USER_NAME, INCORRECT_PASSWORD, LoginPage.class);
+        LoginPage loginPage = new LoginPage(getBrowser());
+        loginPage.login(FIRST_USER_NAME, INCORRECT_PASSWORD);
 
         assertTrue(loginPage.hasError());
     }
