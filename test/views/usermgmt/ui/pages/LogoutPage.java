@@ -22,12 +22,8 @@ public class LogoutPage implements Page {
 
     @Override
     public LogoutPage load() {
-        return load(true);
-    }
-    
-    public LogoutPage load(boolean waitForLogoutForm){
     	browser.goTo(URL);
-    	return waitForLogoutForm ? waitForLogoutForm() : this;
+        return waitForLogoutForm();
     }
 
     @Override
