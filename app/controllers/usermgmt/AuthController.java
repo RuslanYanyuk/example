@@ -17,7 +17,11 @@ public class AuthController extends Controller {
     public static final String LOGOUT_PAGE = "/logout";
 
     public Result loginForm() {
-        return ok(login.render(form(LoginFormBean.class)));
+    	if (session().get("userName") != null){
+    		return redirect(INDEX_PAGE);
+    	} else {
+    		return ok(login.render(form(LoginFormBean.class)));    		
+    	}
     }
 
     public Result login() {

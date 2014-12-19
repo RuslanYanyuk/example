@@ -62,6 +62,20 @@ public class LoginPageTest extends AbstractUITest{
 
         assertTrue(indexPage.isAt());
     }
+    
+    
+    @Test
+    public void login_redirectsToIndexPageIfAlreadyLoggedIn() {
+    	
+    	IndexPage indexPage = new IndexPage(getBrowser());
+        LoginPage loginPage = new LoginPage(getBrowser());
+        
+        loginPage.login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
+        assertTrue(indexPage.isAt());
+        
+        loginPage.load();
+        assertTrue(indexPage.isAt());
+    }
 
     @Test
     public void login_showMessageOnSuccessLogout() {
