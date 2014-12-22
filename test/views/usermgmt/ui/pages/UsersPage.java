@@ -2,25 +2,33 @@ package views.usermgmt.ui.pages;
 
 import org.fluentlenium.core.Fluent;
 
-public class UsersPage implements Page{
+import static views.usermgmt.ui.pages.AdministrationPageUser.USER;
 
-    private Fluent browser;
+public class UsersPage extends AbstractPage{
 
-    public static final String URL = "http://localhost:3333/users";
+    public static final String URL = "http://localhost:3333/administration";
+    static final String USERS_CONTAINER = "#users-container";
+    private static final String CREATE_BUTTON = "#add";
 
     public UsersPage(Fluent browser) {
-        this.browser = browser;
+        super(browser, URL, USERS_CONTAINER);
     }
 
-    @Override
-    public UsersPage load() {
-        browser.goTo(URL);
-        return this;
+    public int getUsersCount(){
+        return getBrowser().$(USER).size();
     }
 
-    @Override
-    public boolean isAt() {
-        return browser.url().equals(URL) ? true : false;
+    public AdministrationPageUser getUserByUserName(String userName){
+        return new AdministrationPageUser(this, userName);
+    }
+
+    public AdministrationPageDialog addNewUser(){
+        getBrowser().findFirst(CREATE_BUTTON).click();
+        return AdministrationPageDialog.getDialog(this);
+    }
+
+    public LoginPage logout() {//TODO implement
+        return null;
     }
 
 }

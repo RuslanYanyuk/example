@@ -1,11 +1,13 @@
 package services.usermgmt;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
 import formbeans.usermgmt.UserFormBean;
 import formbeans.usermgmt.SecuredUserFormBean;
 import models.usermgmt.User;
+import org.apache.commons.lang3.StringUtils;
 
 public class XiUserService implements UserService {
 
@@ -26,6 +28,7 @@ public class XiUserService implements UserService {
 
 	@Override
 	public UserFormBean create(SecuredUserFormBean bean) throws AlreadyExistsException {
+		isBlank(bean.password);
 		validateUserName(bean.userName);
 		User newUser = new User();
 		bean.populateModelWithData(newUser);
@@ -36,10 +39,16 @@ public class XiUserService implements UserService {
 	@Override
 	public UserFormBean update(String userName, SecuredUserFormBean bean) throws NotFoundException, AlreadyExistsException {
 		if (!userName.equals(bean.userName)){
-			validateUserName(bean.userName);
+			throw new IllegalArgumentException("User name can not be changed.");
 		}
 		User user = findUserByUserName(userName);
+		String passwordHash = user.passwordHash;
 		bean.populateModelWithData(user);
+//TODO : refactor password validation
+		if (StringUtils.isBlank(bean.password)) {
+			user.passwordHash = passwordHash;
+		}
+
 		user.update();
 		return UserFormBean.from(user);
 	}
@@ -57,12 +66,19 @@ public class XiUserService implements UserService {
 		}
 		return user;
 	}
-	
+
 	private void validateUserName(String userName) throws AlreadyExistsException {
+		isBlank(userName);
 		if (User.find.where().eq("userName", userName).findUnique() != null) {
 			throw new AlreadyExistsException(
 					String.format("User name %s already exist.", userName));
 		}
 	}
-	
+
+	private void isBlank(String param) {
+		if (StringUtils.isBlank(param)) {
+			throw new IllegalArgumentException("User name and password are required. They can not be empty.");
+		}
+	}
+
 }

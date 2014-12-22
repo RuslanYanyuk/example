@@ -1,28 +1,36 @@
 package controllers.usermgmt;
 
-import java.io.IOException;
-import java.util.List;
-
+import be.objectify.deadbolt.java.actions.Dynamic;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import formbeans.usermgmt.SecuredUserFormBean;
+import formbeans.usermgmt.UserFormBean;
+import models.usermgmt.Role;
 import play.Logger;
 import play.libs.Json;
-import play.mvc.*;
-import formbeans.usermgmt.UserFormBean;
-import formbeans.usermgmt.SecuredUserFormBean;
+import play.mvc.Controller;
+import play.mvc.Result;
+import play.mvc.Security;
 import services.usermgmt.AlreadyExistsException;
 import services.usermgmt.NotFoundException;
 import services.usermgmt.UserService;
 import services.usermgmt.XiUserService;
 import utils.usermgmt.Secured;
-import be.objectify.deadbolt.java.actions.*;
+
+import java.io.IOException;
+import java.util.List;
 
 @Security.Authenticated(Secured.class)
 public class UserController extends Controller {
 	
 	private UserService service = new XiUserService();
-	
+
+	@Dynamic(value = "ADMIN")
+	public Result getAdministration() {
+		Role[] roles = Role.values();
+		return ok(views.html.usermgmt.users.render(roles));
+	}
+
 	@Dynamic(value = "ADMIN")
 	public Result getAll() {
 		List<? extends UserFormBean> beans = service.getAll();
@@ -66,7 +74,7 @@ public class UserController extends Controller {
 			bean = service.update(userName, getFormBeanFromRequest(node));
 		} catch (NotFoundException e) {
 			return notFound();
-		} catch (AlreadyExistsException e) {
+		} catch (AlreadyExistsException | IllegalArgumentException e) {
 			return internalServerError();
 		}
         return ok(Json.toJson(bean));

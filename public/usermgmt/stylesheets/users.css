@@ -1,0 +1,143 @@
+html, body {
+    background: #F0F0F0;
+    font-family: 'Lucida grande', verdana, sans-serif;
+    margin: 0;
+}
+
+#users-container {
+    position: relative;
+    margin: 10px 30px;
+    border: 10px solid #ccc;
+    padding: 40px 50px 10px;
+    height: calc(100% - 90px);
+    text-align: left;
+    overflow-y: scroll;
+    background: #fff;
+    background-image: url("../images/Xi.png");
+    background-size: 170px;
+    background-repeat: no-repeat;
+    background-position: calc(100% - 20px) calc(100% - 10px);
+}
+
+p {
+    width: 75%;
+    border: none;
+    font-size: 20px;
+}
+
+.row p {
+    display: inline-block;
+    border-bottom: 1px #000000 solid;
+}
+
+#users-container span {
+    display: inline-block;
+    padding: 0 10px;
+    width: 30%;
+    word-wrap: break-word;
+}
+
+#title p{
+    position: fixed;
+    background-color: white;
+    margin: 0;
+    top: 20px;
+    line-height: 40px;
+    width: calc((100% - 180px)*0.75);
+}
+
+#title span {
+    font-weight: bold;
+}
+
+.buttons {
+    width: 5%;
+    display: inline-block;
+}
+
+input[type="image"]:focus {
+    outline: none;
+}
+
+.buttons>input[type="image"] {
+    width: 36px;
+    height: 36px;
+}
+
+#add {
+    position: fixed;
+    top: 30px;
+    right: 65px;
+    width: 60px;
+    height: 60px;
+}
+
+.message span{
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    display: block;
+}
+
+.message {
+    padding: 5px;
+    height: 16px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+label {
+    display: block;
+    float: left;
+    margin: 3px;
+    color: #333;
+    font-size: 15px;
+}
+
+#dialog-form {
+    height: 250px;
+}
+
+#dialog-form fieldset {
+    border: none;
+}
+
+#dialog-form input {
+    width: 100%;
+}
+
+#dialog-form select {
+    width: 100%;
+    background: white;
+}
+
+/*Dialog styles*/
+
+div.ui-dialog-titlebar {
+    border: none;
+    background: #ccc;
+    color: #333;
+    font-size: 15px;
+    text-align: center;
+}
+
+span.ui-icon.ui-icon-closethick {
+    background-image: url("../images/close.png");
+    background-position: center;
+    background-size: 25px 25px;
+}
+
+span.ui-button-text {
+    border: none;
+    width: 60px;
+    color: black;
+    font-weight: normal;
+}
+
+span.ui-button-text:hover {
+    background-color: aliceblue;
+}
+
+button.ui-button:hover {
+    border-color: darkgrey;
+}

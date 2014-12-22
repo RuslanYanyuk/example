@@ -2,7 +2,7 @@ package views.usermgmt.ui.pages;
 
 import org.fluentlenium.core.Fluent;
 
-public class LoginPage implements Page{
+public class LoginPage extends AbstractPage {
 
     public static final String URL = "http://localhost:3333/login";
     private static final String USER_NAME_FIELD = "input[type=text]";
@@ -14,53 +14,35 @@ public class LoginPage implements Page{
     private static final String ERROR_TEXT = "Invalid username or password!";
     private static final String SUCCESS_TEXT = "You've been logged out";
 
-    private Fluent browser;
-
     public LoginPage(Fluent browser) {
-        this.browser = browser;
+        super(browser, URL, LOGIN_FORM);
     }
 
-    @Override
-    public  LoginPage load() {
-    	browser.goTo(URL);
-        return this;
-    }
-
-    @Override
-    public boolean isAt() {
-        return browser.url().equals(URL) ? true : false;
-    }
-
-    public <T extends Page> T loginAndGoTo(String userName, String password, Class<T> redirectPageClass) {
+    public <T extends AbstractPage> T loginAndLoad(String userName, String password, Class<T> redirectPageClass) {
+        T page = null;
         login(userName, password);
         try {
-            return redirectPageClass.getConstructor(Fluent.class).newInstance(browser).load();
+            page = redirectPageClass.getConstructor(Fluent.class).newInstance(getBrowser());
+            page.load();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return null;
+        return page;
     }
 
     public boolean hasError() {
-        return browser.findFirst(ERROR).getText().equals(ERROR_TEXT);
+        return getBrowser().findFirst(ERROR).getText().equals(ERROR_TEXT);
     }
 
     public boolean hasSuccess() {
-        return browser.findFirst(SUCCESS).getText().equals(SUCCESS_TEXT);
+        return getBrowser().findFirst(SUCCESS).getText().equals(SUCCESS_TEXT);
     }
 
     public void login(String userName, String password) {
         load();
-        waitForLoginForm();
-        browser.fill(USER_NAME_FIELD).with(userName);
-        browser.fill(PASSWORD_FIELD).with(password);
-        browser.submit(SUBMIT_BUTTON);
-    }
-
-    private LoginPage waitForLoginForm() {
-        browser.await().atMost(WAIT_TIME, TIME_UNIT).until(LOGIN_FORM).isPresent();
-        return this;
+        getBrowser().fill(USER_NAME_FIELD).with(userName);
+        getBrowser().fill(PASSWORD_FIELD).with(password);
+        getBrowser().submit(SUBMIT_BUTTON);
     }
 
 }

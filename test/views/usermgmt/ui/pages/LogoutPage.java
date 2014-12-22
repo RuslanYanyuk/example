@@ -2,43 +2,26 @@ package views.usermgmt.ui.pages;
 
 import org.fluentlenium.core.Fluent;
 
-public class LogoutPage implements Page {
+public class LogoutPage extends AbstractPage {
 
     public static final String URL = "http://localhost:3333/logout";
     private static final String LOGOUT = "#logout";
     private static final String INPUT_TYPE_SUBMIT = "input[type=submit]";
     private static final String INPUT_TYPE_BUTTON = "input[type=button]";
 
-    private Fluent browser;
-
     public LogoutPage(Fluent browser) {
-        this.browser = browser;
+        super(browser, URL, LOGOUT);
     }
 
     public LoginPage logout() {
-        browser.submit(INPUT_TYPE_SUBMIT);
-        return new LoginPage(browser);
+        getBrowser().submit(INPUT_TYPE_SUBMIT);
+        return new LoginPage(getBrowser());
     }
-
-    @Override
-    public LogoutPage load() {
-    	browser.goTo(URL);
-        return waitForLogoutForm();
-    }
-
-    @Override
-    public boolean isAt() {
-        return browser.url().equals(URL) ? true : false;
-    }
-
+    
     public IndexPage redirectToRoot() {
-        browser.$(INPUT_TYPE_BUTTON).click();
-        return new IndexPage(browser);
+        getBrowser().$(INPUT_TYPE_BUTTON).click();
+        return new IndexPage(getBrowser());
     }
 
-    private LogoutPage waitForLogoutForm() {
-        browser.await().atMost(WAIT_TIME, TIME_UNIT).until(LOGOUT).isPresent();
-        return this;
-    }
 
 }

@@ -8,6 +8,7 @@ GET           /login                  @controllers.usermgmt.AuthController.login
 GET           /logout                 @controllers.usermgmt.AuthController.logoutForm()
 POST          /logout                 @controllers.usermgmt.AuthController.logout()
 
+GET           /administration         @controllers.usermgmt.UserController.getAdministration()
 GET           /users                  @controllers.usermgmt.UserController.getAll()
 GET           /users/:username        @controllers.usermgmt.UserController.get(username: String)
 POST          /users                  @controllers.usermgmt.UserController.create()

@@ -19,15 +19,14 @@ public class AccessHandler extends AbstractDeadboltHandler implements DynamicRes
 	@Override
     public boolean isAllowed(String name, String meta, DeadboltHandler deadboltHandler, Http.Context context) {
 		String userName = Context.current().session().get("userName");
-		if (userName == null){
-			return true;
-		} else {
-				User user = User.findUserByUserName(userName);
-				if (user != null && user.role == Role.ADMIN){
-					return true;
-				}
-			return false;
+		if (userName != null){
+			User user = User.findUserByUserName(userName);
+			/*Must be splitted for 'USER' and 'ADMIN' access. Now we expect that name equals "ADMIN"*/
+			if (user != null && user.role == Role.ADMIN){
+				return true;
+			}
 		}
+		return false;
     }
 
     @Override

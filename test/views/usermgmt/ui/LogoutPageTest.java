@@ -43,7 +43,7 @@ public class LogoutPageTest extends AbstractUITest{
     }
 
     private LogoutPage getLogoutPage() {
-        return new LoginPage(getBrowser()).loginAndGoTo(ADMIN_USER_NAME, ADMIN_PASSWORD, LogoutPage.class);
+        return new LoginPage(getBrowser()).loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, LogoutPage.class);
     }
 
 }
