@@ -17,7 +17,7 @@ public class AdministrationPageDialog {
     private static final String BUTTONS = ".ui-dialog-buttonset button";
     private static final String SAVE = "Save";
     private static final String CANCEL = "Cancel";
-    private static final String MESSAGE_CONTAINER = ".message";
+    private static final String MESSAGE_CONTAINER = "#message";
 
     //TODO move it
     public static final String SUCCESS_MESSAGE = "Completed successfully!";
@@ -37,7 +37,7 @@ public class AdministrationPageDialog {
     static AdministrationPageDialog getDialog(UsersPage page) {
         FluentWebElement webElement = page.getBrowser().findFirst(DIALOG_CONTAINER);
         AdministrationPageDialog dialog = new AdministrationPageDialog(page, webElement);
-        page.waitForPresent(DIALOG_CONTAINER);
+        page.waitForDisplayed(DIALOG_CONTAINER);
         return dialog;
     }
 

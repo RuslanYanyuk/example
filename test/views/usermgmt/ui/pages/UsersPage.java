@@ -11,7 +11,7 @@ public class UsersPage extends AbstractPage{
     private static final String CREATE_BUTTON = "#add";
 
     public UsersPage(Fluent browser) {
-        super(browser, URL, USERS_CONTAINER);
+        super(browser, URL, USER);
     }
 
     public int getUsersCount(){

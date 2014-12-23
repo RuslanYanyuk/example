@@ -25,9 +25,9 @@
             <div data-bind="foreach: users">
                 <div class="row">
                     <p>
-                        <span data-bind="text: userName"></span>
-                        <span data-bind="text: fullName"></span>
-                        <span data-bind="text: role"></span>
+                        <span data-bind="text: userName" name="userName"></span>
+                        <span data-bind="text: fullName" name="fullName"></span>
+                        <span data-bind="text: role" name="role"></span>
                     </p>
                     <div class="buttons">
                         <input type="image" name="delete" src="@routes.Assets.at("images/bucket2.png")" alt="Remove user" data-bind="click: $root.remove.bind($data, $index())">
@@ -38,7 +38,7 @@
         </div>
 
         <div id="dialog-form">
-            <div class="message">
+            <div id="message">
                 <span></span>
             </div>
             <form>

@@ -15,6 +15,6 @@ public interface Parameters {
 	String ADMIN_PASSWORD = "password";
 	String NOT_EXISTED_USER_NAME = "notExistedUsername";
 	String INCORRECT_PASSWORD = "incorrect";
-	String EMPTY_PARAMETER = "";
+	String EMPTY_PARAMETER = " ";
 
 }

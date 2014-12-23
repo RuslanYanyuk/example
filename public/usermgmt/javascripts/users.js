@@ -44,9 +44,9 @@ function usersModel(dialog) {
 
     var getFormUser = function() {
         var inputs = dialog.find('form')[0].elements,
-            user = new User(inputs['userName'].value, inputs['fullName'].value, inputs['role'].value);
+            user = new User(inputs['userName'].value, inputs['fullName'].value, $('option:selected').text());
 
-        if (user.fullName.length == 0) {
+        if (!/\S/.test(user.fullName)) {
            user.fullName = user.userName
         }
         user.password = inputs['password'].value;
@@ -85,7 +85,7 @@ function usersModel(dialog) {
     };
 
     var showDialogMessage = function(text, color, isImmediate) {
-        var message = $('.message'),
+        var message = $('#message'),
             textContainer = message.find('span'),
             colorTime = isImmediate ? 0 : 500,
             textTime = isImmediate ? 0 : 300;
@@ -175,7 +175,7 @@ function usersModel(dialog) {
     };
 
     var validateCreation = function(userForm) {
-        return (userForm.userName.length == 0) || (userForm.password.length == 0) ? false : true;
+        return /\S/.test(userForm.password) && /\S/.test(userForm.userName);
     };
 
     self.remove = function(index, currentUser) {

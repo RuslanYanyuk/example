@@ -72,7 +72,7 @@ public class AdministrationPageTest extends AbstractUITest{
         UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
         int usersCount = usersPage.getUsersCount();
 
-        AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(NEW_USER_NAME, null, FIRST_USER_PASSWORD, Role.USER);
+        AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(NEW_USER_NAME, EMPTY_PARAMETER, FIRST_USER_PASSWORD, Role.USER);
         dialog.save(SUCCESS_MESSAGE);
         AdministrationPageUser user = usersPage.getUserByUserName(NEW_USER_NAME);
 
@@ -96,7 +96,7 @@ public class AdministrationPageTest extends AbstractUITest{
     public void adminSeeValidationErrorIfNoPassword() {
         UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
 
-        AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(NEW_USER_NAME, NEW_USER_NAME, null, Role.USER);
+        AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(NEW_USER_NAME, NEW_USER_NAME, EMPTY_PARAMETER, Role.USER);
         dialog.save(VALIDATION_MESSAGE);
     }
 
@@ -104,7 +104,7 @@ public class AdministrationPageTest extends AbstractUITest{
     public void adminSeeValidationErrorIfNoUserName() {
         UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
 
-        AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(null, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
+        AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(EMPTY_PARAMETER, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
         dialog.save(VALIDATION_MESSAGE);
     }
 
