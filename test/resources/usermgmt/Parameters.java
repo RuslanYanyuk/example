@@ -12,6 +12,7 @@ public interface Parameters {
 	String FIRST_USER_UPDATED_FULL_NAME = "userUpdateName";
 	String NEW_USER_NAME = "newUser";
 	String ADMIN_USER_NAME = "Admin";
+	String ADMIN_FULL_NAME = "admin";
 	String ADMIN_PASSWORD = "password";
 	String NOT_EXISTED_USER_NAME = "notExistedUsername";
 	String INCORRECT_PASSWORD = "incorrect";

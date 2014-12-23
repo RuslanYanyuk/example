@@ -6,10 +6,10 @@ html, body {
 
 #users-container {
     position: relative;
-    margin: 10px 30px;
+    margin: 40px 50px;
     border: 10px solid #ccc;
     padding: 40px 50px 10px;
-    height: calc(100% - 90px);
+    height: calc(100% - 150px);
     text-align: left;
     overflow-y: scroll;
     background: #fff;
@@ -41,9 +41,9 @@ p {
     position: fixed;
     background-color: white;
     margin: 0;
-    top: 20px;
+    top: 50px;
     line-height: 40px;
-    width: calc((100% - 180px)*0.75);
+    width: calc((100% - 240px)*0.75);
 }
 
 #title span {
@@ -66,8 +66,8 @@ input[type="image"]:focus {
 
 #add {
     position: fixed;
-    top: 30px;
-    right: 65px;
+    top: 60px;
+    right: 85px;
     width: 60px;
     height: 60px;
 }
@@ -109,6 +109,18 @@ label {
 #dialog-form select {
     width: 100%;
     background: white;
+}
+
+#logout {
+    position: fixed;
+    top:8px;
+    right: 50px;
+    z-index: 1000;
+}
+
+#logout input {
+    margin-left: 5px;
+    width: 24px;
 }
 
 /*Dialog styles*/

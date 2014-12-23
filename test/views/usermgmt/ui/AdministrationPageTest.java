@@ -44,6 +44,21 @@ public class AdministrationPageTest extends AbstractUITest{
     }
 
     @Test
+    public void adminCanLogout() {
+        LoginPage login = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class).logout();
+
+        assertTrue(login.isAt());
+        assertTrue(login.hasSuccess());
+    }
+
+    @Test
+    public void adminCanSeeOwnFullName() {
+        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+
+        assertThat(usersPage.getDescriptionFullName(), is(ADMIN_FULL_NAME));
+    }
+
+    @Test
     public void adminCanDeleteUser() {
         UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
         int usersCount = usersPage.getUsersCount();

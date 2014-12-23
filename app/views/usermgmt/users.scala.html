@@ -1,5 +1,12 @@
 @(roles: Array[models.usermgmt.Role])
 @import controllers.usermgmt._
+
+@fullName = @{
+    val login = play.mvc.Http.Context.current().session().get("userName")
+    val user = new services.usermgmt.XiUserService().get(login)
+    user.fullName
+}
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <title>Users administration</title>
@@ -11,6 +18,11 @@
         <script src="@routes.Assets.at("javascripts/users.js")" type="text/javascript"></script>
     </head>
     <body>
+        <form action="/logout" method="post" id="logout">
+            <span>@fullName</span>
+            <input type="image" name="logout" src="@routes.Assets.at("images/logout.png")" alt="Logout" onclick="$('#logout' ).submit()">
+        </form>
+
         <div id="users-container">
             <input id="add" type="image" src="@routes.Assets.at("images/add_user.png")" alt="Create user" data-bind="click: $root.createDialog">
 

@@ -47,7 +47,7 @@ public class UserController extends Controller {
 		}
         return ok(Json.toJson(bean));
     }
-	
+
 	@Dynamic(value = "ADMIN")
 	public Result create() {
 		UserFormBean bean;
