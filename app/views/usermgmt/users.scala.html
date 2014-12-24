@@ -18,7 +18,7 @@
         <script src="@routes.Assets.at("javascripts/users.js")" type="text/javascript"></script>
     </head>
     <body>
-        <form action="/logout" method="post" id="logout">
+        <form id="logout" action="/logout" method="post">
             <span>@fullName</span>
             <input type="image" name="logout" src="@routes.Assets.at("images/logout.png")" alt="Logout" onclick="$('#logout' ).submit()">
         </form>

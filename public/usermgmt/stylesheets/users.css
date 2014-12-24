@@ -123,6 +123,12 @@ label {
     width: 24px;
 }
 
+#logout span {
+    display: inline-block;
+    vertical-align: bottom;
+    height: 24px;
+}
+
 /*Dialog styles*/
 
 div.ui-dialog-titlebar {
