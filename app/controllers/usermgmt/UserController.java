@@ -10,17 +10,14 @@ import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
 import services.usermgmt.AlreadyExistsException;
 import services.usermgmt.NotFoundException;
 import services.usermgmt.UserService;
 import services.usermgmt.XiUserService;
-import utils.usermgmt.Secured;
 
 import java.io.IOException;
 import java.util.List;
 
-@Security.Authenticated(Secured.class)
 public class UserController extends Controller {
 	
 	private UserService service = new XiUserService();

@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import utils.usermgmt.AdditionalConfiguration;
+import static utils.usermgmt.Constants.EBEAN_SERVER;
 
 @Entity
 public class User extends AbstractModel {
@@ -29,7 +29,7 @@ public class User extends AbstractModel {
 		this.role = role;
 	}
 	
-	public static Finder<Long, User> find = new Finder<Long, User>(AdditionalConfiguration.EBEAN_SERVER.getValue(), Long.class, User.class);
+	public static Finder<Long, User> find = new Finder<Long, User>(EBEAN_SERVER, Long.class, User.class);
 	
 	public static User findUserByUserName(String userName) {
 		User user = User.find.where().eq("userName", userName).findUnique();// throws exception if found more than 1

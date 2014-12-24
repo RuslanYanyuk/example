@@ -1,7 +1,6 @@
 package views.usermgmt.ui;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import usermgmt.YAML;
 import views.usermgmt.AbstractUITest;
@@ -34,13 +33,12 @@ public class LoginPageTest extends AbstractUITest{
         assertTrue(loginPage.hasError());
     }
 
-    @Ignore("should change AccessHandler isAllowed logic")
     @Test
     public void login_redirectsToRequestPage() {
         LoginPage loginPage = new LoginPage(getBrowser());
         UsersPage usersPage = new UsersPage(getBrowser());
         
-        usersPage.load();
+        goTo(UsersPage.URL);
         
         assertTrue(loginPage.isAt());
 

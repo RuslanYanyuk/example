@@ -5,7 +5,7 @@ import java.util.List;
 import com.avaje.ebean.Ebean;
 
 import play.libs.Yaml;
-import utils.usermgmt.AdditionalConfiguration;
+import static utils.usermgmt.Constants.*;
 
 public enum YAML {
 
@@ -19,7 +19,7 @@ public enum YAML {
 	
 	public void load(){
 		List<?> objects = (List<?>)Yaml.load(fileName);
-		Ebean.getServer(AdditionalConfiguration.EBEAN_SERVER.getValue()).save(objects);
+		Ebean.getServer(EBEAN_SERVER).save(objects);
 	}
 	
 }

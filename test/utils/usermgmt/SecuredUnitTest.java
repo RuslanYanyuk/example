@@ -1,7 +1,6 @@
 package utils.usermgmt;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import play.libs.Json;
 import play.mvc.Result;
@@ -25,7 +24,6 @@ public class SecuredUnitTest extends AbstractUnitTest {
 
     }
 
-    @Ignore("should change AccessHandler isAllowed logic")
     @Test
     public void noAccessToUserControllerForNotLoggedInUser() {
         Result result = callAction(controllers.usermgmt.routes.ref.UserController.get(FIRST_USER_NAME));

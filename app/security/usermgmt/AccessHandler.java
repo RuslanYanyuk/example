@@ -1,5 +1,6 @@
 package security.usermgmt;
 
+import play.libs.F;
 import play.libs.F.Promise;
 import play.mvc.Http;
 import play.mvc.Http.Context;
@@ -9,6 +10,7 @@ import models.usermgmt.User;
 import be.objectify.deadbolt.java.AbstractDeadboltHandler;
 import be.objectify.deadbolt.java.DeadboltHandler;
 import be.objectify.deadbolt.java.DynamicResourceHandler;
+import static utils.usermgmt.Constants.*;
 
 public class AccessHandler extends AbstractDeadboltHandler implements DynamicResourceHandler {
 
@@ -16,14 +18,27 @@ public class AccessHandler extends AbstractDeadboltHandler implements DynamicRes
         return this;
     }
 	
+	/**
+	 * If your method has annotated like @Dynamic(value = "ALL USERS"),
+	 * then to method have access all logined users
+	 * 
+	 * If your method has annotated like @Dynamic(value = "MY_ROLE_NAME"), 
+	 * then to method have access users with user.role == Role.valueOf("MY_ROLE_NAME")
+	 * 
+	 * If your method has annotated like @Dynamic(value = "MY_ROLE_NAME1, MY_ROLE_NAME2, ..."), 
+	 * then to method have users with user.role == Role.valueOf("MY_ROLE_NAME1") 
+	 * OR with user.role == Role.valueOf("MY_ROLE_NAME2") etc
+	 */
 	@Override
     public boolean isAllowed(String name, String meta, DeadboltHandler deadboltHandler, Http.Context context) {
-		String userName = Context.current().session().get("userName");
-		if (userName != null){
-			User user = User.findUserByUserName(userName);
-			/*Must be splitted for 'USER' and 'ADMIN' access. Now we expect that name equals "ADMIN"*/
-			if (user != null && user.role == Role.ADMIN){
-				return true;
+		User user = User.findUserByUserName(getUserName(context));
+		if (name.toUpperCase().equals("ALL USERS")){
+			return true;
+		} else {
+			for (String roleName : name.split(",")){
+				if (user.role == Role.valueOf(roleName.trim())){
+					return true;
+				}
 			}
 		}
 		return false;
@@ -35,10 +50,34 @@ public class AccessHandler extends AbstractDeadboltHandler implements DynamicRes
     }
 
 	@Override
-	public Promise<Result> beforeAuthCheck(Context arg0) {
-		// returning null means that everything is OK.  Return a real result if you want a redirect to a login page or
-        // somewhere else
+	public Promise<Result> beforeAuthCheck(final Context context) {
+		String userName = context.session().get("userName");
+		if (userName == null){
+			return onUnauthorized(context);
+		}
+		User user = User.findUserByUserName(userName);
+		if (user == null){
+			context.session().clear();
+			return onUnauthorized(context);
+		}
 		return null;
 	}
-
+	
+	private String getUserName(Context context){
+		return context.session().get("userName");
+	}
+	
+	private Promise<Result> onUnauthorized(final Context context){
+		return F.Promise.promise(new F.Function0<Result>()
+        {
+            @Override
+            public Result apply() throws Throwable {
+            	String redirectUrl = context.request().uri();
+            	if (!redirectUrl.equals(LOGOUT_PAGE)){
+            		context.session().put("redirect", redirectUrl);
+            	}
+                return redirect(controllers.usermgmt.routes.AuthController.loginForm());
+            }
+        });
+	}
 }

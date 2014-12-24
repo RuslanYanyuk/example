@@ -4,7 +4,7 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import play.Configuration;
 import play.test.FakeApplication;
-import utils.usermgmt.AdditionalConfiguration;
+import static utils.usermgmt.Constants.*;
 
 import java.io.File;
 import java.util.Map;
@@ -16,7 +16,7 @@ public class TestHelper {
     public static FakeApplication createFakeApplication() {
         Config additionalConfig = ConfigFactory.parseFile(new File("conf/usermgmt.test.conf"));
         Map<String, Object> additionalConfigurations = new Configuration(additionalConfig).asMap();
-        additionalConfigurations.putAll(inMemoryDatabase(AdditionalConfiguration.EBEAN_SERVER.getValue()));
+        additionalConfigurations.putAll(inMemoryDatabase(EBEAN_SERVER));
         return fakeApplication(additionalConfigurations);
     }
 }

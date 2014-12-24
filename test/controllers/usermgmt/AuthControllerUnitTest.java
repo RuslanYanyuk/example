@@ -100,6 +100,8 @@ public class AuthControllerUnitTest extends AbstractUnitTest {
 
     @Test
     public void logoutForm_renderLogoutPage() {
+    	YAML.GENERAL_USERS.load();
+    	
         Result result = callAction(
                 controllers.usermgmt.routes.ref.AuthController.logoutForm(),
                 fakeRequest().withSession("userName", FIRST_USER_NAME)

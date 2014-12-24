@@ -1,27 +1,22 @@
 package controllers.usermgmt;
 
+import be.objectify.deadbolt.java.actions.Dynamic;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
 import formbeans.usermgmt.LoginFormBean;
-import utils.usermgmt.Secured;
 import views.html.usermgmt.login;
 import views.html.usermgmt.logout;
-
 import static play.data.Form.form;
+import static utils.usermgmt.Constants.*;
 
 public class AuthController extends Controller {
-
-    public static final String INDEX_PAGE = "/";
-    public static final String LOGOUT_PAGE = "/logout";
 
     public Result loginForm() {
     	if (session().get("userName") != null){
     		return redirect(INDEX_PAGE);
-    	} else {
-    		return ok(login.render(form(LoginFormBean.class)));    		
     	}
+    	return ok(login.render(form(LoginFormBean.class)));  
     }
 
     public Result login() {
@@ -30,17 +25,12 @@ public class AuthController extends Controller {
             return badRequest(login.render(loginForm));
         }
         String redirectUrl = session().get("redirect");
-        if (redirectUrl != null && redirectUrl.equals(LOGOUT_PAGE)){
-        	redirectUrl = null;
-        }
-
         session().clear();
         session().put("userName", loginForm.get().userName);
-
         return redirect(redirectUrl != null ? redirectUrl : INDEX_PAGE);
     }
 
-    @Security.Authenticated(Secured.class)
+    @Dynamic(value = "ALL USERS")
     public Result logoutForm() {
         return ok(logout.render());
     }

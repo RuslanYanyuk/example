@@ -6,7 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import play.db.ebean.Model;
-import utils.usermgmt.AdditionalConfiguration;
+
+import static utils.usermgmt.Constants.EBEAN_SERVER;
 
 
 @MappedSuperclass
@@ -18,17 +19,17 @@ public abstract class AbstractModel extends Model {
 	
 	@Override
 	public void save(){
-		super.save(AdditionalConfiguration.EBEAN_SERVER.getValue());
+		super.save(EBEAN_SERVER);
 	}
 	
 	@Override
 	public void update(){
-		super.update(AdditionalConfiguration.EBEAN_SERVER.getValue());
+		super.update(EBEAN_SERVER);
 	}
 	
 	@Override
 	public void delete(){
-		super.delete(AdditionalConfiguration.EBEAN_SERVER.getValue());
+		super.delete(EBEAN_SERVER);
 	}
 	
 }
