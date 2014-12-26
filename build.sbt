@@ -16,6 +16,15 @@ packagedArtifacts in publishLocal := {
   artifacts + (Artifact(moduleName.value, "jar", "jar", "assets") -> assets)
 }
 
+// enable publishing the jar produced by `test:package`
+publishArtifact in (Test, packageBin) := true
+
+// enable publishing the test API jar
+publishArtifact in (Test, packageDoc) := true
+
+// enable publishing the test sources jar
+publishArtifact in (Test, packageSrc) := true
+
 libraryDependencies ++= Seq(
   javaJdbc,
   javaEbean,
@@ -31,5 +40,3 @@ libraryDependencies ++= Seq(
 )
 
 resolvers += Resolver.url("Objectify Play Repository", url("http://deadbolt.ws/releases/"))(Resolver.ivyStylePatterns)
-
-Keys.fork in Test := false
