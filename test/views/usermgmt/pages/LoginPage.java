@@ -1,6 +1,8 @@
-package views.usermgmt.ui.pages;
+package views.usermgmt.pages;
 
 import org.fluentlenium.core.Fluent;
+
+import commons.ui.pages.AbstractPage;
 
 public class LoginPage extends AbstractPage {
 

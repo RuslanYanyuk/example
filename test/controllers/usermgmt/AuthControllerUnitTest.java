@@ -1,12 +1,13 @@
 package controllers.usermgmt;
 
 import com.google.common.collect.ImmutableMap;
+import commons.AbstractUnitTest;
+
 import org.junit.Test;
+
 import play.mvc.Result;
-import views.usermgmt.AbstractUnitTest;
 import usermgmt.YAML;
 import formbeans.usermgmt.UserFormBean;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static play.mvc.Http.Status.OK;

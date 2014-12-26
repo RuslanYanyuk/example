@@ -1,13 +1,13 @@
-package views.usermgmt.ui.pages;
+package commons.ui.pages;
 
-public enum Status {
+public enum PageStatus {
 
     //TODO approve
     UNAUTHORIZED("Unauthorized");
 
     private String contains;
 
-    private Status(String contains){
+    private PageStatus(String contains){
         this.contains = contains;
     }
 

@@ -1,4 +1,4 @@
-package views.usermgmt;
+package commons;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;

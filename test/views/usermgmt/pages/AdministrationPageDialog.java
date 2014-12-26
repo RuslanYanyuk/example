@@ -1,4 +1,4 @@
-package views.usermgmt.ui.pages;
+package views.usermgmt.pages;
 
 import models.usermgmt.Role;
 import org.fluentlenium.core.Fluent;
@@ -25,16 +25,16 @@ public class AdministrationPageDialog {
     public static final String VALIDATION_MESSAGE = "User Name and Password are required";
     public static final String USER_NOT_FOUND = "User not found!";
 
-    private UsersPage page;
+    private AdministrationPage page;
 
     private FluentWebElement webElement;
 
-    private AdministrationPageDialog (UsersPage page, FluentWebElement webElement){
+    private AdministrationPageDialog (AdministrationPage page, FluentWebElement webElement){
         this.page = page;
         this.webElement = webElement;
     }
 
-    static AdministrationPageDialog getDialog(UsersPage page) {
+    static AdministrationPageDialog getDialog(AdministrationPage page) {
         FluentWebElement webElement = page.getBrowser().findFirst(DIALOG_CONTAINER);
         AdministrationPageDialog dialog = new AdministrationPageDialog(page, webElement);
         page.waitForDisplayed(DIALOG_CONTAINER);
@@ -54,13 +54,13 @@ public class AdministrationPageDialog {
         return this;
     }
 
-    public UsersPage save(String text) {
+    public AdministrationPage save(String text) {
         webElement.find(BUTTONS, withText(SAVE)).click();
         page.waitForElementHasText(MESSAGE_CONTAINER, text);
         return page;
     }
 
-    public UsersPage cancel() {
+    public AdministrationPage cancel() {
         webElement.find(BUTTONS, withText(CANCEL)).click();
         page.waitForElementHasText(DIALOG_CONTAINER, "");
         return page;

@@ -1,22 +1,42 @@
 package controllers.usermgmt;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import formbeans.usermgmt.SecuredUserFormBean;
-import models.usermgmt.Role;
-import models.usermgmt.User;
-import org.junit.Test;
-import org.mindrot.jbcrypt.BCrypt;
-import play.mvc.Result;
-import usermgmt.YAML;
-import views.usermgmt.AbstractUnitTest;
+import static junit.framework.Assert.assertTrue;
+import static org.fest.assertions.Assertions.assertThat;
+import static play.mvc.Http.Status.BAD_REQUEST;
+import static play.mvc.Http.Status.INTERNAL_SERVER_ERROR;
+import static play.mvc.Http.Status.NOT_FOUND;
+import static play.mvc.Http.Status.OK;
+import static play.mvc.Http.Status.UNAUTHORIZED;
+import static play.test.Helpers.callAction;
+import static play.test.Helpers.charset;
+import static play.test.Helpers.contentAsString;
+import static play.test.Helpers.contentType;
+import static play.test.Helpers.fakeRequest;
+import static play.test.Helpers.status;
+import static usermgmt.Parameters.ADMIN_USER_NAME;
+import static usermgmt.Parameters.FIRST_USER_FULLNAME;
+import static usermgmt.Parameters.FIRST_USER_NAME;
+import static usermgmt.Parameters.FIRST_USER_PASSWORD;
+import static usermgmt.Parameters.FIRST_USER_UPDATED_PASSWORD;
+import static usermgmt.Parameters.NEW_USER_NAME;
+import static usermgmt.Parameters.NOT_EXISTED_USER_NAME;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertTrue;
-import static org.fest.assertions.Assertions.assertThat;
-import static play.test.Helpers.*;
-import static usermgmt.Parameters.*;
+import models.usermgmt.Role;
+import models.usermgmt.User;
+
+import org.junit.Test;
+import org.mindrot.jbcrypt.BCrypt;
+
+import play.mvc.Result;
+import usermgmt.YAML;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import commons.AbstractUnitTest;
+
+import formbeans.usermgmt.SecuredUserFormBean;
 
 public class UserControllerUnitTest extends AbstractUnitTest {
 

@@ -1,4 +1,4 @@
-package views.usermgmt.ui.pages;
+package views.usermgmt.pages;
 
 import org.fluentlenium.core.domain.FluentWebElement;
 
@@ -8,16 +8,16 @@ public class AdministrationPageUser {
 
     private static final String EDIT_BUTTON = "input[name=edit]";
     private static final String DELETE_BUTTON = "input[name=delete]";
-    static final String USER = UsersPage.USERS_CONTAINER + " .row";
+    static final String USER = AdministrationPage.USERS_CONTAINER + " .row";
     static final String USER_NAME_CONTAINER = "p span[name='userName']";
     static final String FULL_NAME_CONTAINER = "p span[name='fullName']";
     static final String ROLE_CONTAINER = "p span[name='role']";
 
-    private UsersPage page;
+    private AdministrationPage page;
 
     private String userName;
 
-    AdministrationPageUser(UsersPage page, String userName){
+    AdministrationPageUser(AdministrationPage page, String userName){
         this.page = page;
         this.userName = userName;
     }

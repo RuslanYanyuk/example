@@ -1,10 +1,12 @@
-package views.usermgmt.ui.pages;
+package views.usermgmt.pages;
 
 import org.fluentlenium.core.Fluent;
 
-import static views.usermgmt.ui.pages.AdministrationPageUser.USER;
+import commons.ui.pages.AbstractPage;
 
-public class UsersPage extends AbstractPage{
+import static views.usermgmt.pages.AdministrationPageUser.USER;
+
+public class AdministrationPage extends AbstractPage{
 
     public static final String URL = "http://localhost:3333/administration";
     static final String USERS_CONTAINER = "#users-container";
@@ -12,7 +14,7 @@ public class UsersPage extends AbstractPage{
     private static final String LOGOUT_BUTTON = "#logout input[name='logout']";
     private static final String FULL_NAME = "#logout span";
 
-    public UsersPage(Fluent browser) {
+    public AdministrationPage(Fluent browser) {
         super(browser, URL, USER);
     }
 

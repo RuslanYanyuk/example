@@ -1,4 +1,4 @@
-package views.usermgmt.ui.pages;
+package commons.ui.pages;
 
 import org.fluentlenium.core.Fluent;
 
@@ -41,23 +41,23 @@ public abstract class AbstractPage {
         browser.await().atMost(WAIT_TIME, TIME_UNIT).until(element).isPresent();
     }
 
-    void waitForDisplayed(String element) {
+    public void waitForDisplayed(String element) {
         browser.await().atMost(WAIT_TIME, TIME_UNIT).until(element).areDisplayed();
     }
 
-    void waitForNotPresent(String element, String text) {
+    public void waitForNotPresent(String element, String text) {
         browser.await().atMost(WAIT_TIME, TIME_UNIT).until(element).withText(text).isNotPresent();
     }
 
-    void waitForElementHasText(String element, String text) {
+    public void waitForElementHasText(String element, String text) {
         browser.await().atMost(WAIT_TIME, TIME_UNIT).until(element).hasText(text);
     }
 
-    protected Fluent getBrowser(){
+    public Fluent getBrowser(){
         return browser;
     }
 
-    public boolean checkStatus (Status status){
+    public boolean checkStatus (PageStatus status){
         return getBrowser().$("body", withText(status.getContains())) != null;
     }
 

@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.junit.rules.ExpectedException;
 import org.mindrot.jbcrypt.BCrypt;
-import views.usermgmt.AbstractUnitTest;
+
+import commons.AbstractUnitTest;
+
 import usermgmt.YAML;
 import formbeans.usermgmt.SecuredUserFormBean;
 import formbeans.usermgmt.UserFormBean;

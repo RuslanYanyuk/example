@@ -1,11 +1,11 @@
-package views.usermgmt.ui;
+package views.usermgmt;
 
 import org.junit.Before;
 import org.junit.Test;
-import usermgmt.YAML;
-import views.usermgmt.AbstractUITest;
-import views.usermgmt.ui.pages.*;
 
+import commons.ui.AbstractUITest;
+import usermgmt.YAML;
+import views.usermgmt.pages.*;
 import static org.junit.Assert.assertTrue;
 import static usermgmt.Parameters.*;
 
@@ -36,9 +36,9 @@ public class LoginPageTest extends AbstractUITest{
     @Test
     public void login_redirectsToRequestPage() {
         LoginPage loginPage = new LoginPage(getBrowser());
-        UsersPage usersPage = new UsersPage(getBrowser());
+        AdministrationPage usersPage = new AdministrationPage(getBrowser());
         
-        goTo(UsersPage.URL);
+        goTo(AdministrationPage.URL);
         
         assertTrue(loginPage.isAt());
 

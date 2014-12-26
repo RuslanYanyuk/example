@@ -1,12 +1,12 @@
-package views.usermgmt.ui;
+package views.usermgmt;
 
 import org.junit.Test;
-import usermgmt.YAML;
-import views.usermgmt.ui.pages.IndexPage;
-import views.usermgmt.ui.pages.LoginPage;
-import views.usermgmt.AbstractUITest;
-import views.usermgmt.ui.pages.LogoutPage;
 
+import commons.ui.AbstractUITest;
+import usermgmt.YAML;
+import views.usermgmt.pages.IndexPage;
+import views.usermgmt.pages.LoginPage;
+import views.usermgmt.pages.LogoutPage;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import static usermgmt.Parameters.ADMIN_PASSWORD;

@@ -1,12 +1,12 @@
-package views.usermgmt;
+package commons;
 
 import org.junit.After;
 import org.junit.Before;
-import play.test.FakeApplication;
 
+import play.test.FakeApplication;
+import static commons.TestHelper.*;
 import static play.test.Helpers.start;
 import static play.test.Helpers.stop;
-import static views.usermgmt.TestHelper.*;
 
 
 public abstract class AbstractUnitTest {

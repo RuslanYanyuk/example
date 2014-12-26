@@ -19,20 +19,20 @@ public class AccessHandler extends AbstractDeadboltHandler implements DynamicRes
     }
 	
 	/**
-	 * If your method has annotated like @Dynamic(value = "ALL USERS"),
+	 * If your method has annotated like @Dynamic("Logged in"),
 	 * then to method have access all logined users
 	 * 
-	 * If your method has annotated like @Dynamic(value = "MY_ROLE_NAME"), 
+	 * If your method has annotated like @Dynamic("MY_ROLE_NAME"), 
 	 * then to method have access users with user.role == Role.valueOf("MY_ROLE_NAME")
 	 * 
-	 * If your method has annotated like @Dynamic(value = "MY_ROLE_NAME1, MY_ROLE_NAME2, ..."), 
+	 * If your method has annotated like @Dynamic("MY_ROLE_NAME1, MY_ROLE_NAME2, ..."), 
 	 * then to method have users with user.role == Role.valueOf("MY_ROLE_NAME1") 
 	 * OR with user.role == Role.valueOf("MY_ROLE_NAME2") etc
 	 */
 	@Override
     public boolean isAllowed(String name, String meta, DeadboltHandler deadboltHandler, Http.Context context) {
 		User user = User.findUserByUserName(getUserName(context));
-		if (name.toUpperCase().equals("ALL USERS")){
+		if (name.toUpperCase().equals("LOGGED IN")){
 			return true;
 		} else {
 			for (String roleName : name.split(",")){

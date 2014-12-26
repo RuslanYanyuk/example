@@ -1,4 +1,4 @@
-package views.usermgmt;
+package commons.ui;
 
 import org.fluentlenium.adapter.FluentTest;
 import org.fluentlenium.core.Fluent;
@@ -6,13 +6,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+
+import commons.ui.pages.AbstractPage;
+
 import play.test.TestBrowser;
 import play.test.TestServer;
-import views.usermgmt.ui.pages.AbstractPage;
-import views.usermgmt.ui.pages.LoginPage;
-
+import views.usermgmt.pages.LoginPage;
+import static commons.TestHelper.createFakeApplication;
 import static play.test.Helpers.*;
-import static views.usermgmt.TestHelper.createFakeApplication;
 
 public class AbstractUITest extends FluentTest{
 

@@ -2,12 +2,13 @@ package utils.usermgmt;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import commons.AbstractUnitTest;
+
 import play.libs.Json;
 import play.mvc.Result;
-import views.usermgmt.AbstractUnitTest;
 import usermgmt.YAML;
 import formbeans.usermgmt.UserFormBean;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static play.mvc.Http.Status.SEE_OTHER;

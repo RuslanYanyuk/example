@@ -1,20 +1,20 @@
-package views.usermgmt.ui;
+package views.usermgmt;
 
 import models.usermgmt.Role;
+
 import org.junit.Before;
 import org.junit.Test;
-import usermgmt.YAML;
-import views.usermgmt.AbstractUITest;
-import views.usermgmt.ui.pages.*;
 
+import commons.ui.AbstractUITest;
+import usermgmt.YAML;
+import views.usermgmt.pages.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static usermgmt.Parameters.*;
-import static views.usermgmt.ui.pages.AdministrationPageDialog.*;
-import static views.usermgmt.ui.pages.AdministrationPageDialog.USER_NOT_FOUND;
-import static views.usermgmt.ui.pages.Status.*;
+import static views.usermgmt.pages.AdministrationPageDialog.*;
+import static commons.ui.pages.PageStatus.*;
 
 public class AdministrationPageTest extends AbstractUITest{
 
@@ -27,10 +27,10 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void onlyAdminHasAccessToAdministrationPage() {
-        UsersPage usersPage = new UsersPage(getBrowser());
+        AdministrationPage usersPage = new AdministrationPage(getBrowser());
 
         login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
-        goTo(UsersPage.URL);
+        goTo(AdministrationPage.URL);
 
         assertTrue(usersPage.isAt());
         assertTrue(usersPage.checkStatus(UNAUTHORIZED));
@@ -38,14 +38,14 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void adminCanOpenAdministrationPage() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
         assertTrue(usersPage.isAt());
     }
 
     @Test
     public void adminCanLogout() {
-        LoginPage login = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class).logout();
+        LoginPage login = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class).logout();
 
         assertTrue(login.isAt());
         assertTrue(login.hasSuccess());
@@ -53,14 +53,14 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void adminCanSeeOwnFullName() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
         assertThat(usersPage.getDescriptionFullName(), is(ADMIN_FULL_NAME));
     }
 
     @Test
     public void adminCanDeleteUser() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
         int usersCount = usersPage.getUsersCount();
 
         AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
@@ -99,7 +99,7 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void adminCanAddNewUser() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
         int usersCount = usersPage.getUsersCount();
 
         AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(NEW_USER_NAME, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
@@ -111,7 +111,7 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void adminCanAddNewUserWithoutSettingDirectlyFullName() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
         int usersCount = usersPage.getUsersCount();
 
         AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(NEW_USER_NAME, EMPTY_PARAMETER, FIRST_USER_PASSWORD, Role.USER);
@@ -125,7 +125,7 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void adminCanNotAddNewUserWithExistingName() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
         int usersCount = usersPage.getUsersCount();
 
         AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(FIRST_USER_NAME, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
@@ -136,7 +136,7 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void adminSeeValidationErrorIfNoPassword() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
         AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(NEW_USER_NAME, NEW_USER_NAME, EMPTY_PARAMETER, Role.USER);
         dialog.save(VALIDATION_MESSAGE);
@@ -144,7 +144,7 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void adminSeeValidationErrorIfNoUserName() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
         AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(EMPTY_PARAMETER, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
         dialog.save(VALIDATION_MESSAGE);
@@ -152,7 +152,7 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void adminCanCloseDialogWithoutSavingUser() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
         int usersCount = usersPage.getUsersCount();
 
         AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(NEW_USER_NAME, null, FIRST_USER_PASSWORD, Role.USER);
@@ -164,7 +164,7 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void adminCanNotChangeUserNameWhileEditing() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
         AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
 
@@ -173,7 +173,7 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void adminCanEditUser() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
         int usersCount = usersPage.getUsersCount();
 
         AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
@@ -188,13 +188,13 @@ public class AdministrationPageTest extends AbstractUITest{
         LogoutPage logoutPage = new LogoutPage(getBrowser());
         logoutPage.logout();
 
-        loginAndLoad(FIRST_USER_NAME, FIRST_USER_UPDATED_PASSWORD, UsersPage.class);
+        loginAndLoad(FIRST_USER_NAME, FIRST_USER_UPDATED_PASSWORD, AdministrationPage.class);
         assertTrue(usersPage.isAt());
     }
 
     @Test
     public void adminCanEditUserWithoutPasswordChange() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
         int usersCount = usersPage.getUsersCount();
 
         AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
@@ -209,7 +209,7 @@ public class AdministrationPageTest extends AbstractUITest{
         LogoutPage logoutPage = new LogoutPage(getBrowser());
         logoutPage.logout();
 
-        loginAndLoad(FIRST_USER_NAME, FIRST_USER_PASSWORD, UsersPage.class);
+        loginAndLoad(FIRST_USER_NAME, FIRST_USER_PASSWORD, AdministrationPage.class);
         assertTrue(usersPage.isAt());
     }
 
@@ -229,7 +229,7 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void adminSeeErrorWhileEditingNotExistingUser() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
         AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
         AdministrationPageDialog dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, EMPTY_PARAMETER, Role.ADMIN);

@@ -2,10 +2,11 @@ package services.usermgmt;
 
 import org.junit.Before;
 import org.junit.Test;
-import views.usermgmt.AbstractUnitTest;
+
+import commons.AbstractUnitTest;
+
 import usermgmt.YAML;
 import formbeans.usermgmt.LoginFormBean;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static usermgmt.Parameters.*;
