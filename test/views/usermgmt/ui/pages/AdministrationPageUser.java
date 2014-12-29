@@ -33,7 +33,7 @@ public class AdministrationPageUser {
 
     public DeleteConfirmDialog delete(){
         getWebElement().findFirst(DELETE_BUTTON).click();
-        return DeleteConfirmDialog.getDialog(page);
+        return DeleteConfirmDialog.getDialog(page,userName);
     }
 
     public boolean isPresent() {
