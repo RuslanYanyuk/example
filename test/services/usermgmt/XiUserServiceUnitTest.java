@@ -151,7 +151,7 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 		assertThat(users.size()).isEqualTo(4);
 		User firstUser = User.find.where().eq("userName", FIRST_USER_NAME).findUnique();
 		assertThat(firstUser).isNotNull();
-		service.delete(FIRST_USER_NAME);
+		service.delete(ADMIN_USER_NAME, FIRST_USER_NAME);
 		users = User.find.all();
 		assertThat(users.size()).isEqualTo(3);
 		firstUser = User.find.where().eq("userName", FIRST_USER_NAME).findUnique();
@@ -162,9 +162,19 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 	public void delete_ThrowsExceptionUnlessUserNameFound() throws NotFoundException {
 		YAML.GENERAL_USERS.load();
 		
-		service.delete(NOT_EXISTED_USER_NAME);
+		service.delete(ADMIN_USER_NAME, NOT_EXISTED_USER_NAME);
 	}
-	
+
+	@Test
+	public void delete_ThrowsExceptionWhenDeletingCurrentUser() throws NotFoundException {
+		YAML.GENERAL_USERS.load();
+
+		exception.expect(IllegalArgumentException.class);
+		exception.expectMessage("Can not be deleted current user.");
+
+		service.delete(ADMIN_USER_NAME, ADMIN_USER_NAME);
+	}
+
 	private SecuredUserFormBean createUserFormBean(String userName, String fullName, Role role, String password){
 		return new SecuredUserFormBean(userName, fullName, Role.ADMIN.toString(), password);
 	}

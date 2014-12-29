@@ -80,9 +80,11 @@ public class UserController extends Controller {
 	@Dynamic(value = "ADMIN")
 	public Result delete(String userName) {
 		try {
-			service.delete(userName);
+			service.delete(session().get("userName"), userName);
 		} catch (NotFoundException e) {
 			return notFound();
+		}catch (IllegalArgumentException e) {
+			return badRequest();
 		}
 		return ok();
 	}

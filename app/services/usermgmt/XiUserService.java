@@ -1,13 +1,12 @@
 package services.usermgmt;
 
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.List;
-
-import formbeans.usermgmt.UserFormBean;
 import formbeans.usermgmt.SecuredUserFormBean;
+import formbeans.usermgmt.UserFormBean;
 import models.usermgmt.User;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class XiUserService implements UserService {
 
@@ -54,7 +53,11 @@ public class XiUserService implements UserService {
 	}
 
 	@Override
-	public void delete(String userName) throws NotFoundException {
+	public void delete(String currentUser, String userName) throws NotFoundException {
+		if(currentUser.equals(userName)){
+			throw new IllegalArgumentException("Can not be deleted current user.");
+		}
+
 		findUserByUserName(userName).delete();
 	}
 

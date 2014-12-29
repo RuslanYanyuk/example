@@ -2,15 +2,14 @@ package controllers.usermgmt;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
+import formbeans.usermgmt.SecuredUserFormBean;
+import models.usermgmt.Role;
+import models.usermgmt.User;
 import org.junit.Test;
 import org.mindrot.jbcrypt.BCrypt;
 import play.mvc.Result;
 import usermgmt.YAML;
 import views.usermgmt.AbstractUnitTest;
-import formbeans.usermgmt.SecuredUserFormBean;
-import models.usermgmt.Role;
-import models.usermgmt.User;
 
 import java.util.List;
 
@@ -225,6 +224,15 @@ public class UserControllerUnitTest extends AbstractUnitTest {
 		Result result = callAction(controllers.usermgmt.routes.ref.UserController.delete(""),
 				fakeRequest().withSession("userName", FIRST_USER_NAME));
 		checkResponse(result, UNAUTHORIZED);
+	}
+
+	@Test
+	public void delete_ReturnBadRequestWhenDeletingCurrentUser(){
+		YAML.GENERAL_USERS.load();
+
+		Result result = callAction(controllers.usermgmt.routes.ref.UserController.delete(ADMIN_USER_NAME),
+				fakeRequest().withSession("userName", ADMIN_USER_NAME));
+		checkResponse(result, BAD_REQUEST);
 	}
 	
 	private void checkResponse(Result result, int status){

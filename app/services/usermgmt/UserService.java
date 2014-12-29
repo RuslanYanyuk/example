@@ -15,6 +15,6 @@ public interface UserService {
 	
 	UserFormBean update(String userName, SecuredUserFormBean bean) throws AlreadyExistsException, NotFoundException;
 	
-	void delete(String userName) throws NotFoundException;
-	
+	void delete(String currentUser, String userName) throws NotFoundException;
+
 }

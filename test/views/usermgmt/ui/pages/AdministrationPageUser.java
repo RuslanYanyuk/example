@@ -31,9 +31,9 @@ public class AdministrationPageUser {
         return AdministrationPageDialog.getDialog(page);
     }
 
-    public void delete(){
+    public DeleteConfirmDialog delete(){
         getWebElement().findFirst(DELETE_BUTTON).click();
-        page.waitForNotPresent(USER_NAME_CONTAINER, userName);
+        return DeleteConfirmDialog.getDialog(page);
     }
 
     public boolean isPresent() {
@@ -46,6 +46,10 @@ public class AdministrationPageUser {
 
     public String getRole() {
         return getWebElement().find(ROLE_CONTAINER).getText();
+    }
+
+    public boolean isDeleteButtonDisplayed() {
+        return getWebElement().findFirst(DELETE_BUTTON).isDisplayed();
     }
 
 }

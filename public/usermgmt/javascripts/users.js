@@ -31,12 +31,19 @@ function usersModel(dialog) {
             }
         };
 
+    var wrapSelfUser = function(user){
+        if (user.userName == self.currentUser.userName) {
+            user.self = true;
+        }
+        return user;
+    }
+
     var getAll = function() {
         $.get("/users", function(data) {
             var usersFromServer = [];
             $.each(data, function(key, value) {
                 var user = new User(value.userName, value.fullName, value.role);
-                usersFromServer.push(user);
+                usersFromServer.push(wrapSelfUser(user));
             });
             self.users(usersFromServer);
         });
@@ -128,7 +135,9 @@ function usersModel(dialog) {
             data: JSON.stringify(formUser),
             success: function(data) {
                 var user = new User(data.userName, data.fullName, data.role);
-                self.users.replace(currentUser, user);
+                self.users.replace(currentUser, wrapSelfUser(user));
+
+                $("#logout span").text(user.fullName);
 
                 showDialogMessage(message.success, color.success);
                 setTimeout(function() {
@@ -179,12 +188,40 @@ function usersModel(dialog) {
     };
 
     self.remove = function(index, currentUser) {
-        var url = '/users/' + currentUser.userName;
-        $.ajax({
-            url: url,
-            type: 'DELETE'
-        }).always(function(){
-            self.users.remove(currentUser);
+        function removeUser(user){
+            var url = '/users/' + user.userName;
+            $.ajax({
+                url: url,
+                type: 'DELETE'
+            }).always(function(){
+                self.users.remove(user);
+            });
+        };
+        var $dialog = $('#dialog-confirm-delete');
+        $dialog.find(".user").text(currentUser.fullName);
+        var dialog = $dialog.dialog({
+            title: "Delete user",
+            modal: true,
+            resizable: false,
+            dialogClass: "confirm",
+            open: function(event, ui){
+                $(".ui-dialog.confirm button").blur();
+            },
+            buttons: [
+                {
+                    text: "Delete",
+                    click: function() {
+                        removeUser(currentUser);
+                        $(this).dialog( "close" );
+                    }
+                },
+                {
+                    text: "Cancel",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
         });
     };
 

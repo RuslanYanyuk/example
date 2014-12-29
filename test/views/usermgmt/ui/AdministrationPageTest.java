@@ -64,10 +64,37 @@ public class AdministrationPageTest extends AbstractUITest{
         int usersCount = usersPage.getUsersCount();
 
         AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
-        user.delete();
+
+        assertTrue(user.isDeleteButtonDisplayed());
+
+        user.delete().submit();
 
         assertFalse(user.isPresent());
         assertThat(usersPage.getUsersCount(), is(--usersCount));
+    }
+
+    @Test
+    public void adminCanRejectDeletingUser() {
+        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        int usersCount = usersPage.getUsersCount();
+
+        AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
+        user.delete().cancel();
+
+        assertTrue(user.isPresent());
+        assertThat(usersPage.getUsersCount(), is(usersCount));
+    }
+
+    @Test
+    public void adminCanNotDeleteYourself() {
+        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        int usersCount = usersPage.getUsersCount();
+
+        AdministrationPageUser user = usersPage.getUserByUserName(ADMIN_USER_NAME);
+        assertFalse(user.isDeleteButtonDisplayed());
+
+        assertTrue(user.isPresent());
+        assertThat(usersPage.getUsersCount(), is(usersCount));
     }
 
     @Test
@@ -187,12 +214,26 @@ public class AdministrationPageTest extends AbstractUITest{
     }
 
     @Test
+    public void adminCanEditItsFullNameAndItBeUpdatedOnLogoutPanel() {
+        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
+        AdministrationPageUser user = usersPage.getUserByUserName(ADMIN_USER_NAME);
+
+        assertThat(usersPage.getDescriptionFullName(), is(user.getFullName()));
+
+        AdministrationPageDialog dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, ADMIN_PASSWORD, Role.ADMIN);
+        dialog.save(SUCCESS_MESSAGE);
+
+        assertTrue(user.getFullName().equals(FIRST_USER_UPDATED_FULL_NAME));
+        assertThat(usersPage.getDescriptionFullName(), is(user.getFullName()));
+    }
+
+    @Test
     public void adminSeeErrorWhileEditingNotExistingUser() {
         UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
 
         AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
         AdministrationPageDialog dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, EMPTY_PARAMETER, Role.ADMIN);
-        user.delete();
+        user.delete().submit();
         dialog.save(USER_NOT_FOUND);
     }
 

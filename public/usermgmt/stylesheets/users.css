@@ -64,6 +64,10 @@ input[type="image"]:focus {
     height: 36px;
 }
 
+.buttons>input[type="image"].disabled {
+    display: none;
+}
+
 #add {
     position: fixed;
     top: 60px;
@@ -111,6 +115,10 @@ label {
     background: white;
 }
 
+#dialog-confirm-delete {
+    display: none;
+}
+
 #logout {
     position: fixed;
     top:8px;
@@ -139,6 +147,10 @@ div.ui-dialog-titlebar {
     text-align: center;
 }
 
+div.ui-dialog.confirm {
+    width: auto !important;
+}
+
 span.ui-icon.ui-icon-closethick {
     background-image: url("../images/close.png");
     background-position: center;
@@ -152,10 +164,12 @@ span.ui-button-text {
     font-weight: normal;
 }
 
-span.ui-button-text:hover {
-    background-color: aliceblue;
+.ui-widget-content .ui-state-focus,
+.ui-widget-content .ui-state-hover {
+    background: aliceblue;
 }
 
-button.ui-button:hover {
+button.ui-button.ui-state-focus,
+button.ui-button.ui-state-hover {
     border-color: darkgrey;
 }
