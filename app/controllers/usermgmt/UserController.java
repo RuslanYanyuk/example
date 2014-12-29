@@ -22,19 +22,19 @@ public class UserController extends Controller {
 	
 	private UserService service = new XiUserService();
 
-	@Dynamic(value = "ADMIN")
+	@Dynamic("ADMIN")
 	public Result getAdministration() {
 		Role[] roles = Role.values();
 		return ok(views.html.usermgmt.users.render(roles));
 	}
 
-	@Dynamic(value = "ADMIN")
+	@Dynamic("ADMIN")
 	public Result getAll() {
 		List<? extends UserFormBean> beans = service.getAll();
         return ok(Json.toJson(beans));
     }
 	
-	@Dynamic(value = "ADMIN")
+	@Dynamic("ADMIN")
 	public Result get(String userName) {
 		UserFormBean bean;
 		try {
@@ -45,7 +45,7 @@ public class UserController extends Controller {
         return ok(Json.toJson(bean));
     }
 
-	@Dynamic(value = "ADMIN")
+	@Dynamic("ADMIN")
 	public Result create() {
 		UserFormBean bean;
 		JsonNode node = request().body().asJson();
@@ -60,7 +60,7 @@ public class UserController extends Controller {
         return ok(Json.toJson(bean));
     }
 	
-	@Dynamic(value = "ADMIN")
+	@Dynamic("ADMIN")
 	public Result update(String userName) {
 		UserFormBean bean;
 		JsonNode node = request().body().asJson();
@@ -77,7 +77,7 @@ public class UserController extends Controller {
         return ok(Json.toJson(bean));
     }
 	
-	@Dynamic(value = "ADMIN")
+	@Dynamic("ADMIN")
 	public Result delete(String userName) {
 		try {
 			service.delete(session().get("userName"), userName);

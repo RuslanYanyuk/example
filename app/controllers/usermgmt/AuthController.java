@@ -30,7 +30,7 @@ public class AuthController extends Controller {
         return redirect(redirectUrl != null ? redirectUrl : INDEX_PAGE);
     }
 
-    @Dynamic(value = "ALL USERS")
+    @Dynamic("Logged in")
     public Result logoutForm() {
         return ok(logout.render());
     }
