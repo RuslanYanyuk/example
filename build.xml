@@ -1,6 +1,5 @@
 <project basedir="." default="deploy-to-stage" name="">
     <taskdef resource="net/sf/antcontrib/antlib.xml"/>
-
     <!--********************Run tests********************-->
 
     <target name="apply-remote-properties">
@@ -30,4 +29,24 @@
         </exec>
     </target>
 
+	<!--********************Run mainapp tests********************-->
+
+	<target name="publish-module" depends="list-params-tests">
+        <exec executable="${local.play.home}/play">
+            <arg value="clean-all"/>
+        </exec>
+        <exec executable="${local.play.home}/play" failonerror="true">
+            <arg value="publish-local"/>
+        </exec>
+	</target>
+    <target name="run-mainapp-tests" depends="publish-module">
+        <exec dir="test-mainapp" executable="${local.play.home}/play" failonerror="true">
+            <arg value="clean-all"/>
+        </exec>
+        <exec dir="test-mainapp" executable="bash" failonerror="true">
+            <arg value="-c"/>
+            <arg value="${local.play.home}/play ${no.formatted.output} test"/>
+        </exec>
+    </target>
+	
 </project>
