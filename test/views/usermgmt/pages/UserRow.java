@@ -2,9 +2,11 @@ package views.usermgmt.pages;
 
 import org.fluentlenium.core.domain.FluentWebElement;
 
+import commons.ui.pages.AbstractPage;
+
 import static org.fluentlenium.core.filter.FilterConstructor.withText;
 
-public class AdministrationPageUser {
+public class UserRow<P extends AbstractPage> {
 
     private static final String EDIT_BUTTON = "input[name=edit]";
     private static final String DELETE_BUTTON = "input[name=delete]";
@@ -13,11 +15,11 @@ public class AdministrationPageUser {
     static final String FULL_NAME_CONTAINER = "p span[name='fullName']";
     static final String ROLE_CONTAINER = "p span[name='role']";
 
-    private AdministrationPage page;
+    private P page;
 
     private String userName;
 
-    AdministrationPageUser(AdministrationPage page, String userName){
+    UserRow(P page, String userName){
         this.page = page;
         this.userName = userName;
     }
@@ -26,14 +28,14 @@ public class AdministrationPageUser {
         return page.getBrowser().findFirst(USER, withText().contains(userName));
     }
 
-    public AdministrationPageDialog edit(){
+    public UserCreateUpdateDialog<P> edit(){
         getWebElement().findFirst(EDIT_BUTTON).click();
-        return AdministrationPageDialog.getDialog(page);
+        return UserCreateUpdateDialog.getDialog(page);
     }
 
-    public DeleteConfirmDialog delete(){
+    public UserDeleteDialog<P> delete(){
         getWebElement().findFirst(DELETE_BUTTON).click();
-        return DeleteConfirmDialog.getDialog(page,userName);
+        return UserDeleteDialog.getDialog(page,userName);
     }
 
     public boolean isPresent() {

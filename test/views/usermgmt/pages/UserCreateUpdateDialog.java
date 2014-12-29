@@ -1,12 +1,15 @@
 package views.usermgmt.pages;
 
 import models.usermgmt.Role;
+
 import org.fluentlenium.core.Fluent;
 import org.fluentlenium.core.domain.FluentWebElement;
 
+import commons.ui.pages.AbstractPage;
+
 import static org.fluentlenium.core.filter.FilterConstructor.withText;
 
-public class AdministrationPageDialog {
+public class UserCreateUpdateDialog<P extends AbstractPage> {
 
     private static final String DIALOG_CONTAINER = ".ui-dialog";
 
@@ -25,28 +28,28 @@ public class AdministrationPageDialog {
     public static final String VALIDATION_MESSAGE = "User Name and Password are required";
     public static final String USER_NOT_FOUND = "User not found!";
 
-    private AdministrationPage page;
+    private P page;
 
     private FluentWebElement webElement;
 
-    private AdministrationPageDialog (AdministrationPage page, FluentWebElement webElement){
+    private UserCreateUpdateDialog (P page, FluentWebElement webElement){
         this.page = page;
         this.webElement = webElement;
     }
 
-    static AdministrationPageDialog getDialog(AdministrationPage page) {
+    static <P extends AbstractPage> UserCreateUpdateDialog<P> getDialog(P page) {
         FluentWebElement webElement = page.getBrowser().findFirst(DIALOG_CONTAINER);
-        AdministrationPageDialog dialog = new AdministrationPageDialog(page, webElement);
+        UserCreateUpdateDialog<P> dialog = new UserCreateUpdateDialog<P>(page, webElement);
         page.waitForDisplayed(DIALOG_CONTAINER);
         return dialog;
     }
 
-    public AdministrationPageDialog fillCreateDialog(String userName, String fullName, String password, Role role) {
+    public UserCreateUpdateDialog<P> fillCreateDialog(String userName, String fullName, String password, Role role) {
         page.getBrowser().fill(USER_NAME_FIELD).with(userName);
         return fillEditDialog(fullName, password, role);
     }
 
-    public AdministrationPageDialog fillEditDialog(String fullName, String password, Role role) {
+    public UserCreateUpdateDialog<P> fillEditDialog(String fullName, String password, Role role) {
         Fluent browser = page.getBrowser();
         browser.fill(FULL_NAME_FIELD).with(fullName);
         browser.fill(PASSWORD_FIELD).with(password);
@@ -54,13 +57,13 @@ public class AdministrationPageDialog {
         return this;
     }
 
-    public AdministrationPage save(String text) {
+    public P save(String text) {
         webElement.find(BUTTONS, withText(SAVE)).click();
         page.waitForElementHasText(MESSAGE_CONTAINER, text);
         return page;
     }
 
-    public AdministrationPage cancel() {
+    public P cancel() {
         webElement.find(BUTTONS, withText(CANCEL)).click();
         page.waitForElementHasText(DIALOG_CONTAINER, "");
         return page;

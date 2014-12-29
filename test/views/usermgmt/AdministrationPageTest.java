@@ -13,7 +13,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static usermgmt.Parameters.*;
-import static views.usermgmt.pages.AdministrationPageDialog.*;
+import static views.usermgmt.pages.UserCreateUpdateDialog.*;
 import static commons.ui.pages.PageStatus.*;
 
 public class AdministrationPageTest extends AbstractUITest{
@@ -27,20 +27,20 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void onlyAdminHasAccessToAdministrationPage() {
-        AdministrationPage usersPage = new AdministrationPage(getBrowser());
+        AdministrationPage page = new AdministrationPage(getBrowser());
 
         login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
         goTo(AdministrationPage.URL);
 
-        assertTrue(usersPage.isAt());
-        assertTrue(usersPage.checkStatus(UNAUTHORIZED));
+        assertTrue(page.isAt());
+        assertTrue(page.checkStatus(UNAUTHORIZED));
     }
 
     @Test
     public void adminCanOpenAdministrationPage() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
-        assertTrue(usersPage.isAt());
+        assertTrue(page.isAt());
     }
 
     @Test
@@ -53,134 +53,134 @@ public class AdministrationPageTest extends AbstractUITest{
 
     @Test
     public void adminCanSeeOwnFullName() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
-        assertThat(usersPage.getDescriptionFullName(), is(ADMIN_FULL_NAME));
+        assertThat(page.getDescriptionFullName(), is(ADMIN_FULL_NAME));
     }
 
     @Test
     public void adminCanDeleteUser() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
-        int usersCount = usersPage.getUsersCount();
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        int usersCount = page.getUsersCount();
 
-        AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
+        UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
 
         assertTrue(user.isDeleteButtonDisplayed());
 
         user.delete().submit();
 
         assertFalse(user.isPresent());
-        assertThat(usersPage.getUsersCount(), is(--usersCount));
+        assertThat(page.getUsersCount(), is(--usersCount));
     }
 
     @Test
     public void adminCanRejectDeletingUser() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
-        int usersCount = usersPage.getUsersCount();
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        int usersCount = page.getUsersCount();
 
-        AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
+        UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
         user.delete().cancel();
 
         assertTrue(user.isPresent());
-        assertThat(usersPage.getUsersCount(), is(usersCount));
+        assertThat(page.getUsersCount(), is(usersCount));
     }
 
     @Test
     public void adminCanNotDeleteYourself() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
-        int usersCount = usersPage.getUsersCount();
+    	AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        int usersCount = page.getUsersCount();
 
-        AdministrationPageUser user = usersPage.getUserByUserName(ADMIN_USER_NAME);
+        UserRow<AdministrationPage> user = page.getUserByUserName(ADMIN_USER_NAME);
         assertFalse(user.isDeleteButtonDisplayed());
 
         assertTrue(user.isPresent());
-        assertThat(usersPage.getUsersCount(), is(usersCount));
+        assertThat(page.getUsersCount(), is(usersCount));
     }
 
     @Test
     public void adminCanAddNewUser() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
-        int usersCount = usersPage.getUsersCount();
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        int usersCount = page.getUsersCount();
 
-        AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(NEW_USER_NAME, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
+        UserCreateUpdateDialog<AdministrationPage> dialog = page.addNewUser().fillCreateDialog(NEW_USER_NAME, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
         dialog.save(SUCCESS_MESSAGE);
 
-        assertThat(usersPage.getUsersCount(), is(++usersCount));
-        assertTrue(usersPage.getUserByUserName(NEW_USER_NAME).isPresent());
+        assertThat(page.getUsersCount(), is(++usersCount));
+        assertTrue(page.getUserByUserName(NEW_USER_NAME).isPresent());
     }
 
     @Test
     public void adminCanAddNewUserWithoutSettingDirectlyFullName() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
-        int usersCount = usersPage.getUsersCount();
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        int usersCount = page.getUsersCount();
 
-        AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(NEW_USER_NAME, EMPTY_PARAMETER, FIRST_USER_PASSWORD, Role.USER);
+        UserCreateUpdateDialog<AdministrationPage> dialog = page.addNewUser().fillCreateDialog(NEW_USER_NAME, EMPTY_PARAMETER, FIRST_USER_PASSWORD, Role.USER);
         dialog.save(SUCCESS_MESSAGE);
-        AdministrationPageUser user = usersPage.getUserByUserName(NEW_USER_NAME);
+        UserRow<AdministrationPage> user = page.getUserByUserName(NEW_USER_NAME);
 
-        assertThat(usersPage.getUsersCount(), is(++usersCount));
+        assertThat(page.getUsersCount(), is(++usersCount));
         assertTrue(user.isPresent());
         assertTrue(user.getFullName().equals(NEW_USER_NAME));
     }
 
     @Test
     public void adminCanNotAddNewUserWithExistingName() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
-        int usersCount = usersPage.getUsersCount();
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        int usersCount = page.getUsersCount();
 
-        AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(FIRST_USER_NAME, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
+        UserCreateUpdateDialog<AdministrationPage> dialog = page.addNewUser().fillCreateDialog(FIRST_USER_NAME, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
         dialog.save(ALREADY_EXIST_MESSAGE);
 
-        assertThat(usersPage.getUsersCount(), is(usersCount));
+        assertThat(page.getUsersCount(), is(usersCount));
     }
 
     @Test
     public void adminSeeValidationErrorIfNoPassword() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
-        AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(NEW_USER_NAME, NEW_USER_NAME, EMPTY_PARAMETER, Role.USER);
+        UserCreateUpdateDialog<AdministrationPage> dialog = page.addNewUser().fillCreateDialog(NEW_USER_NAME, NEW_USER_NAME, EMPTY_PARAMETER, Role.USER);
         dialog.save(VALIDATION_MESSAGE);
     }
 
     @Test
     public void adminSeeValidationErrorIfNoUserName() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
-        AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(EMPTY_PARAMETER, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
+        UserCreateUpdateDialog<AdministrationPage> dialog = page.addNewUser().fillCreateDialog(EMPTY_PARAMETER, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
         dialog.save(VALIDATION_MESSAGE);
     }
 
     @Test
     public void adminCanCloseDialogWithoutSavingUser() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
-        int usersCount = usersPage.getUsersCount();
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        int usersCount = page.getUsersCount();
 
-        AdministrationPageDialog dialog = usersPage.addNewUser().fillCreateDialog(NEW_USER_NAME, null, FIRST_USER_PASSWORD, Role.USER);
+        UserCreateUpdateDialog<AdministrationPage> dialog = page.addNewUser().fillCreateDialog(NEW_USER_NAME, null, FIRST_USER_PASSWORD, Role.USER);
         dialog.cancel();
 
-        assertThat(usersPage.getUsersCount(), is(usersCount));
-        assertFalse(usersPage.getUserByUserName(NEW_USER_NAME).isPresent());
+        assertThat(page.getUsersCount(), is(usersCount));
+        assertFalse(page.getUserByUserName(NEW_USER_NAME).isPresent());
     }
 
     @Test
     public void adminCanNotChangeUserNameWhileEditing() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
-        AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
+        UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
 
         assertTrue(user.edit().isUserNameFieldDisabled());
     }
 
     @Test
     public void adminCanEditUser() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
-        int usersCount = usersPage.getUsersCount();
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        int usersCount = page.getUsersCount();
 
-        AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
-        AdministrationPageDialog dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, FIRST_USER_UPDATED_PASSWORD, Role.ADMIN);
+        UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
+        UserCreateUpdateDialog<AdministrationPage> dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, FIRST_USER_UPDATED_PASSWORD, Role.ADMIN);
         dialog.save(SUCCESS_MESSAGE);
 
-        assertThat(usersPage.getUsersCount(), is(usersCount));
+        assertThat(page.getUsersCount(), is(usersCount));
         assertTrue(user.getFullName().equals(FIRST_USER_UPDATED_FULL_NAME));
         assertTrue(user.getRole().equals(Role.ADMIN.toString()));
 
@@ -189,19 +189,19 @@ public class AdministrationPageTest extends AbstractUITest{
         logoutPage.logout();
 
         loginAndLoad(FIRST_USER_NAME, FIRST_USER_UPDATED_PASSWORD, AdministrationPage.class);
-        assertTrue(usersPage.isAt());
+        assertTrue(page.isAt());
     }
 
     @Test
     public void adminCanEditUserWithoutPasswordChange() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
-        int usersCount = usersPage.getUsersCount();
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        int usersCount = page.getUsersCount();
 
-        AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
-        AdministrationPageDialog dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, EMPTY_PARAMETER, Role.ADMIN);
+        UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
+        UserCreateUpdateDialog<AdministrationPage> dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, EMPTY_PARAMETER, Role.ADMIN);
         dialog.save(SUCCESS_MESSAGE);
 
-        assertThat(usersPage.getUsersCount(), is(usersCount));
+        assertThat(page.getUsersCount(), is(usersCount));
         assertTrue(user.getFullName().equals(FIRST_USER_UPDATED_FULL_NAME));
         assertTrue(user.getRole().equals(Role.ADMIN.toString()));
 
@@ -210,29 +210,29 @@ public class AdministrationPageTest extends AbstractUITest{
         logoutPage.logout();
 
         loginAndLoad(FIRST_USER_NAME, FIRST_USER_PASSWORD, AdministrationPage.class);
-        assertTrue(usersPage.isAt());
+        assertTrue(page.isAt());
     }
 
     @Test
     public void adminCanEditItsFullNameAndItBeUpdatedOnLogoutPanel() {
-        UsersPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, UsersPage.class);
-        AdministrationPageUser user = usersPage.getUserByUserName(ADMIN_USER_NAME);
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        UserRow<AdministrationPage> user = page.getUserByUserName(ADMIN_USER_NAME);
 
-        assertThat(usersPage.getDescriptionFullName(), is(user.getFullName()));
+        assertThat(page.getDescriptionFullName(), is(user.getFullName()));
 
-        AdministrationPageDialog dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, ADMIN_PASSWORD, Role.ADMIN);
+        UserCreateUpdateDialog<AdministrationPage> dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, ADMIN_PASSWORD, Role.ADMIN);
         dialog.save(SUCCESS_MESSAGE);
 
         assertTrue(user.getFullName().equals(FIRST_USER_UPDATED_FULL_NAME));
-        assertThat(usersPage.getDescriptionFullName(), is(user.getFullName()));
+        assertThat(page.getDescriptionFullName(), is(user.getFullName()));
     }
 
     @Test
     public void adminSeeErrorWhileEditingNotExistingUser() {
-        AdministrationPage usersPage = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
-        AdministrationPageUser user = usersPage.getUserByUserName(FIRST_USER_NAME);
-        AdministrationPageDialog dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, EMPTY_PARAMETER, Role.ADMIN);
+        UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
+        UserCreateUpdateDialog<AdministrationPage> dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, EMPTY_PARAMETER, Role.ADMIN);
         user.delete().submit();
         dialog.save(USER_NOT_FOUND);
     }

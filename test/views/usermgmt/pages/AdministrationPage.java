@@ -3,8 +3,7 @@ package views.usermgmt.pages;
 import org.fluentlenium.core.Fluent;
 
 import commons.ui.pages.AbstractPage;
-
-import static views.usermgmt.pages.AdministrationPageUser.USER;
+import static views.usermgmt.pages.UserRow.USER;
 
 public class AdministrationPage extends AbstractPage{
 
@@ -22,13 +21,13 @@ public class AdministrationPage extends AbstractPage{
         return getBrowser().$(USER).size();
     }
 
-    public AdministrationPageUser getUserByUserName(String userName){
-        return new AdministrationPageUser(this, userName);
+    public UserRow<AdministrationPage> getUserByUserName(String userName){
+        return new UserRow<AdministrationPage>(this, userName);
     }
 
-    public AdministrationPageDialog addNewUser(){
+    public UserCreateUpdateDialog<AdministrationPage> addNewUser(){
         getBrowser().findFirst(CREATE_BUTTON).click();
-        return AdministrationPageDialog.getDialog(this);
+        return UserCreateUpdateDialog.getDialog(this);
     }
 
     public LoginPage logout() {//TODO implement
