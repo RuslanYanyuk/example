@@ -4,19 +4,29 @@ html, body {
     margin: 0;
 }
 
+body {
+    height: 100%;
+    overflow-y: hidden;
+}
+
 #users-container {
     position: relative;
     margin: 40px 50px;
     border: 10px solid #ccc;
-    padding: 40px 50px 10px;
+    padding: 40px 200px 10px 50px;
     height: calc(100% - 150px);
+    min-height: 215px;
+    min-width: 815px;
     text-align: left;
-    overflow-y: scroll;
     background: #fff;
     background-image: url("../images/Xi.png");
     background-size: 170px;
     background-repeat: no-repeat;
     background-position: calc(100% - 20px) calc(100% - 10px);
+}
+
+div.row {
+    position: relative;
 }
 
 p {
@@ -26,8 +36,9 @@ p {
 }
 
 .row p {
-    display: inline-block;
     border-bottom: 1px #000000 solid;
+    width: calc(100% - 80px);
+    margin-right: 80px;
 }
 
 #users-container span {
@@ -36,14 +47,18 @@ p {
     width: 30%;
     word-wrap: break-word;
 }
+.users {
+    height: calc(100% - 40px);
+    overflow-y: auto;
+}
 
 #title p{
-    position: fixed;
     background-color: white;
     margin: 0;
     top: 50px;
     line-height: 40px;
-    width: calc((100% - 240px)*0.75);
+    width: calc(100% - 80px);
+    padding-right: 80px;
 }
 
 #title span {
@@ -51,8 +66,11 @@ p {
 }
 
 .buttons {
-    width: 5%;
+    width: 80px;
     display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 input[type="image"]:focus {
@@ -69,9 +87,9 @@ input[type="image"]:focus {
 }
 
 #add {
-    position: fixed;
-    top: 60px;
-    right: 85px;
+    position: absolute;
+    top: 10px;
+    right: 25px;
     width: 60px;
     height: 60px;
 }
