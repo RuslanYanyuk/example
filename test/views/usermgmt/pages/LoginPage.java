@@ -40,11 +40,18 @@ public class LoginPage extends AbstractPage {
         return getBrowser().findFirst(SUCCESS).getText().equals(SUCCESS_TEXT);
     }
 
-    public void login(String userName, String password) {
-        load();
+    public boolean submitCredentials(String userName, String password){
+    	load();
         getBrowser().fill(USER_NAME_FIELD).with(userName);
         getBrowser().fill(PASSWORD_FIELD).with(password);
         getBrowser().submit(SUBMIT_BUTTON);
+        return !isAt();
+    }
+    
+    public void login(String userName, String password) {
+        if (!submitCredentials(userName, password)){
+        	throw new IllegalAccessError();
+        }
     }
 
 }

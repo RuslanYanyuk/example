@@ -7,6 +7,7 @@ import commons.ui.AbstractUITest;
 import usermgmt.YAML;
 import views.usermgmt.pages.*;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static usermgmt.Parameters.*;
 
 public class LoginPageTest extends AbstractUITest{
@@ -28,9 +29,11 @@ public class LoginPageTest extends AbstractUITest{
     @Test
     public void login_showMessageOnError() {
         LoginPage loginPage = new LoginPage(getBrowser());
-        loginPage.login(FIRST_USER_NAME, INCORRECT_PASSWORD);
+        boolean result = loginPage.submitCredentials(FIRST_USER_NAME, INCORRECT_PASSWORD);
 
+        assertFalse(result);
         assertTrue(loginPage.hasError());
+        
     }
 
     @Test
