@@ -1,19 +1,19 @@
 package views;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static usermgmt.Parameters.FIRST_USER_NAME;
+import static usermgmt.Parameters.FIRST_USER_PASSWORD;
+
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 import usermgmt.YAML;
 import views.pages.OpenIndexPage;
+import views.usermgmt.XiAbstractUITest;
 import views.usermgmt.pages.IndexPage;
 import views.usermgmt.pages.LoginPage;
-import commons.ui.AbstractUITest;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static usermgmt.Parameters.*;
 
-public class IndexPageTest extends AbstractUITest {
+public class IndexPageTest extends XiAbstractUITest {
 	
 	@Test
 	public void indexPageCanAccessLoginedUser(){

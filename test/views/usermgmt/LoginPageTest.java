@@ -1,16 +1,21 @@
 package views.usermgmt;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static usermgmt.Parameters.FIRST_USER_NAME;
+import static usermgmt.Parameters.FIRST_USER_PASSWORD;
+import static usermgmt.Parameters.INCORRECT_PASSWORD;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import commons.ui.AbstractUITest;
 import usermgmt.YAML;
-import views.usermgmt.pages.*;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static usermgmt.Parameters.*;
+import views.usermgmt.pages.AdministrationPage;
+import views.usermgmt.pages.IndexPage;
+import views.usermgmt.pages.LoginPage;
+import views.usermgmt.pages.LogoutPage;
 
-public class LoginPageTest extends AbstractUITest{
+public class LoginPageTest extends XiAbstractUITest{
 
     @Override
     @Before
