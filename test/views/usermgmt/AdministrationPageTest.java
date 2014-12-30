@@ -1,34 +1,18 @@
 package views.usermgmt;
 
-import static commons.ui.pages.PageStatus.UNAUTHORIZED;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static usermgmt.Parameters.ADMIN_FULL_NAME;
-import static usermgmt.Parameters.ADMIN_PASSWORD;
-import static usermgmt.Parameters.ADMIN_USER_NAME;
-import static usermgmt.Parameters.EMPTY_PARAMETER;
-import static usermgmt.Parameters.FIRST_USER_NAME;
-import static usermgmt.Parameters.FIRST_USER_PASSWORD;
-import static usermgmt.Parameters.FIRST_USER_UPDATED_FULL_NAME;
-import static usermgmt.Parameters.FIRST_USER_UPDATED_PASSWORD;
-import static usermgmt.Parameters.NEW_USER_NAME;
-import static views.usermgmt.pages.UserCreateUpdateDialog.ALREADY_EXIST_MESSAGE;
-import static views.usermgmt.pages.UserCreateUpdateDialog.SUCCESS_MESSAGE;
-import static views.usermgmt.pages.UserCreateUpdateDialog.USER_NOT_FOUND;
-import static views.usermgmt.pages.UserCreateUpdateDialog.VALIDATION_MESSAGE;
 import models.usermgmt.Role;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import usermgmt.YAML;
-import views.usermgmt.pages.AdministrationPage;
-import views.usermgmt.pages.LoginPage;
-import views.usermgmt.pages.LogoutPage;
-import views.usermgmt.pages.UserCreateUpdateDialog;
-import views.usermgmt.pages.UserRow;
+import views.usermgmt.pages.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static usermgmt.Parameters.*;
+import static views.usermgmt.pages.UserCreateUpdateDialog.*;
 
 public class AdministrationPageTest extends XiAbstractUITest{
 
@@ -47,7 +31,7 @@ public class AdministrationPageTest extends XiAbstractUITest{
         goTo(AdministrationPage.URL);
 
         assertTrue(page.isAt());
-        assertTrue(page.checkStatus(UNAUTHORIZED));
+        assertTrue(page.isForbidden());
     }
 
     @Test

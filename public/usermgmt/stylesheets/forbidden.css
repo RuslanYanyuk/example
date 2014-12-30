@@ -1,0 +1,10 @@
+#error-message {
+    height: 100%;
+    min-height: 520px;
+    font-size: 30px;
+    font-family: sans-serif;
+    text-align: center;
+    background-image: url("../images/Restricted-Area.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}

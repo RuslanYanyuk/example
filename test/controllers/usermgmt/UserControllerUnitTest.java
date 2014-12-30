@@ -6,7 +6,7 @@ import static play.mvc.Http.Status.BAD_REQUEST;
 import static play.mvc.Http.Status.INTERNAL_SERVER_ERROR;
 import static play.mvc.Http.Status.NOT_FOUND;
 import static play.mvc.Http.Status.OK;
-import static play.mvc.Http.Status.UNAUTHORIZED;
+import static play.mvc.Http.Status.FORBIDDEN;
 import static play.test.Helpers.callAction;
 import static play.test.Helpers.charset;
 import static play.test.Helpers.contentAsString;
@@ -54,12 +54,12 @@ public class UserControllerUnitTest extends AbstractUnitTest {
 	}
 
 	@Test
-	public void getAdministration_ReturnsUnauthorizedIfNoPermissions(){
+	public void getAdministration_ReturnsForbiddenIfNoPermissions(){
 		YAML.GENERAL_USERS.load();
 
 		Result result = callAction(controllers.usermgmt.routes.ref.UserController.getAdministration(),
 				fakeRequest().withSession("userName", FIRST_USER_NAME));
-		checkResponse(result, UNAUTHORIZED);
+		checkResponse(result, FORBIDDEN);
 	}
 
 	@Test
@@ -79,12 +79,12 @@ public class UserControllerUnitTest extends AbstractUnitTest {
 	}
 	
 	@Test
-	public void getAll_ReturnsUnauthorizedIfNoPermissions(){
+	public void getAll_ReturnsForbiddenIfNoPermissions(){
 		YAML.GENERAL_USERS.load();
 		
 		Result result = callAction(controllers.usermgmt.routes.ref.UserController.getAll(),
 				fakeRequest().withSession("userName", FIRST_USER_NAME));
-		checkResponse(result, UNAUTHORIZED);
+		checkResponse(result, FORBIDDEN);
 	}
 	
 	@Test
@@ -108,12 +108,12 @@ public class UserControllerUnitTest extends AbstractUnitTest {
 	}
 	
 	@Test
-	public void get_ReturnsUnauthorizedIfNoPermissions(){
+	public void get_ReturnsForbiddenIfNoPermissions(){
 		YAML.GENERAL_USERS.load();
 		
 		Result result = callAction(controllers.usermgmt.routes.ref.UserController.get(""),
 				fakeRequest().withSession("userName", FIRST_USER_NAME));
-		checkResponse(result, UNAUTHORIZED);
+		checkResponse(result, FORBIDDEN);
 	}
 
 	@Test
@@ -152,12 +152,12 @@ public class UserControllerUnitTest extends AbstractUnitTest {
 	}
 	
 	@Test
-	public void create_ReturnsUnauthorizedIfNoPermissions(){
+	public void create_ReturnsForbiddenIfNoPermissions(){
 		YAML.GENERAL_USERS.load();
 		
 		Result result = callAction(controllers.usermgmt.routes.ref.UserController.create(),
                 fakeRequest().withSession("userName", FIRST_USER_NAME));
-		checkResponse(result, UNAUTHORIZED);
+		checkResponse(result, FORBIDDEN);
 	}
 
 	@Test
@@ -207,12 +207,12 @@ public class UserControllerUnitTest extends AbstractUnitTest {
 	}
 	
 	@Test
-	public void update_ReturnsUnauthorizedIfNoPermissions(){
+	public void update_ReturnsForbiddenIfNoPermissions(){
 		YAML.GENERAL_USERS.load();
 		
 		Result result = callAction(controllers.usermgmt.routes.ref.UserController.update(""),
                 fakeRequest().withSession("userName", FIRST_USER_NAME));
-		checkResponse(result, UNAUTHORIZED);		
+		checkResponse(result, FORBIDDEN);
 	}
 	
 	@Test
@@ -238,12 +238,12 @@ public class UserControllerUnitTest extends AbstractUnitTest {
 	}
 	
 	@Test
-	public void delete_ReturnsUnauthorizedIfNoPermissions(){
+	public void delete_ReturnsForbiddenIfNoPermissions(){
 		YAML.GENERAL_USERS.load();
 		
 		Result result = callAction(controllers.usermgmt.routes.ref.UserController.delete(""),
 				fakeRequest().withSession("userName", FIRST_USER_NAME));
-		checkResponse(result, UNAUTHORIZED);
+		checkResponse(result, FORBIDDEN);
 	}
 
 	@Test

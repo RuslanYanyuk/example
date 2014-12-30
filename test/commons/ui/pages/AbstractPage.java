@@ -4,8 +4,6 @@ import org.fluentlenium.core.Fluent;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.fluentlenium.core.filter.FilterConstructor.withText;
-
 public abstract class AbstractPage {
 
     public static final int WAIT_TIME = 2;
@@ -55,10 +53,6 @@ public abstract class AbstractPage {
 
     public Fluent getBrowser(){
         return browser;
-    }
-
-    public boolean checkStatus (PageStatus status){
-        return getBrowser().$("body", withText(status.getContains())) != null;
     }
 
 }

@@ -10,6 +10,8 @@ import models.usermgmt.User;
 import be.objectify.deadbolt.java.AbstractDeadboltHandler;
 import be.objectify.deadbolt.java.DeadboltHandler;
 import be.objectify.deadbolt.java.DynamicResourceHandler;
+import play.mvc.Results;
+
 import static utils.usermgmt.Constants.*;
 
 public class AccessHandler extends AbstractDeadboltHandler implements DynamicResourceHandler {
@@ -79,5 +81,14 @@ public class AccessHandler extends AbstractDeadboltHandler implements DynamicRes
                 return redirect(controllers.usermgmt.routes.AuthController.loginForm());
             }
         });
+	}
+
+	@Override
+	public Promise<Result> onAuthFailure(Context context, String content) {
+		return Promise.promise(new F.Function0() {
+			public Result apply() throws Throwable {
+				return Results.forbidden(views.html.usermgmt.forbidden.render());
+			}
+		});
 	}
 }

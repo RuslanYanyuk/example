@@ -3,6 +3,8 @@ package views.usermgmt.pages;
 import org.fluentlenium.core.Fluent;
 
 import commons.ui.pages.AbstractPage;
+import static org.fluentlenium.core.filter.FilterConstructor.withText;
+
 import static views.usermgmt.pages.UserRow.USER;
 
 public class AdministrationPage extends AbstractPage{
@@ -12,6 +14,7 @@ public class AdministrationPage extends AbstractPage{
     private static final String CREATE_BUTTON = "#add";
     private static final String LOGOUT_BUTTON = "#logout input[name='logout']";
     private static final String FULL_NAME = "#logout span";
+    private static final String FORBIDDEN_MESSAGE = "Access denied";
 
     public AdministrationPage(Fluent browser) {
         super(browser, URL, USER);
@@ -40,4 +43,7 @@ public class AdministrationPage extends AbstractPage{
         return getBrowser().findFirst(FULL_NAME).getText();
     }
 
+    public boolean isForbidden (){
+        return !getBrowser().$("body", withText().contains(FORBIDDEN_MESSAGE)).isEmpty();
+    }
 }
