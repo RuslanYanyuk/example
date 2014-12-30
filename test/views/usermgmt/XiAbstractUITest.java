@@ -16,12 +16,10 @@ public abstract class XiAbstractUITest extends AbstractUITest {
         loginPage = new LoginPage(getBrowser());
     }
     
-    @Override
     protected void login(String userName, String password) {
         loginPage.login(userName, password);
     }
 
-    @Override
     protected <T extends AbstractPage> T loginAndLoad(String userName, String password, Class<T> redirectPageClass) {
         return loginPage.loginAndLoad(userName, password, redirectPageClass);
     }

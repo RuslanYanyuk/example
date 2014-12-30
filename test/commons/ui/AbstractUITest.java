@@ -15,8 +15,6 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import play.test.TestBrowser;
 import play.test.TestServer;
 
-import commons.ui.pages.AbstractPage;
-
 public abstract class AbstractUITest extends FluentTest {
 
 	private TestServer testServer;
@@ -41,8 +39,4 @@ public abstract class AbstractUITest extends FluentTest {
         return testBrowser(getDriver());
     }
     
-    protected abstract void login(String userName, String password);
-    
-    protected abstract <T extends AbstractPage> T loginAndLoad(String userName, String password, Class<T> redirectPageClass);
-	
 }
