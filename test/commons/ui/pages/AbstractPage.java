@@ -43,8 +43,8 @@ public abstract class AbstractPage {
         browser.await().atMost(WAIT_TIME, TIME_UNIT).until(element).areDisplayed();
     }
 
-    public void waitForNotPresent(String element, String text) {
-        browser.await().atMost(WAIT_TIME, TIME_UNIT).until(element).withText(text).isNotPresent();
+    public void waitForNotPresent(String element) {
+        browser.await().atMost(WAIT_TIME, TIME_UNIT).until(element).isNotPresent();
     }
 
     public void waitForElementHasText(String element, String text) {

@@ -1,6 +1,6 @@
 var users;
 
-function usersModel(dialog) {
+function usersModel() {
     var self = this;
     self.users = ko.observableArray();
 
@@ -49,7 +49,7 @@ function usersModel(dialog) {
         });
     };
 
-    var getFormUser = function() {
+    var getFormUser = function(dialog) {
         var inputs = dialog.find('form')[0].elements,
             user = new User(inputs['userName'].value, inputs['fullName'].value, $('option:selected').text());
 
@@ -62,33 +62,32 @@ function usersModel(dialog) {
     };
 
     var configureDialog = function(saveHandler, title, isUserNameDisabled, currentUser) {
-        var dialogForm = dialog,
-            form = dialogForm.find('form')[0];
-
-        dialogForm.dialog( "option", "title", title );
-        dialogForm.dialog( "option", "buttons",
-            [
-                {
-                    text: "Save",
-                    click: function() {
-                        saveHandler(currentUser);
-                    }
+        var dialog = $( "#dialog-form" ).dialog({
+            autoOpen: false,
+            height: 430,
+            width: 350,
+            modal: true,
+            resizable: false,
+            title: title,
+            buttons: {
+                "Save": function() {
+                    saveHandler(dialog, currentUser);
                 },
-                {
-                    text: "Cancel",
-                    click: function() {
-                        dialogForm.dialog( "close" );
-                    }
+                Cancel: function() {
+                  dialog.dialog( "destroy" );
                 }
-            ]
-        );
-
+              }
+        });
+        
         showDialogMessage(message.none, color.none, true);
+        
+        var form = dialog.find('form')[0];
         form.elements["userName"].disabled = isUserNameDisabled;
         form.elements["password"].onblur = null;
         form.reset();
 
-        dialogForm.dialog( "open" );
+        dialog.dialog( "open" );
+        return dialog;
     };
 
     var showDialogMessage = function(text, color, isImmediate) {
@@ -106,7 +105,7 @@ function usersModel(dialog) {
     };
 
     self.editDialog = function(currentUser) {//TODO:don't like it
-        configureDialog(update, "Edit user", true, currentUser);
+        var dialog = configureDialog(update, "Edit user", true, currentUser);
 
         var inputs = dialog.find('form')[0].elements;
         inputs['userName'].value = currentUser.userName;
@@ -121,9 +120,9 @@ function usersModel(dialog) {
         };
     };
 
-    var update = function(currentUser) {
+    var update = function(dialog, currentUser) {
         var url = '/users/' + currentUser.userName;
-        var formUser = getFormUser();
+        var formUser = getFormUser(dialog);
 
         if (formUser.password == 'd.e.f.a.u.l.t') {
             formUser.password = '';
@@ -141,7 +140,7 @@ function usersModel(dialog) {
 
                 showDialogMessage(message.success, color.success);
                 setTimeout(function() {
-                    dialog.dialog( "close" );
+                    dialog.dialog( "destroy" );
                 },1500);
             },
             error: function(error) {
@@ -156,8 +155,8 @@ function usersModel(dialog) {
         configureDialog(create, "Create new user", false);
     };
 
-    var create = function() {
-        var user = getFormUser();
+    var create = function(dialog) {
+        var user = getFormUser(dialog);
 
         if (validateCreation(user)) {
             $.ajax({
@@ -169,7 +168,7 @@ function usersModel(dialog) {
                     self.users.push(user);
                     showDialogMessage(message.success, color.success);
                     setTimeout(function () {
-                        dialog.dialog("close");
+                        dialog.dialog("destroy");
                     }, 1500);
                 },
                 error: function (error) {
@@ -202,7 +201,7 @@ function usersModel(dialog) {
             }).always(function(){
                 self.users.remove(user);
                 setTimeout(function () {
-                    dialog.dialog("close");
+                    dialog.dialog("destroy");
                 }, 1500);
             });
         };
@@ -230,7 +229,7 @@ function usersModel(dialog) {
                 {
                     text: "Cancel",
                     click: function () {
-                        $(this).dialog("close");
+                        $(this).dialog("destroy");
                     }
                 }
             ]
@@ -247,14 +246,6 @@ function usersModel(dialog) {
 };
 
 $(function() {
-    var dialog = $( "#dialog-form" ).dialog({
-        autoOpen: false,
-        height: 430,
-        width: 350,
-        modal: true,
-        resizable: false
-    });
-
-    users = new usersModel(dialog);
+    users = new usersModel();
     ko.applyBindings(users);
 });

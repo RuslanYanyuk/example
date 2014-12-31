@@ -35,11 +35,11 @@ public class UserRow<P extends AbstractPage> {
 
     public UserDeleteDialog<P> delete(){
         getWebElement().findFirst(DELETE_BUTTON).click();
-        return UserDeleteDialog.getDialog(page,userName);
+        return UserDeleteDialog.getDialog(page);
     }
 
     public boolean isPresent() {
-        return page.getBrowser().find(USER).find(USER_NAME_CONTAINER,  withText(userName)).size() > 0;
+        return !page.getBrowser().find(USER).find(USER_NAME_CONTAINER,  withText(userName)).isEmpty();
     }
 
     public String getFullName() {

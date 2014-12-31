@@ -33,7 +33,7 @@ public class AdministrationPage extends AbstractPage{
         return UserCreateUpdateDialog.getDialog(this);
     }
 
-    public LoginPage logout() {//TODO implement
+    public LoginPage logout() {
         Fluent browser = getBrowser();
         browser.findFirst(LOGOUT_BUTTON).click();
         return new LoginPage(browser);

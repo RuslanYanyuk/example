@@ -1,6 +1,7 @@
 package views.usermgmt;
 
 import models.usermgmt.Role;
+import models.usermgmt.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -65,12 +66,34 @@ public class AdministrationPageTest extends XiAbstractUITest{
 
         assertTrue(user.isDeleteButtonDisplayed());
 
-        user.delete().submit();
+        UserDeleteDialog<AdministrationPage> dialog = user.delete();
+        dialog.submit(SUCCESS_MESSAGE);
 
+        assertTrue(dialog.isNotPresent());
         assertFalse(user.isPresent());
         assertThat(page.getUsersCount(), is(--usersCount));
     }
 
+    @Test
+    public void adminSeeErrorIfDeletesAlreadyDeletedUser() {
+    	AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        int usersCount = page.getUsersCount();
+
+        UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
+
+        assertTrue(user.isDeleteButtonDisplayed());
+
+        UserDeleteDialog<AdministrationPage> dialog = user.delete();
+        
+        User.findUserByUserName(FIRST_USER_NAME).delete();
+        
+        dialog.submit(USER_NOT_FOUND);
+
+        assertTrue(dialog.isNotPresent());
+        assertFalse(user.isPresent());
+        assertThat(page.getUsersCount(), is(--usersCount));
+    }
+    
     @Test
     public void adminCanRejectDeletingUser() {
         AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
@@ -84,7 +107,7 @@ public class AdministrationPageTest extends XiAbstractUITest{
     }
 
     @Test
-    public void adminCanNotDeleteYourself() {
+    public void adminCanNotDeleteHimself() {
     	AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
         int usersCount = page.getUsersCount();
 
@@ -101,7 +124,7 @@ public class AdministrationPageTest extends XiAbstractUITest{
         int usersCount = page.getUsersCount();
 
         UserCreateUpdateDialog<AdministrationPage> dialog = page.addNewUser().fillCreateDialog(NEW_USER_NAME, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
-        dialog.save(SUCCESS_MESSAGE);
+        dialog.submit(SUCCESS_MESSAGE);
 
         assertThat(page.getUsersCount(), is(++usersCount));
         assertTrue(page.getUserByUserName(NEW_USER_NAME).isPresent());
@@ -113,7 +136,7 @@ public class AdministrationPageTest extends XiAbstractUITest{
         int usersCount = page.getUsersCount();
 
         UserCreateUpdateDialog<AdministrationPage> dialog = page.addNewUser().fillCreateDialog(NEW_USER_NAME, EMPTY_PARAMETER, FIRST_USER_PASSWORD, Role.USER);
-        dialog.save(SUCCESS_MESSAGE);
+        dialog.submit(SUCCESS_MESSAGE);
         UserRow<AdministrationPage> user = page.getUserByUserName(NEW_USER_NAME);
 
         assertThat(page.getUsersCount(), is(++usersCount));
@@ -127,7 +150,7 @@ public class AdministrationPageTest extends XiAbstractUITest{
         int usersCount = page.getUsersCount();
 
         UserCreateUpdateDialog<AdministrationPage> dialog = page.addNewUser().fillCreateDialog(FIRST_USER_NAME, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
-        dialog.save(ALREADY_EXIST_MESSAGE);
+        dialog.submit(ALREADY_EXIST_MESSAGE);
 
         assertThat(page.getUsersCount(), is(usersCount));
     }
@@ -137,7 +160,7 @@ public class AdministrationPageTest extends XiAbstractUITest{
         AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
         UserCreateUpdateDialog<AdministrationPage> dialog = page.addNewUser().fillCreateDialog(NEW_USER_NAME, NEW_USER_NAME, EMPTY_PARAMETER, Role.USER);
-        dialog.save(VALIDATION_MESSAGE);
+        dialog.submit(VALIDATION_MESSAGE);
     }
 
     @Test
@@ -145,7 +168,7 @@ public class AdministrationPageTest extends XiAbstractUITest{
         AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
         UserCreateUpdateDialog<AdministrationPage> dialog = page.addNewUser().fillCreateDialog(EMPTY_PARAMETER, NEW_USER_NAME, FIRST_USER_PASSWORD, Role.USER);
-        dialog.save(VALIDATION_MESSAGE);
+        dialog.submit(VALIDATION_MESSAGE);
     }
 
     @Test
@@ -176,7 +199,7 @@ public class AdministrationPageTest extends XiAbstractUITest{
 
         UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
         UserCreateUpdateDialog<AdministrationPage> dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, FIRST_USER_UPDATED_PASSWORD, Role.ADMIN);
-        dialog.save(SUCCESS_MESSAGE);
+        dialog.submit(SUCCESS_MESSAGE);
 
         assertThat(page.getUsersCount(), is(usersCount));
         assertTrue(user.getFullName().equals(FIRST_USER_UPDATED_FULL_NAME));
@@ -197,7 +220,7 @@ public class AdministrationPageTest extends XiAbstractUITest{
 
         UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
         UserCreateUpdateDialog<AdministrationPage> dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, EMPTY_PARAMETER, Role.ADMIN);
-        dialog.save(SUCCESS_MESSAGE);
+        dialog.submit(SUCCESS_MESSAGE);
 
         assertThat(page.getUsersCount(), is(usersCount));
         assertTrue(user.getFullName().equals(FIRST_USER_UPDATED_FULL_NAME));
@@ -219,7 +242,7 @@ public class AdministrationPageTest extends XiAbstractUITest{
         assertThat(page.getDescriptionFullName(), is(user.getFullName()));
 
         UserCreateUpdateDialog<AdministrationPage> dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, ADMIN_PASSWORD, Role.ADMIN);
-        dialog.save(SUCCESS_MESSAGE);
+        dialog.submit(SUCCESS_MESSAGE);
 
         assertTrue(user.getFullName().equals(FIRST_USER_UPDATED_FULL_NAME));
         assertThat(page.getDescriptionFullName(), is(user.getFullName()));
@@ -231,8 +254,10 @@ public class AdministrationPageTest extends XiAbstractUITest{
 
         UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
         UserCreateUpdateDialog<AdministrationPage> dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, EMPTY_PARAMETER, Role.ADMIN);
-        user.delete().submit();
-        dialog.save(USER_NOT_FOUND);
+        
+        User.findUserByUserName(FIRST_USER_NAME).delete();
+        
+        dialog.submit(USER_NOT_FOUND);
     }
 
 }
