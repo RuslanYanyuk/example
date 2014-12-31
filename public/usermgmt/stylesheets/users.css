@@ -94,14 +94,14 @@ input[type="image"]:focus {
     height: 60px;
 }
 
-#message span{
+.message span{
     color: #fff;
     font-size: 12px;
     text-align: center;
     display: block;
 }
 
-#message {
+.message {
     padding: 5px;
     height: 16px;
     margin-bottom: 10px;

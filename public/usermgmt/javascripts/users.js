@@ -36,7 +36,7 @@ function usersModel(dialog) {
             user.self = true;
         }
         return user;
-    }
+    };
 
     var getAll = function() {
         $.get("/users", function(data) {
@@ -92,7 +92,7 @@ function usersModel(dialog) {
     };
 
     var showDialogMessage = function(text, color, isImmediate) {
-        var message = $('#message'),
+        var message = $('.message'),
             textContainer = message.find('span'),
             colorTime = isImmediate ? 0 : 500,
             textTime = isImmediate ? 0 : 300;
@@ -192,19 +192,32 @@ function usersModel(dialog) {
             var url = '/users/' + user.userName;
             $.ajax({
                 url: url,
-                type: 'DELETE'
+                type: 'DELETE',
+                success: function (data) {
+                    showDialogMessage(message.success, color.success);
+                },
+                error: function (error) {
+                    showDialogMessage(message.getError(error.status), color.error);
+                }
             }).always(function(){
                 self.users.remove(user);
+                setTimeout(function () {
+                    dialog.dialog("close");
+                }, 1500);
             });
         };
+
         var $dialog = $('#dialog-confirm-delete');
         $dialog.find(".user").text(currentUser.fullName);
+
         var dialog = $dialog.dialog({
             title: "Delete user",
             modal: true,
             resizable: false,
+            height: 210,
             dialogClass: "confirm",
             open: function(event, ui){
+                showDialogMessage(message.none, color.none, true);
                 $(".ui-dialog.confirm button").blur();
             },
             buttons: [
@@ -212,7 +225,6 @@ function usersModel(dialog) {
                     text: "Delete",
                     click: function() {
                         removeUser(currentUser);
-                        $(this).dialog( "close" );
                     }
                 },
                 {
@@ -237,7 +249,7 @@ function usersModel(dialog) {
 $(function() {
     var dialog = $( "#dialog-form" ).dialog({
         autoOpen: false,
-        height: 420,
+        height: 430,
         width: 350,
         modal: true,
         resizable: false
