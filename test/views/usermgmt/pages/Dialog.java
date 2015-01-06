@@ -7,7 +7,7 @@ import commons.ui.pages.AbstractPage;
 public abstract class Dialog<P extends AbstractPage> {
 
 	private static final String DIALOG_CONTAINER = ".ui-dialog";
-	private static final String MESSAGE_CONTAINER = ".ui-dialog .message";
+	protected static final String MESSAGE_CONTAINER = ".ui-dialog .message";
 	
 	protected static final String BUTTONS = ".ui-dialog-buttonset button";
 	
