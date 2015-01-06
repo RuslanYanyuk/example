@@ -8,7 +8,7 @@ How to use the module
 
 * Add module dependency to ```build.sbt```:
 
-```"co.wds" % "usermgmt_2.11" % "1.0" classifier "assets"```
+```"co.wds" %% "usermgmt" % "1.0" classifier "assets"```
 
 * For downloading modules routes add to routes file the following line:
 
