@@ -136,7 +136,9 @@ function usersModel() {
                 var user = new User(data.userName, data.fullName, data.role);
                 self.users.replace(currentUser, wrapSelfUser(user));
 
-                $("#logout span").text(user.fullName);
+                if(user.userName == self.currentUser.userName){
+                    $("#logout span").text(user.fullName);
+                }
 
                 showDialogMessage(message.success, color.success);
                 setTimeout(function() {

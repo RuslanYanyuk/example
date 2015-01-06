@@ -265,6 +265,20 @@ public class AdministrationPageTest extends XiAbstractUITest{
     }
 
     @Test
+    public void onlyAdminFullNameBeUpdatedOnLogoutPanel() {
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
+
+        assertThat(page.getDescriptionFullName(), is(ADMIN_FULL_NAME));
+
+        UserCreateUpdateDialog<AdministrationPage> dialog = user.edit().fillEditDialog(FIRST_USER_UPDATED_FULL_NAME, ADMIN_PASSWORD, Role.ADMIN);
+        dialog.submit(SUCCESS_MESSAGE);
+
+        assertTrue(user.getFullName().equals(FIRST_USER_UPDATED_FULL_NAME));
+        assertThat(page.getDescriptionFullName(), is(ADMIN_FULL_NAME));
+    }
+
+    @Test
     public void adminSeeErrorWhileEditingNotExistingUser() {
         AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
