@@ -21,7 +21,7 @@ function usersModel() {
                         message = "User name already exist!";
                         break;
                     case 404:
-                        message = "User not found!";
+                        message = "User not found! Please refresh page!";
                         break;
                     default:
                         message = "Bad Request!";
@@ -194,15 +194,15 @@ function usersModel() {
                 type: 'DELETE',
                 success: function (data) {
                     showDialogMessage(message.success, color.success);
+                    self.users.remove(user);
+                    setTimeout(function () {
+                        dialog.dialog("destroy");
+                    }, 1500);
+
                 },
                 error: function (error) {
                     showDialogMessage(message.getError(error.status), color.error);
                 }
-            }).always(function(){
-                self.users.remove(user);
-                setTimeout(function () {
-                    dialog.dialog("destroy");
-                }, 1500);
             });
         };
 

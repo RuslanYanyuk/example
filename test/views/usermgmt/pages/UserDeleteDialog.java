@@ -24,14 +24,6 @@ public class UserDeleteDialog<P extends AbstractPage> extends Dialog<P> {
         return dialog;
     }
 
-    @Override
-    public P submit(String text) {
-        getSubmitButton().click();
-        page.waitForElementHasText(MESSAGE_CONTAINER, text);
-        page.waitForNotDisplayed(MESSAGE_CONTAINER);
-        return page;
-    }
-
 	@Override
 	protected FluentWebElement getSubmitButton() {
 		return webElement.findFirst(BUTTONS, withText(DELETE));

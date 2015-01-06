@@ -12,7 +12,7 @@ public abstract class Dialog<P extends AbstractPage> {
 	protected static final String BUTTONS = ".ui-dialog-buttonset button";
 	
 	public static final String SUCCESS_MESSAGE = "Completed successfully!";
-	public static final String USER_NOT_FOUND = "User not found!";
+	public static final String USER_NOT_FOUND = "User not found! Please refresh page!";
 	
 	protected final P page;
 	
@@ -39,10 +39,6 @@ public abstract class Dialog<P extends AbstractPage> {
         page.waitForNotPresent(DIALOG_CONTAINER);
         return page;
     }
-
-	public boolean isNotPresent() {
-		return page.getBrowser().find(DIALOG_CONTAINER).isEmpty();
-	}
 	
 	protected void waitForDisplayed(){
 		page.waitForDisplayed(DIALOG_CONTAINER);

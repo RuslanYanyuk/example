@@ -40,6 +40,7 @@ public class AdministrationPageTest extends XiAbstractUITest{
         AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
 
         assertTrue(page.isAt());
+        assertFalse(page.isForbidden());
     }
 
     @Test
@@ -69,7 +70,6 @@ public class AdministrationPageTest extends XiAbstractUITest{
         UserDeleteDialog<AdministrationPage> dialog = user.delete();
         dialog.submit(SUCCESS_MESSAGE);
 
-        assertTrue(dialog.isNotPresent());
         assertFalse(user.isPresent());
         assertThat(page.getUsersCount(), is(--usersCount));
     }
@@ -88,8 +88,24 @@ public class AdministrationPageTest extends XiAbstractUITest{
         User.findUserByUserName(FIRST_USER_NAME).delete();
         
         dialog.submit(USER_NOT_FOUND);
+    }
 
-        assertTrue(dialog.isNotPresent());
+    @Test
+    public void notExistedUserDeleteOnlyAfterReloadPage() {
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+        int usersCount = page.getUsersCount();
+
+        UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
+        UserDeleteDialog<AdministrationPage> dialog = user.delete();
+
+        User.findUserByUserName(FIRST_USER_NAME).delete();
+        dialog.submit(USER_NOT_FOUND);
+        dialog.cancel();
+
+        assertTrue(user.isPresent());
+
+        page.load();
+
         assertFalse(user.isPresent());
         assertThat(page.getUsersCount(), is(--usersCount));
     }

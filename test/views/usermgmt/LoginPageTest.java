@@ -2,9 +2,7 @@ package views.usermgmt;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static usermgmt.Parameters.FIRST_USER_NAME;
-import static usermgmt.Parameters.FIRST_USER_PASSWORD;
-import static usermgmt.Parameters.INCORRECT_PASSWORD;
+import static usermgmt.Parameters.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +40,7 @@ public class LoginPageTest extends XiAbstractUITest{
     }
 
     @Test
-    public void login_redirectsToRequestPage() {
+    public void login_redirectsToRequestPageEvenIfHasNotAccess() {
         LoginPage loginPage = new LoginPage(getBrowser());
         AdministrationPage usersPage = new AdministrationPage(getBrowser());
         
@@ -53,6 +51,7 @@ public class LoginPageTest extends XiAbstractUITest{
         loginPage.login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
 
         assertTrue(usersPage.isAt());
+        assertTrue(usersPage.isForbidden());
     }
     
     @Test
