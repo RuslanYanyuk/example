@@ -8,7 +8,7 @@ version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
-scalaVersion := "2.11.1"
+//scalaVersion := "2.11.1"
 
 packagedArtifacts in publishLocal := {
   val artifacts: Map[sbt.Artifact, java.io.File] = (packagedArtifacts in publishLocal).value

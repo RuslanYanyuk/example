@@ -8,11 +8,13 @@ How to use the module
 
 * Add module dependency to ```build.sbt```:
 
-```"co.wds" %% "usermgmt" % "1.0" classifier "assets"```
+```"co.wds" %% "usermgmt" % "1.0-SNAPSHOT"
 
 * For downloading modules routes add to routes file the following line:
 
 ```->     /        usermgmt.Routes```
+
+* Make sure you have a database named ```usermgmt```
 
 * In main application add empty file ```1.sql``` in evolution.usermgmt
 
