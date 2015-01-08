@@ -1,8 +1,9 @@
 package services.usermgmt;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+import ximodels.usermgmt.User;
 import formbeans.usermgmt.LoginFormBean;
-import models.usermgmt.User;
 
 public class XiAuthService implements AuthService {
 

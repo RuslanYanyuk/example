@@ -8,12 +8,11 @@ import org.junit.rules.ExpectedException;
 import org.mindrot.jbcrypt.BCrypt;
 
 import commons.AbstractUnitTest;
-
 import usermgmt.YAML;
+import ximodels.usermgmt.Role;
+import ximodels.usermgmt.User;
 import formbeans.usermgmt.SecuredUserFormBean;
 import formbeans.usermgmt.UserFormBean;
-import models.usermgmt.Role;
-import models.usermgmt.User;
 import static org.fest.assertions.Assertions.*;
 import static org.junit.Assert.assertTrue;
 import static usermgmt.Parameters.*;

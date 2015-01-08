@@ -1,11 +1,12 @@
 package controllers.usermgmt;
 
 import be.objectify.deadbolt.java.actions.Dynamic;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import formbeans.usermgmt.SecuredUserFormBean;
 import formbeans.usermgmt.UserFormBean;
-import models.usermgmt.Role;
 import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -14,6 +15,7 @@ import services.usermgmt.AlreadyExistsException;
 import services.usermgmt.NotFoundException;
 import services.usermgmt.UserService;
 import services.usermgmt.XiUserService;
+import ximodels.usermgmt.Role;
 
 import java.io.IOException;
 import java.util.List;

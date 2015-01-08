@@ -1,4 +1,4 @@
-package models.usermgmt;
+package ximodels.usermgmt;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

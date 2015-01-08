@@ -1,4 +1,4 @@
-package models.usermgmt;
+package ximodels.usermgmt;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

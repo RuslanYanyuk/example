@@ -5,13 +5,12 @@ import play.libs.F.Promise;
 import play.mvc.Http;
 import play.mvc.Http.Context;
 import play.mvc.Result;
-import models.usermgmt.Role;
-import models.usermgmt.User;
 import be.objectify.deadbolt.java.AbstractDeadboltHandler;
 import be.objectify.deadbolt.java.DeadboltHandler;
 import be.objectify.deadbolt.java.DynamicResourceHandler;
 import play.mvc.Results;
-
+import ximodels.usermgmt.Role;
+import ximodels.usermgmt.User;
 import static utils.usermgmt.Constants.*;
 
 public class AccessHandler extends AbstractDeadboltHandler implements DynamicResourceHandler {

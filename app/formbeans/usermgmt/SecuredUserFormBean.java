@@ -1,7 +1,8 @@
 package formbeans.usermgmt;
 
 import org.mindrot.jbcrypt.BCrypt;
-import models.usermgmt.User;
+
+import ximodels.usermgmt.User;
 
 public class SecuredUserFormBean extends UserFormBean {
 

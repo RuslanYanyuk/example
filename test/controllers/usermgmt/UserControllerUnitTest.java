@@ -23,19 +23,18 @@ import static usermgmt.Parameters.NOT_EXISTED_USER_NAME;
 
 import java.util.List;
 
-import models.usermgmt.Role;
-import models.usermgmt.User;
-
 import org.junit.Test;
 import org.mindrot.jbcrypt.BCrypt;
 
 import play.mvc.Result;
 import usermgmt.YAML;
+import ximodels.usermgmt.Role;
+import ximodels.usermgmt.User;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import commons.AbstractUnitTest;
 
+import commons.AbstractUnitTest;
 import formbeans.usermgmt.SecuredUserFormBean;
 
 public class UserControllerUnitTest extends AbstractUnitTest {

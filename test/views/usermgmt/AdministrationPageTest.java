@@ -1,13 +1,12 @@
 package views.usermgmt;
 
-import models.usermgmt.Role;
-import models.usermgmt.User;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import usermgmt.YAML;
 import views.usermgmt.pages.*;
+import ximodels.usermgmt.Role;
+import ximodels.usermgmt.User;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;

@@ -1,22 +1,22 @@
-- !!models.usermgmt.User
+- !!ximodels.usermgmt.User
   userName: user1Username
   fullName: user1Fullname
   passwordHash: $2a$10$JgOf9dAOI76N.GvUgWhfw.FJ6.E8VjWzBFSpptUaI0Q03yYenlfvG
   role: USER
   
-- !!models.usermgmt.User
+- !!ximodels.usermgmt.User
   userName: user2Username
   fullName: user2Fullname
   passwordHash: $2a$10$JgOf9dAOI76N.GvUgWhfw.FJ6.E8VjWzBFSpptUaI0Q03yYenlfvG
   role: USER
   
-- !!models.usermgmt.User
+- !!ximodels.usermgmt.User
   userName: user3Username
   fullName: user3Fullname
   passwordHash: $2a$10$JgOf9dAOI76N.GvUgWhfw.FJ6.E8VjWzBFSpptUaI0Q03yYenlfvG
   role: ADMIN
 
-- !!models.usermgmt.User
+- !!ximodels.usermgmt.User
   userName: Admin
   fullName: admin
   passwordHash: $2a$10$JgOf9dAOI76N.GvUgWhfw.FJ6.E8VjWzBFSpptUaI0Q03yYenlfvG

@@ -1,10 +1,9 @@
 package views.usermgmt.pages;
 
-import models.usermgmt.Role;
-
 import org.fluentlenium.core.Fluent;
 import org.fluentlenium.core.domain.FluentWebElement;
 
+import ximodels.usermgmt.Role;
 import commons.ui.pages.AbstractPage;
 import static org.fluentlenium.core.filter.FilterConstructor.withText;
 

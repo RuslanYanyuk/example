@@ -2,8 +2,10 @@ package services.usermgmt;
 
 import formbeans.usermgmt.SecuredUserFormBean;
 import formbeans.usermgmt.UserFormBean;
-import models.usermgmt.User;
+
 import org.apache.commons.lang3.StringUtils;
+
+import ximodels.usermgmt.User;
 
 import java.util.ArrayList;
 import java.util.List;

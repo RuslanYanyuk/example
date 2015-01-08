@@ -1,7 +1,7 @@
 package formbeans.usermgmt;
 
-import models.usermgmt.Role;
-import models.usermgmt.User;
+import ximodels.usermgmt.Role;
+import ximodels.usermgmt.User;
 
 public class UserFormBean implements FormBean<User> {
 
