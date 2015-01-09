@@ -17,6 +17,7 @@ public abstract class AbstractUnitTest {
 	public void setUp(){
 		fakeApplication = createFakeApplication();
 		start(fakeApplication);
+		clearDb();
 	}
 	
 	@After

@@ -1,5 +1,6 @@
 package commons.ui;
 
+import static commons.TestHelper.clearDb;
 import static commons.TestHelper.createFakeApplication;
 import static play.test.Helpers.start;
 import static play.test.Helpers.stop;
@@ -23,6 +24,7 @@ public abstract class AbstractUITest extends FluentTest {
     public void setUp() {
         testServer = testServer(3333, createFakeApplication());
         start(testServer);
+        clearDb();
     }
 
     @After
