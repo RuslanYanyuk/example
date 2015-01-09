@@ -1,12 +1,16 @@
 package commons.ui.pages;
 
-import org.fluentlenium.core.Fluent;
-
 import java.util.concurrent.TimeUnit;
+
+import org.fluentlenium.core.Fluent;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class AbstractPage {
 
-    public static final int WAIT_TIME = 2;
+    public static final int WAIT_TIME = 3;
     public static final TimeUnit TIME_UNIT = TimeUnit.SECONDS;
 
     private Fluent browser;
@@ -54,5 +58,16 @@ public abstract class AbstractPage {
     public Fluent getBrowser(){
         return browser;
     }
-
+    
+    public void waitUntilAjaxCompleted() {
+    	new WebDriverWait(browser.getDriver(), WAIT_TIME)
+    		.until(new ExpectedCondition<Boolean>(){
+    			
+			    public Boolean apply(WebDriver driver) {
+			        JavascriptExecutor js = (JavascriptExecutor) driver;
+			        return (Boolean)js.executeScript("return jQuery.active == 0");
+			    }
+			    
+			});
+    }
 }

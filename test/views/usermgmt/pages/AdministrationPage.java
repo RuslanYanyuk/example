@@ -21,6 +21,7 @@ public class AdministrationPage extends AbstractPage{
     }
 
     public int getUsersCount(){
+    	waitUntilAjaxCompleted();
         return getBrowser().$(USER).size();
     }
 
