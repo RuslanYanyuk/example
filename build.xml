@@ -25,7 +25,7 @@
         </exec>
         <exec executable="bash" failonerror="true">
             <arg value="-c"/>
-            <arg value="${local.play.home}/play ${no.formatted.output} error test"/>
+            <arg value="${local.play.home}/play ${no.formatted.output} test"/>
         </exec>
     </target>
 
@@ -36,7 +36,7 @@
             <arg value="clean-all"/>
         </exec>
         <exec executable="${local.play.home}/play" failonerror="true">
-            <arg value="error publish-local"/>
+            <arg value="publish-local"/>
         </exec>
 	</target>
     <target name="run-mainapp-tests" depends="publish-module">
@@ -45,7 +45,7 @@
         </exec>
         <exec dir="test-mainapp" executable="bash" failonerror="true">
             <arg value="-c"/>
-            <arg value="${local.play.home}/play ${no.formatted.output} error test"/>
+            <arg value="${local.play.home}/play ${no.formatted.output} test"/>
         </exec>
     </target>
 	
