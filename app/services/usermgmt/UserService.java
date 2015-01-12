@@ -13,8 +13,8 @@ public interface UserService {
 	
 	UserFormBean create(SecuredUserFormBean bean) throws AlreadyExistsException;
 	
-	UserFormBean update(String userName, SecuredUserFormBean bean) throws AlreadyExistsException, NotFoundException;
+	UserFormBean update(String userName, SecuredUserFormBean bean, boolean isCurrentUser) throws AlreadyExistsException, NotFoundException;
 	
-	void delete(String currentUser, String userName) throws NotFoundException;
+	void delete(String userName, boolean isCurrentUser) throws NotFoundException;
 
 }

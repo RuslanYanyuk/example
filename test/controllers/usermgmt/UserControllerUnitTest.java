@@ -13,13 +13,7 @@ import static play.test.Helpers.contentAsString;
 import static play.test.Helpers.contentType;
 import static play.test.Helpers.fakeRequest;
 import static play.test.Helpers.status;
-import static usermgmt.Parameters.ADMIN_USER_NAME;
-import static usermgmt.Parameters.FIRST_USER_FULLNAME;
-import static usermgmt.Parameters.FIRST_USER_NAME;
-import static usermgmt.Parameters.FIRST_USER_PASSWORD;
-import static usermgmt.Parameters.FIRST_USER_UPDATED_PASSWORD;
-import static usermgmt.Parameters.NEW_USER_NAME;
-import static usermgmt.Parameters.NOT_EXISTED_USER_NAME;
+import static usermgmt.Parameters.*;
 
 import java.util.List;
 
@@ -204,6 +198,19 @@ public class UserControllerUnitTest extends AbstractUnitTest {
 		User user = users.get(0);
 		checkUser(user, FIRST_USER_NAME, FIRST_USER_FULLNAME, Role.USER, FIRST_USER_PASSWORD);
 	}
+
+    @Test
+    public void update_ReturnsInternalServerErrorIfCurrentUserRoleWasChanged(){
+        YAML.GENERAL_USERS.load();
+
+        JsonNode node = createUserJsonNode(ADMIN_USER_NAME, ADMIN_FULL_NAME, Role.USER, ADMIN_PASSWORD);
+        Result result = callAction(controllers.usermgmt.routes.ref.UserController.update(ADMIN_USER_NAME),
+                fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
+        checkResponse(result, INTERNAL_SERVER_ERROR);
+        User user = User.findUserByUserName(ADMIN_USER_NAME);
+
+        assertTrue(user.role == Role.ADMIN);
+    }
 	
 	@Test
 	public void update_ReturnsForbiddenIfNoPermissions(){

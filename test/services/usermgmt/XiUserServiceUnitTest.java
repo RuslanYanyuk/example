@@ -89,14 +89,15 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 	}
 	
 	@Test
-	public void create_DoesNothingIfUserNameAlreadyExists() {
+	public void create_DoesNothingIfUserNameAlreadyExists() throws AlreadyExistsException {
 		YAML.GENERAL_USERS.load();
-		
+
+        exception.expect(AlreadyExistsException.class);
+        exception.expectMessage(String.format("User name %s already exist.", ADMIN_USER_NAME));
+
 		SecuredUserFormBean bean = createUserFormBean(ADMIN_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
-		try {
-			service.create(bean);
-		} catch (AlreadyExistsException e) {
-		}
+		service.create(bean);
+
 		assertThat(User.find.all().size()).isEqualTo(4);
 	}
 
@@ -108,15 +109,26 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 		exception.expectMessage("User name can not be changed.");
 
 		SecuredUserFormBean bean = createUserFormBean(FIRST_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
-		service.update(FIRST_USER_UPDATED_USER_NAME, bean);
+		service.update(FIRST_USER_UPDATED_USER_NAME, bean, false);
 	}
+
+	@Test
+    public void update_ThrowsExceptionIfCurrentUserRoleWasUpdated() throws NotFoundException, AlreadyExistsException {
+        YAML.GENERAL_USERS.load();
+
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("Current user role can not be changed.");
+
+        SecuredUserFormBean bean = createUserFormBean(ADMIN_USER_NAME, ADMIN_FULL_NAME, Role.USER, ADMIN_PASSWORD);
+        service.update(ADMIN_USER_NAME, bean, true);
+    }
 	
 	@Test
 	public void update_UpdatesExistedUserWithUpdatingPassword() throws NotFoundException, AlreadyExistsException {
 		YAML.GENERAL_USERS.load();
 		
 		SecuredUserFormBean bean = createUserFormBean(FIRST_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
-		service.update(FIRST_USER_NAME, bean);
+		service.update(FIRST_USER_NAME, bean, false);
 		List<User> users = User.find.all();
 		checkBean(bean, users.get(0));
 	}
@@ -127,7 +139,7 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 		String initialPassword = User.find.all().get(0).passwordHash;
 
 		SecuredUserFormBean bean = createUserFormBean(FIRST_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, EMPTY_PARAMETER);
-		service.update(FIRST_USER_NAME, bean);
+		service.update(FIRST_USER_NAME, bean, false);
 
 		User user = User.find.all().get(0);
 		checkBean(bean, user.userName, user.fullName, user.role);
@@ -140,7 +152,7 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 		YAML.GENERAL_USERS.load();
 		
 		SecuredUserFormBean bean = createUserFormBean(NOT_EXISTED_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
-		service.update(NOT_EXISTED_USER_NAME, bean);
+		service.update(NOT_EXISTED_USER_NAME, bean, false);
 	}
 
 	@Test
@@ -151,7 +163,7 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 		assertThat(users.size()).isEqualTo(4);
 		User firstUser = User.find.where().eq("userName", FIRST_USER_NAME).findUnique();
 		assertThat(firstUser).isNotNull();
-		service.delete(ADMIN_USER_NAME, FIRST_USER_NAME);
+		service.delete(FIRST_USER_NAME, false);
 		users = User.find.all();
 		assertThat(users.size()).isEqualTo(3);
 		firstUser = User.find.where().eq("userName", FIRST_USER_NAME).findUnique();
@@ -162,7 +174,7 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 	public void delete_ThrowsExceptionUnlessUserNameFound() throws NotFoundException {
 		YAML.GENERAL_USERS.load();
 		
-		service.delete(ADMIN_USER_NAME, NOT_EXISTED_USER_NAME);
+		service.delete(NOT_EXISTED_USER_NAME, false);
 	}
 
 	@Test
@@ -172,11 +184,11 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 		exception.expect(IllegalArgumentException.class);
 		exception.expectMessage("Can not be deleted current user.");
 
-		service.delete(ADMIN_USER_NAME, ADMIN_USER_NAME);
+		service.delete(ADMIN_USER_NAME, true);
 	}
 
 	private SecuredUserFormBean createUserFormBean(String userName, String fullName, Role role, String password){
-		return new SecuredUserFormBean(userName, fullName, Role.ADMIN.toString(), password);
+		return new SecuredUserFormBean(userName, fullName, role.toString(), password);
 	}
 	
 	private void checkBean(SecuredUserFormBean bean, User user){

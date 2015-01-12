@@ -70,7 +70,7 @@ public class UserController extends Controller {
 			return badRequest();
 		}
 		try {
-			bean = service.update(userName, getFormBeanFromRequest(node));
+			bean = service.update(userName, getFormBeanFromRequest(node), isCurrentUser(userName));
 		} catch (NotFoundException e) {
 			return notFound();
 		} catch (AlreadyExistsException | IllegalArgumentException e) {
@@ -82,7 +82,7 @@ public class UserController extends Controller {
 	@Dynamic("ADMIN")
 	public Result delete(String userName) {
 		try {
-			service.delete(session().get("userName"), userName);
+			service.delete(userName, isCurrentUser(userName));
 		} catch (NotFoundException e) {
 			return notFound();
 		}catch (IllegalArgumentException e) {
@@ -102,5 +102,8 @@ public class UserController extends Controller {
         }
         return result;
 	}
-    
+
+    private boolean isCurrentUser(String name) {
+        return session().get("userName").equals(name);
+    }
 }

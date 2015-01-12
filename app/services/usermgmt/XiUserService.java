@@ -38,11 +38,16 @@ public class XiUserService implements UserService {
 	}
 
 	@Override
-	public UserFormBean update(String userName, SecuredUserFormBean bean) throws NotFoundException, AlreadyExistsException {
+	public UserFormBean update(String userName, SecuredUserFormBean bean, boolean isCurrentUser) throws NotFoundException, AlreadyExistsException {
 		if (!userName.equals(bean.userName)){
 			throw new IllegalArgumentException("User name can not be changed.");
 		}
 		User user = findUserByUserName(userName);
+
+        if (isCurrentUser && !user.role.toString().equals(bean.role)) {
+            throw new IllegalArgumentException("Current user role can not be changed.");
+        }
+
 		String passwordHash = user.passwordHash;
 		bean.populateModelWithData(user);
 //TODO : refactor password validation
@@ -55,8 +60,8 @@ public class XiUserService implements UserService {
 	}
 
 	@Override
-	public void delete(String currentUser, String userName) throws NotFoundException {
-		if(currentUser.equals(userName)){
+	public void delete(String userName, boolean isCurrentUser) throws NotFoundException {
+		if(isCurrentUser){
 			throw new IllegalArgumentException("Can not be deleted current user.");
 		}
 

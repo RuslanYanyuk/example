@@ -208,6 +208,15 @@ public class AdministrationPageTest extends XiAbstractUITest{
     }
 
     @Test
+    public void adminCanNotChangeOwnRoleWhileEditing() {
+        AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
+
+        UserRow<AdministrationPage> user = page.getUserByUserName(ADMIN_USER_NAME);
+
+        assertTrue(user.edit().isRoleFieldDisabled());
+    }
+
+    @Test
     public void adminCanEditUser() {
         AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
         int usersCount = page.getUsersCount();

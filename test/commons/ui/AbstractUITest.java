@@ -40,5 +40,5 @@ public abstract class AbstractUITest extends FluentTest {
     public TestBrowser getBrowser() {
         return testBrowser(getDriver());
     }
-    
+
 }

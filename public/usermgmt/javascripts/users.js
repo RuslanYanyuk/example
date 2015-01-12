@@ -83,6 +83,7 @@ function usersModel() {
         
         var form = dialog.find('form')[0];
         form.elements["userName"].disabled = isUserNameDisabled;
+        form.elements["role"].disabled = currentUser && currentUser.self;
         form.elements["password"].onblur = null;
         form.reset();
 

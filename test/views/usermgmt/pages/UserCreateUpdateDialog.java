@@ -12,8 +12,9 @@ public class UserCreateUpdateDialog<P extends AbstractPage> extends Dialog<P> {
     private static final String USER_NAME_FIELD = "input[name=userName]";
     private static final String FULL_NAME_FIELD = "input[name=fullName]";
     private static final String PASSWORD_FIELD = "input[name=password]";
-    private static final String ROLE_FIELD = "select option";
-    
+    private static final String ROLE_FIELD = "select";
+    private static final String ROLE_OPTION = "select option";
+
     private static final String SAVE = "Save";
     private static final String CANCEL = "Cancel";
     
@@ -43,12 +44,16 @@ public class UserCreateUpdateDialog<P extends AbstractPage> extends Dialog<P> {
         Fluent browser = page.getBrowser();
         browser.fill(FULL_NAME_FIELD).with(fullName);
         browser.fill(PASSWORD_FIELD).with(password);
-        webElement.find(ROLE_FIELD, withText(role.name())).click();
+        webElement.find(ROLE_OPTION, withText(role.name())).click();
         return this;
     }
 
     public boolean isUserNameFieldDisabled() {
         return webElement.find(USER_NAME_FIELD).getAttribute("disabled").equals("true");
+    }
+
+    public boolean isRoleFieldDisabled() {
+        return webElement.find(ROLE_FIELD).getAttribute("disabled").equals("true");
     }
     
 	@Override
