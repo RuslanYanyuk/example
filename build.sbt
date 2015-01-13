@@ -17,6 +17,12 @@ packagedArtifacts in publishLocal := {
 
 publishTo := Some("WDS Xi Snapshots" at "s3://xi-repository/snapshot")
 
+packagedArtifacts in publish := {
+  val artifacts: Map[sbt.Artifact, java.io.File] = (packagedArtifacts in publish).value
+  val assets: java.io.File = (playPackageAssets in Compile).value
+  artifacts + (Artifact(moduleName.value, "jar", "jar", "assets") -> assets)
+}
+
 
 // enable publishing the jar produced by `test:package`
 publishArtifact in (Test, packageBin) := true
