@@ -14,6 +14,10 @@ packagedArtifacts in publishLocal := {
   artifacts + (Artifact(moduleName.value, "jar", "jar", "assets") -> assets)
 }
 
+
+publishTo := Some("WDS Xi Snapshots" at "s3://xi-repository/snapshot")
+
+
 // enable publishing the jar produced by `test:package`
 publishArtifact in (Test, packageBin) := true
 
