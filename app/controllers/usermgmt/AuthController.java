@@ -5,6 +5,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import formbeans.usermgmt.LoginFormBean;
+import static utils.usermgmt.OptionalHtmlLoader.*;
 import views.html.usermgmt.login;
 import views.html.usermgmt.logout;
 import static play.data.Form.form;
@@ -16,13 +17,13 @@ public class AuthController extends Controller {
     	if (session().get("userName") != null){
     		return redirect(INDEX_PAGE);
     	}
-    	return ok(login.render(form(LoginFormBean.class)));  
+    	return ok(login.render(form(LoginFormBean.class), LOGIN_HTML.get()));
     }
 
     public Result login() {
         Form<LoginFormBean> loginForm = form(LoginFormBean.class).bindFromRequest();
         if (loginForm.hasErrors()) {
-            return badRequest(login.render(loginForm));
+            return badRequest(login.render(loginForm, LOGIN_HTML.get()));
         }
         String redirectUrl = session().get("redirect");
         session().clear();
