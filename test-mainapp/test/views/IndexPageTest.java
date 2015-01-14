@@ -22,7 +22,7 @@ public class IndexPageTest extends XiAbstractUITest {
 		IndexPage indexPage = new IndexPage(getBrowser());
 		LoginPage loginPage = new LoginPage(getBrowser()); 
 		
-		goTo(IndexPage.URL);
+		indexPage.goTo();
 		assertTrue(loginPage.isAt());
 		
 		loginPage.login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
@@ -30,9 +30,10 @@ public class IndexPageTest extends XiAbstractUITest {
 	}
 	
 	@Test
-	public void indexPageCannotAccessNotLoginedUser(){				
-		goTo(IndexPage.URL);
-		assertFalse(new IndexPage(getBrowser()).isAt());
+	public void indexPageCannotAccessNotLoginedUser(){
+        IndexPage indexPage = new IndexPage(getBrowser());
+        indexPage.goTo();
+		assertFalse(indexPage.isAt());
 	}
 	
 	@Test
