@@ -2,40 +2,34 @@
 
 @import controllers.usermgmt._
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <head>
-        <title>Login</title>
-		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
-    </head>
-    <body>
-        @Html(content)
-       <div id="login-form">
-	    @helper.form(controllers.usermgmt.routes.AuthController.login) {
-	
-			@if(form.hasGlobalErrors) {
-				<p class="error">
-					@form.globalError.message
-				</p>
-			}
+@views.html.usermgmt.main("Login") {
+	<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
+	@Html(content)
+	<div id="login-form">
+		@if(form.hasGlobalErrors) {
+			<p class="error">
+				@form.globalError.message
+			</p>
+		}
 
-			@if(flash.contains("success")) {
-				<p class="success">
-					@flash.get("success")
-				</p>
-	    	}
+		@if(flash.contains("success")) {
+			<p class="success">
+				@flash.get("success")
+			</p>
+		}
 
-	        <p>
-	            <label for="userName">Username:</label>
-	            <input type="text" name="userName" id="userName" value="">
-	        </p>
-	        <p>
-	            <label for="password">Password:</label>
-	            <input type="password" name="password" id="password" value="">
-	        </p>
-	        <p>
-	            <input type="submit" id="signin" value="Sign in">
-	        </p>
-	    }
-		</div>
-    </body>
-</html>
+		@helper.form(controllers.usermgmt.routes.AuthController.login) {
+			<p>
+				<label for="userName">Username:</label>
+				<input type="text" name="userName" id="userName" value="">
+			</p>
+			<p>
+				<label for="password">Password:</label>
+				<input type="password" name="password" id="password" value="">
+			</p>
+			<p>
+				<input type="submit" id="signin" value="Sign in">
+			</p>
+		}
+	</div>
+}

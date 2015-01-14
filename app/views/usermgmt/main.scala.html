@@ -1,0 +1,27 @@
+@(title: String)(content: Html)
+
+@import controllers.usermgmt._
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>@title</title>
+		<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/banner.css")">
+    </head>
+    <body>
+		<div>
+			<div id="logo-banner">
+				<span>Mind-meld</span>
+			</div>
+			<div id="header-banner">
+				<h2>@title</h2>
+			</div>
+		</div>
+
+       	@content
+
+		<div id="footer">
+			<h3>© WDS, A Xerox Company 1996-2015</h3>
+		</div>
+    </body>
+</html>

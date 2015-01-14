@@ -1,8 +1,3 @@
-html, body {
-    background: #F0F0F0;
-    font-family: 'Lucida grande', verdana, sans-serif;
-}
-
 #logout {
     width: 500px;
     margin: 50px auto;
@@ -10,25 +5,24 @@ html, body {
 }
 
 #logout form {
-    border: 10px solid #ccc;
-    background: #fff;
-    padding: 10px;
-    text-align: left;
-}
-
-#logout form p {
-    margin: 3px 0px;
-    text-align: center;
-    color: #333;
-    font-size: 15px;
-}
-
-#logout form div {
-    width: 60%;
-    margin: auto;
+    background-color: #F9FAFA;
+    border: 1px solid rgba(214, 219, 223, 0.8);
+    margin: 0px auto;
+    width: 380px;
+    margin-top: 80px;
 }
 
 input[type=button], input[type=submit] {
-    width: 47%;
-    margin: 1%;
+    background-color: #ff8200;
+    outline: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 6px 12px;
+    margin: 10px 0;
+    width: 130px;
+}
+
+#logout input + input {
+    margin-left: 15px;
 }

@@ -1,56 +1,59 @@
-html, body {
-    background: #F0F0F0;
-    font-family: 'Lucida grande', verdana, sans-serif;
+form {
+    margin-bottom: 0;
+    margin-top: 15px;
 }
 
 #login-form {
-    width: 500px;
-    margin: 50px auto;
-    text-align: center;
+    background-color: #F9FAFA;
+    border: 1px solid rgba(214, 219, 223, 0.8);
+    margin: 0px auto;
+    width: 380px;
+    margin-top: 80px;
 }
 
-#login-form form {
-    border: 10px solid #ccc;
-    background: #fff;
-    padding: 10px;
-    text-align: left;
-}
-
-#login-form form p {
-    margin: 3px;
+#login-form p {
+    margin: 6px 20px 6px 6px;
+    text-align: right;
 }
 
 label {
-    display: block;
-    width: 150px;
-    float: left;
     text-align: right;
     margin-right: 5px;
-    color: #333;
-    font-size: 15px;
+    padding-top: 5px;
 }
 
-input[type=text], input[type=password] {
-    width: 200px;
-    font-size: 13px;
+input {
+    margin: 0;
+    border: 1px solid #d6dbdf;
+    width: 250px;
+    padding: 8px 4px;
+    height: 30px;
+    outline: none;
 }
 
-input[type=submit] {
-    margin-left: 155px;
+#signin {
+    width: inherit;
+    outline: none;
+    background-color: #ff8200;
+    cursor: pointer;
+    padding: 6px 12px;
+    border: none;
+    color: white;
+    margin: 10px 0;
 }
 
-.error, .success  {
-    color: #fff;
+#login-form .error, #login-form .success  {
+    color: white;
     font-size: 12px;
     text-align: center;
-    margin-bottom: 10px;
     padding: 5px;
+    margin-right: 6px;
 }
 
 .error {
-    background: #c00;
+    background-color: #FF8200
 }
 
 .success {
-    background: #008800;
+    background: #71B471;
 }
