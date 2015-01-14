@@ -42,16 +42,16 @@ public class LoginPageTest extends XiAbstractUITest{
     @Test
     public void login_redirectsToRequestPageEvenIfHasNotAccess() {
         LoginPage loginPage = new LoginPage(getBrowser());
-        AdministrationPage usersPage = new AdministrationPage(getBrowser());
+        AdministrationPage administrationPage = new AdministrationPage(getBrowser());
         
-        goTo(AdministrationPage.URL);
+        administrationPage.goTo();
         
         assertTrue(loginPage.isAt());
 
         loginPage.login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
 
-        assertTrue(usersPage.isAt());
-        assertTrue(usersPage.isForbidden());
+        assertTrue(administrationPage.isAt());
+        assertTrue(administrationPage.isForbidden());
     }
     
     @Test
@@ -59,7 +59,7 @@ public class LoginPageTest extends XiAbstractUITest{
         LoginPage loginPage = new LoginPage(getBrowser());
         IndexPage indexPage = new IndexPage(getBrowser());
 
-        goTo(LogoutPage.URL);
+        new LogoutPage(getBrowser()).goTo();
         
         assertTrue(loginPage.isAt());
 
@@ -77,7 +77,7 @@ public class LoginPageTest extends XiAbstractUITest{
         loginPage.login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
         assertTrue(indexPage.isAt());
         
-        goTo(LoginPage.URL);
+        loginPage.goTo();
         assertTrue(indexPage.isAt());
     }
 

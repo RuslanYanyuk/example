@@ -8,11 +8,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import commons.ui.AbstractUITest;
+
 public abstract class AbstractPage {
 
     public static final int WAIT_TIME = 3;
     public static final TimeUnit TIME_UNIT = TimeUnit.SECONDS;
-
+    
     private Fluent browser;
 
     private String url;
@@ -21,20 +23,25 @@ public abstract class AbstractPage {
 
     public AbstractPage(Fluent browser, String url, String selector){
         this.browser = browser;
-        this.url = url;
+        this.url = getFullUrl(url);
         this.selector = selector;
     }
 
     public AbstractPage load() {
-        browser.goTo(url);
+        goTo();
         waitForPageLoads();
         return this;
     }
-
-    public boolean isAt() {
-        return browser.url().equals(url) ? true : false;
+    
+    public AbstractPage goTo(){
+    	browser.goTo(url);
+    	return this;
     }
 
+    public boolean isAt() {
+        return browser.url().equals(url);
+    }
+    
     private void waitForPageLoads() {
         waitForPresent(selector);
     }
@@ -70,4 +77,23 @@ public abstract class AbstractPage {
 			    
 			});
     }
+    
+    private final String getFullUrl(String url){
+    	checkUrl(url);
+    	if (!url.startsWith("/")){
+    		url = '/' + url;
+    	}
+    	return getBaseUrl() + url;
+    }
+    
+    private final void checkUrl(String url){
+    	if (url.startsWith("http")){
+    		throw new IllegalArgumentException();
+    	}
+    }
+    
+    private final String getBaseUrl(){
+    	//TODO get HOST and PORT values at runtime
+    	return String.format("http://%s:%s", AbstractUITest.HOST, AbstractUITest.PORT);
+    }    
 }

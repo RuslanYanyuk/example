@@ -36,10 +36,8 @@ public class LogoutPageTest extends XiAbstractUITest{
     @Test
     public void logout_noFormIfNotLogged() {
         YAML.GENERAL_USERS.load();
-
-        goTo(LogoutPage.URL);
-
-        assertThat(url()).isEqualTo(LoginPage.URL);
+        new LogoutPage(getBrowser()).goTo();
+        assertThat(new LoginPage(getBrowser()).isAt());
     }
 
     private LogoutPage getLogoutPage() {

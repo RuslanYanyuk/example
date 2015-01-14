@@ -19,10 +19,13 @@ import play.test.TestServer;
 public abstract class AbstractUITest extends FluentTest {
 
 	private TestServer testServer;
+	
+	public static final String HOST = "localhost";
+	public static final int PORT = 3333;
 
     @Before
     public void setUp() {
-        testServer = testServer(3333, createFakeApplication());
+        testServer = testServer(PORT, createFakeApplication());
         start(testServer);
         clearDb();
     }

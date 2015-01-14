@@ -9,7 +9,7 @@ import static views.usermgmt.pages.UserRow.USER;
 
 public class AdministrationPage extends AbstractPage{
 
-    public static final String URL = "http://localhost:3333/administration";
+    private static final String URL = "/administration";
     static final String USERS_CONTAINER = "#users-container";
     private static final String CREATE_BUTTON = "#add";
     private static final String LOGOUT_BUTTON = "#logout input[name='logout']";

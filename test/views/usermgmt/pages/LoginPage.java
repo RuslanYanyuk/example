@@ -6,7 +6,7 @@ import commons.ui.pages.AbstractPage;
 
 public class LoginPage extends AbstractPage {
 
-    public static final String URL = "http://localhost:3333/login";
+    private static final String URL = "/login";
     private static final String USER_NAME_FIELD = "input[type=text]";
     private static final String PASSWORD_FIELD = "input[type=password]";
     private static final String SUBMIT_BUTTON = "input[type=submit]";

@@ -25,13 +25,13 @@ public class AdministrationPageTest extends XiAbstractUITest{
 
     @Test
     public void onlyAdminHasAccessToAdministrationPage() {
-        AdministrationPage page = new AdministrationPage(getBrowser());
+        AdministrationPage administrationPage = new AdministrationPage(getBrowser());
 
         login(FIRST_USER_NAME, FIRST_USER_PASSWORD);
-        goTo(AdministrationPage.URL);
+        administrationPage.goTo();
 
-        assertTrue(page.isAt());
-        assertTrue(page.isForbidden());
+        assertTrue(administrationPage.isAt());
+        assertTrue(administrationPage.isForbidden());
     }
 
     @Test
@@ -229,8 +229,8 @@ public class AdministrationPageTest extends XiAbstractUITest{
         assertTrue(user.getFullName().equals(FIRST_USER_UPDATED_FULL_NAME));
         assertTrue(user.getRole().equals(Role.ADMIN.toString()));
 
-        goTo(LogoutPage.URL);
         LogoutPage logoutPage = new LogoutPage(getBrowser());
+        logoutPage.load();
         logoutPage.logout();
 
         loginAndLoad(FIRST_USER_NAME, FIRST_USER_UPDATED_PASSWORD, AdministrationPage.class);
@@ -250,8 +250,8 @@ public class AdministrationPageTest extends XiAbstractUITest{
         assertTrue(user.getFullName().equals(FIRST_USER_UPDATED_FULL_NAME));
         assertTrue(user.getRole().equals(Role.ADMIN.toString()));
 
-        goTo(LogoutPage.URL);
         LogoutPage logoutPage = new LogoutPage(getBrowser());
+        logoutPage.load();
         logoutPage.logout();
 
         loginAndLoad(FIRST_USER_NAME, FIRST_USER_PASSWORD, AdministrationPage.class);
