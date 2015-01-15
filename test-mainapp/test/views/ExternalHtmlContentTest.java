@@ -1,6 +1,8 @@
 package views;
 
+import org.junit.Ignore;
 import org.junit.Test;
+
 import views.usermgmt.XiAbstractUITest;
 import views.usermgmt.pages.LoginPage;
 
@@ -10,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 public class ExternalHtmlContentTest extends XiAbstractUITest {
 
-
+	@Ignore //TODO
 	@Test
 	public void canSeeCustomTitleOnLoginPage(){
         LoginPage loginPage = new LoginPage(getBrowser());
@@ -18,6 +20,7 @@ public class ExternalHtmlContentTest extends XiAbstractUITest {
         assertTrue(getBrowser().findFirst("#test-title").getText().equals("This is custom header"));
 	}
 
+	@Ignore
     @Test
     public void canSeeCustomStyleOnLoginPage(){
         LoginPage loginPage = new LoginPage(getBrowser());
