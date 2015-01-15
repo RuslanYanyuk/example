@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, logo: String)(content: Html)
 
 @import controllers.usermgmt._
 
@@ -10,13 +10,15 @@
     </head>
     <body>
 		<div id="header">
-			<div id="logo-banner">
-				<span>Mind-meld</span>
-			</div>
-			<div id="header-banner">
-				<h2>@title</h2>
-			</div>
-		</div>
+            @if(logo != null){
+                <div id="logo-banner">
+                    <span>@logo</span>
+                </div>
+            }
+            <div id="header-banner">
+                <h2>@title</h2>
+            </div>
+		<div>
 
        	<div id="content">@content</div>
 

@@ -5,25 +5,36 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import formbeans.usermgmt.LoginFormBean;
-import static utils.usermgmt.OptionalHtmlLoader.*;
+import static utils.usermgmt.ApplicationConf.*;
 import views.html.usermgmt.login;
 import views.html.usermgmt.logout;
 import static play.data.Form.form;
 import static utils.usermgmt.Constants.*;
+import static utils.usermgmt.Helper.readText;
 
 public class AuthController extends Controller {
 
     public Result loginForm() {
-    	if (session().get("userName") != null){
-    		return redirect(INDEX_PAGE);
-    	}
-    	return ok(login.render(form(LoginFormBean.class), LOGIN_HTML.get()));
+        if (session().get("userName") != null) {
+            return redirect(INDEX_PAGE);
+        }
+        return ok(login.render(
+                        form(LoginFormBean.class),
+                        LOGO_TEXT.value(),
+                        readText(LOGIN_HTML.value())
+                )
+        );
     }
 
     public Result login() {
         Form<LoginFormBean> loginForm = form(LoginFormBean.class).bindFromRequest();
         if (loginForm.hasErrors()) {
-            return badRequest(login.render(loginForm, LOGIN_HTML.get()));
+            return badRequest(login.render(
+                            loginForm,
+                            LOGO_TEXT.value(),
+                            readText(LOGIN_HTML.value())
+                    )
+            );
         }
         String redirectUrl = session().get("redirect");
         session().clear();
@@ -33,7 +44,11 @@ public class AuthController extends Controller {
 
     @Dynamic("Logged in")
     public Result logoutForm() {
-        return ok(logout.render());
+        return ok(logout.render(
+                        LOGO_TEXT.value(),
+                        readText(LOGOUT_HTML.value())
+                )
+        );
     }
 
     public Result logout() {

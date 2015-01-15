@@ -1,8 +1,8 @@
-@(form: Form[formbeans.usermgmt.LoginFormBean], content: String)
+@(form: Form[formbeans.usermgmt.LoginFormBean], logo: String, content: String)
 
 @import controllers.usermgmt._
 
-@views.html.usermgmt.main("Login") {
+@views.html.usermgmt.main("Login", logo) {
 	<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
 	@Html(content)
 	<div id="login-form">

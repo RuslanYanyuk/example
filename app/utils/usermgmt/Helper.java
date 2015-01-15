@@ -4,19 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public enum OptionalHtmlLoader {
+public class Helper {
 
-    LOGIN_HTML("usermgmt.login.html");
-
-    private String propertyName;
-
-    private OptionalHtmlLoader(String propertyName) {
-        this.propertyName = propertyName;
-    }
-
-    public String get() {
+    public static String readText(String path) {
         StringBuilder html = new StringBuilder();
-        String path = getPath(propertyName);
         if (path != null) {
             try(BufferedReader in = new BufferedReader(new FileReader(path))) {
                 String str;
@@ -28,10 +19,6 @@ public enum OptionalHtmlLoader {
             }
         }
         return html.toString();
-    }
-
-    private static final String getPath(String propertyName){
-        return play.Play.application().configuration().getString(propertyName);
     }
 
 }

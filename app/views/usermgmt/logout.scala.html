@@ -1,8 +1,10 @@
+@(logo: String, content: String)
+
 @import controllers.usermgmt._
 
-@views.html.usermgmt.main("Logout") {
+@views.html.usermgmt.main("Logout", logo) {
 	<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/logout.css")">
-
+    @Html(content)
 	<div id="logout">
 	   <form action="/logout" method="post">
 		   <p>
