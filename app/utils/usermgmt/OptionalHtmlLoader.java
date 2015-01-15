@@ -8,14 +8,15 @@ public enum OptionalHtmlLoader {
 
     LOGIN_HTML("usermgmt.login.html");
 
-    private String path;
+    private String propertyName;
 
     private OptionalHtmlLoader(String propertyName) {
-        path = getPath(propertyName);
+        this.propertyName = propertyName;
     }
 
     public String get() {
         StringBuilder html = new StringBuilder();
+        String path = getPath(propertyName);
         if (path != null) {
             try(BufferedReader in = new BufferedReader(new FileReader(path))) {
                 String str;
