@@ -25,6 +25,7 @@ public class UserRow<P extends AbstractPage> {
     }
 
     private FluentWebElement getWebElement(){
+    	page.waitForContainsText(USER, userName);
         return page.getBrowser().findFirst(USER, withText().contains(userName));
     }
 
