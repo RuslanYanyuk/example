@@ -10,6 +10,9 @@ How to use the module
 
 ```"co.wds" %% "usermgmt" % "1.0-SNAPSHOT"```
 
+* Add repository for deadbolt plugin to ```build.sbt``` in main application:
+```resolvers += Resolver.url("Objectify Play Repository", url("http://deadbolt.ws/releases/"))(Resolver.ivyStylePatterns)```
+
 * For downloading modules routes add to routes file the following line:
 
 ```->     /        usermgmt.Routes```
