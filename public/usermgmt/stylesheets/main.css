@@ -8,7 +8,7 @@ html, body {
     color: #34495E;
 }
 
-h1, h2, h3 {
+h2 {
     font-weight: 500;
 }
 
@@ -48,12 +48,15 @@ h1, h2, h3 {
     border-top: 1px solid rgba(214, 219, 223, 0.8);
 }
 
-#footer h3 {
+#footer-img {
     width: 960px;
+    height: 90px;
     margin: 0 auto;
-    text-align: center;
-    line-height: 90px;
-    font-size: 14px;
-    color: #000;
-    background: url('../images/logo.png') no-repeat center right;
+    background: url('../images/wds.png') no-repeat center left;
 }
+
+img {
+    vertical-align: middle;
+    border: 0;
+}
+
