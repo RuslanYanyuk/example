@@ -29,6 +29,10 @@ public class AccessHandler extends AbstractDeadboltHandler implements DynamicRes
 	 * If your method has annotated like @Dynamic("MY_ROLE_NAME1, MY_ROLE_NAME2, ..."), 
 	 * then to method have users with user.role == Role.valueOf("MY_ROLE_NAME1") 
 	 * OR with user.role == Role.valueOf("MY_ROLE_NAME2") etc
+	 * 
+	 * String constants of roles are at ximodels.usermgmt.Role.Names
+	 * You can make static import of constants (import static ximodels.usermgmt.Role.Names.*;)
+	 * 
 	 */
 	@Override
     public boolean isAllowed(String name, String meta, DeadboltHandler deadboltHandler, Http.Context context) {

@@ -11,6 +11,7 @@ import views.html.usermgmt.logout;
 import static play.data.Form.form;
 import static utils.usermgmt.Constants.*;
 import static utils.usermgmt.Helper.readText;
+import static ximodels.usermgmt.Role.Names.*;
 
 public class AuthController extends Controller {
 
@@ -42,7 +43,7 @@ public class AuthController extends Controller {
         return redirect(redirectUrl != null ? redirectUrl : INDEX_PAGE);
     }
 
-    @Dynamic("Logged in")
+    @Dynamic(LOGGED_IN)
     public Result logoutForm() {
         return ok(logout.render(
                         LOGO_TEXT.value(),

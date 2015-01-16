@@ -20,23 +20,25 @@ import ximodels.usermgmt.Role;
 import java.io.IOException;
 import java.util.List;
 
+import static ximodels.usermgmt.Role.Names.*;
+
 public class UserController extends Controller {
 	
 	private UserService service = new XiUserService();
 
-	@Dynamic("ADMIN")
+	@Dynamic(ADMIN)
 	public Result getAdministration() {
 		Role[] roles = Role.values();
 		return ok(views.html.usermgmt.users.render(roles));
 	}
 
-	@Dynamic("ADMIN")
+	@Dynamic(ADMIN)
 	public Result getAll() {
 		List<? extends UserFormBean> beans = service.getAll();
         return ok(Json.toJson(beans));
     }
 	
-	@Dynamic("ADMIN")
+	@Dynamic(ADMIN)
 	public Result get(String userName) {
 		UserFormBean bean;
 		try {
@@ -47,7 +49,7 @@ public class UserController extends Controller {
         return ok(Json.toJson(bean));
     }
 
-	@Dynamic("ADMIN")
+	@Dynamic(ADMIN)
 	public Result create() {
 		UserFormBean bean;
 		JsonNode node = request().body().asJson();
@@ -62,7 +64,7 @@ public class UserController extends Controller {
         return ok(Json.toJson(bean));
     }
 	
-	@Dynamic("ADMIN")
+	@Dynamic(ADMIN)
 	public Result update(String userName) {
 		UserFormBean bean;
 		JsonNode node = request().body().asJson();
@@ -79,7 +81,7 @@ public class UserController extends Controller {
         return ok(Json.toJson(bean));
     }
 	
-	@Dynamic("ADMIN")
+	@Dynamic(ADMIN)
 	public Result delete(String userName) {
 		try {
 			service.delete(userName, isCurrentUser(userName));

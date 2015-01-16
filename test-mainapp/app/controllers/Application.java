@@ -5,9 +5,11 @@ import play.*;
 import play.mvc.*;
 import views.html.*;
 
+import static ximodels.usermgmt.Role.Name.*;
+
 public class Application extends Controller {
 	
-	@Dynamic("Logged in")
+	@Dynamic(LOGGED_IN)
     public static Result index() {
         return ok(index.render("Your new application is ready."));
     }
