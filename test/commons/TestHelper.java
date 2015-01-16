@@ -3,21 +3,14 @@ package commons;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Transaction;
 import org.apache.commons.lang3.ArrayUtils;
-import play.test.FakeApplication;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import static play.test.Helpers.fakeApplication;
 
 public class TestHelper {
-
-    public static FakeApplication createFakeApplication(Map<String, Object> configuration) {
-    	return fakeApplication(configuration);
-    }
     
     public static void cleanDb(String ebeanServer, String... skipTables){
 		for (String tableName : getAllTableNames(ebeanServer)){

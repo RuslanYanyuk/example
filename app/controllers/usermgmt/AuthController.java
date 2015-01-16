@@ -6,39 +6,34 @@ import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import formbeans.usermgmt.LoginFormBean;
-import static utils.usermgmt.ApplicationConf.*;
-import views.html.usermgmt.login;
-import views.html.usermgmt.logout;
+import views.html.usermgmt.*;
 import static play.data.Form.form;
 import static utils.usermgmt.Constants.*;
-import static utils.usermgmt.Helper.readText;
 import static ximodels.usermgmt.Role.Names.*;
 
 public class AuthController extends Controller {
 
-    static final String LOGOUT_SUCCESS_MESSAGE = "usermgmt.logout.success";
-
-    public Result loginForm() {
+	static {
+		templates = AuthTemplates.getInstance();
+		AuthTemplates.getInstance().initialize();
+	}
+	
+	static final String LOGOUT_SUCCESS_MESSAGE = "usermgmt.logout.success";
+	
+	private static AuthTemplates templates;
+	
+    public static Result loginForm() {
         if (session().get("userName") != null) {
             return redirect(INDEX_PAGE);
         }
-        return ok(login.render(
-                        form(LoginFormBean.class),
-                        LOGO_TEXT.value(),
-                        readText(LOGIN_HTML.value())
-                )
-        );
+        return ok(templates.getLoginTemplate().render(login.render(form(LoginFormBean.class))));
     }
 
-    public Result login() {
+    public static Result login() {
         Form<LoginFormBean> loginForm = form(LoginFormBean.class).bindFromRequest();
         if (loginForm.hasErrors()) {
-            return badRequest(login.render(
-                            loginForm,
-                            LOGO_TEXT.value(),
-                            readText(LOGIN_HTML.value())
-                    )
-            );
+        	//TODO return another status code (not bad request)
+            return badRequest(templates.getLoginTemplate().render(login.render(loginForm)));
         }
         String redirectUrl = session().get("redirect");
         session().clear();
@@ -47,18 +42,14 @@ public class AuthController extends Controller {
     }
 
     @Dynamic(LOGGED_IN)
-    public Result logoutForm() {
-        return ok(logout.render(
-                        LOGO_TEXT.value(),
-                        readText(LOGOUT_HTML.value())
-                )
-        );
+    public static Result logoutForm() {
+        return ok(templates.getLogoutTemplate().render(logout.render()));
     }
 
-    public Result logout() {
+    public static Result logout() {
         session().clear();
         flash().put("success", Messages.get(LOGOUT_SUCCESS_MESSAGE));
         return redirect(controllers.usermgmt.routes.AuthController.loginForm());
     }
-
+    
 }

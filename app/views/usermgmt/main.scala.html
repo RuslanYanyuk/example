@@ -1,4 +1,4 @@
-@(title: String, logo: String)(content: Html)
+@(title: String, logo: String, external: String, content: Html)
 
 @import controllers.usermgmt._
 
@@ -9,6 +9,7 @@
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
     </head>
     <body>
+    	@Html(external)
 		<div id="header">
             @if(logo != null){
                 <div id="logo-banner">

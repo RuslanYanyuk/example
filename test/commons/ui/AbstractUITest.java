@@ -1,17 +1,17 @@
 package commons.ui;
 
 import commons.XiTestHelper;
+
 import org.fluentlenium.adapter.FluentTest;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+
+import play.test.FakeApplication;
 import play.test.TestBrowser;
 import play.test.TestServer;
 
-import java.util.Map;
-
-import static commons.TestHelper.createFakeApplication;
 import static commons.XiTestHelper.cleanDb;
 import static play.test.Helpers.*;
 
@@ -24,7 +24,7 @@ public abstract class AbstractUITest extends FluentTest {
 
     @Before
     public void setUp() {
-        testServer = testServer(PORT, createFakeApplication(getConfiguration()));
+        testServer = testServer(PORT, createFakeApplication());
         start(testServer);
         cleanDb();
     }
@@ -43,8 +43,8 @@ public abstract class AbstractUITest extends FluentTest {
         return testBrowser(getDriver());
     }
 
-    protected Map<String, Object> getConfiguration(){
-        return XiTestHelper.getConfiguration();
+    protected FakeApplication createFakeApplication(){
+    	return fakeApplication(XiTestHelper.getConfiguration(), fakeGlobal());
     }
 
 }

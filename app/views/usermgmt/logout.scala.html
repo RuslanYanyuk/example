@@ -1,20 +1,16 @@
-@(logo: String, content: String)
-
 @import controllers.usermgmt._
 
-@views.html.usermgmt.main("Logout", logo) {
-	<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/logout.css")">
-    @Html(content)
-	<div id="logout">
-	   <form action="/logout" method="post">
-		   <p>
-		   Are you sure you want to logout?
-		   </p>
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/logout.css")">
 
-		   <div>
-			   <input type="submit" value="Yes, please" onclick="document.forms[0].submit();">
-			   <input type="button" value="No, take me back" onclick="location.href = '/';">
-		   </div>
-	   </form>
-	</div>
-}
+<div id="logout">
+   <form action="/logout" method="post">
+	   <p>
+	   Are you sure you want to logout?
+	   </p>
+
+	   <div>
+		   <input type="submit" value="Yes, please" onclick="document.forms[0].submit();">
+		   <input type="button" value="No, take me back" onclick="location.href = '/';">
+	   </div>
+   </form>
+</div>

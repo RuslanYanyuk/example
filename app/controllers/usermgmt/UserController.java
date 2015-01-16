@@ -30,22 +30,23 @@ public class UserController extends Controller {
 	private static final String BAD_REQUEST_MESSAGE = "usermgmt.users.badRequest";
 	private static final String NOT_FOUND_MESSAGE = "usermgmt.users.notFound";
 	private static final String ALREADY_EXIST_MESSAGE = "usermgmt.users.alreadyExist";
-	private UserService service = new XiUserService();
+	
+	private static UserService service = new XiUserService();
 
 	@Dynamic(ADMIN)
-	public Result getAdministration() {
+	public static Result getAdministration() {
 		Role[] roles = Role.values();
 		return ok(views.html.usermgmt.users.render(roles));
 	}
 
 	@Dynamic(ADMIN)
-	public Result getAll() {
+	public static Result getAll() {
 		List<? extends UserFormBean> beans = service.getAll();
         return ok(Json.toJson(beans));
     }
 	
 	@Dynamic(ADMIN)
-	public Result get(String userName) {
+	public static Result get(String userName) {
 		UserFormBean bean;
 		try {
 			bean = service.get(userName);
@@ -56,7 +57,7 @@ public class UserController extends Controller {
     }
 
 	@Dynamic(ADMIN)
-	public Result create() {
+	public static Result create() {
 		UserFormBean bean;
 		JsonNode node = request().body().asJson();
 		if (node == null){
@@ -71,7 +72,7 @@ public class UserController extends Controller {
     }
 	
 	@Dynamic(ADMIN)
-	public Result update(String userName) {
+	public static Result update(String userName) {
 		UserFormBean bean;
 		JsonNode node = request().body().asJson();
 		if (node == null){
@@ -90,7 +91,7 @@ public class UserController extends Controller {
     }
 
 	@Dynamic(ADMIN)
-	public Result delete(String userName) {
+	public static Result delete(String userName) {
 		try {
 			service.delete(userName, isCurrentUser(userName));
 		} catch (NotFoundException e) {
@@ -101,14 +102,14 @@ public class UserController extends Controller {
 		return ok(Messages.get(SUCCESS_MESSAGE));
 	}
 
-	private ObjectNode createSuccessJson(UserFormBean bean) {
+	private static ObjectNode createSuccessJson(UserFormBean bean) {
 		ObjectNode jsonNodes = Json.newObject();
 		jsonNodes.put("user", Json.toJson(bean));
 		jsonNodes.put("message", Messages.get(SUCCESS_MESSAGE));
 		return jsonNodes;
 	}
-
-	private SecuredUserFormBean getFormBeanFromRequest(JsonNode node){
+	
+	private static SecuredUserFormBean getFormBeanFromRequest(JsonNode node){
 		SecuredUserFormBean result = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -120,7 +121,7 @@ public class UserController extends Controller {
         return result;
 	}
 
-    private boolean isCurrentUser(String name) {
+    private static boolean isCurrentUser(String name) {
         return session().get("userName").equals(name);
     }
 }
