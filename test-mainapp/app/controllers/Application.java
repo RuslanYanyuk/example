@@ -5,7 +5,7 @@ import play.*;
 import play.mvc.*;
 import views.html.*;
 
-import static ximodels.usermgmt.Role.Name.*;
+import static ximodels.usermgmt.Role.Names.*;
 
 public class Application extends Controller {
 	
