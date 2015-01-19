@@ -2,6 +2,7 @@ package controllers.usermgmt;
 
 import be.objectify.deadbolt.java.actions.Dynamic;
 import play.data.Form;
+import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import formbeans.usermgmt.LoginFormBean;
@@ -14,6 +15,8 @@ import static utils.usermgmt.Helper.readText;
 import static ximodels.usermgmt.Role.Names.*;
 
 public class AuthController extends Controller {
+
+    static final String LOGOUT_SUCCESS_MESSAGE = "usermgmt.logout.success";
 
     public Result loginForm() {
         if (session().get("userName") != null) {
@@ -54,7 +57,7 @@ public class AuthController extends Controller {
 
     public Result logout() {
         session().clear();
-        flash().put("success", "You've been logged out");
+        flash().put("success", Messages.get(LOGOUT_SUCCESS_MESSAGE));
         return redirect(controllers.usermgmt.routes.AuthController.loginForm());
     }
 

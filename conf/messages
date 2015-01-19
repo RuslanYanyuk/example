@@ -1,0 +1,8 @@
+usermgmt.logout.success=You've been logged out
+usermgmt.login.error=Invalid username or password!
+
+usermgmt.users.success=Completed successfully!
+usermgmt.users.validation=User Name and Password are required
+usermgmt.users.alreadyExist=User name already exist!
+usermgmt.users.notFound=User not found! Please refresh page!
+usermgmt.users.badRequest=Bad request!

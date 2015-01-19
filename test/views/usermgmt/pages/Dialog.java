@@ -1,8 +1,8 @@
 package views.usermgmt.pages;
 
-import org.fluentlenium.core.domain.FluentWebElement;
-
 import commons.ui.pages.AbstractPage;
+import org.fluentlenium.core.domain.FluentWebElement;
+import play.i18n.Messages;
 
 public abstract class Dialog<P extends AbstractPage> {
 
@@ -10,9 +10,8 @@ public abstract class Dialog<P extends AbstractPage> {
 	protected static final String MESSAGE_CONTAINER = ".ui-dialog .message";
 	
 	protected static final String BUTTONS = ".ui-dialog-buttonset button";
-	
-	public static final String SUCCESS_MESSAGE = "Completed successfully!";
-	public static final String USER_NOT_FOUND = "User not found! Please refresh page!";
+	public static final String SUCCESS_MESSAGE = "usermgmt.users.success";
+	public static final String USER_NOT_FOUND = "usermgmt.users.notFound";
 	
 	protected final P page;
 	
@@ -30,7 +29,7 @@ public abstract class Dialog<P extends AbstractPage> {
 	
     public P submit(String text) {
         getSubmitButton().click();
-        page.waitForElementHasText(MESSAGE_CONTAINER, text);
+        page.waitForElementHasText(MESSAGE_CONTAINER, Messages.get(text));
         return page;
     }
 

@@ -1,8 +1,8 @@
 package views.usermgmt.pages;
 
-import org.fluentlenium.core.Fluent;
-
 import commons.ui.pages.AbstractPage;
+import org.fluentlenium.core.Fluent;
+import play.i18n.Messages;
 
 public class LoginPage extends AbstractPage {
 
@@ -13,8 +13,8 @@ public class LoginPage extends AbstractPage {
     private static final String LOGIN_FORM = "#login-form";
     private static final String ERROR = ".error";
     private static final String SUCCESS = ".success";
-    private static final String ERROR_TEXT = "Invalid username or password!";
-    private static final String SUCCESS_TEXT = "You've been logged out";
+    private static final String ERROR_TEXT = "usermgmt.login.error";
+    private static final String SUCCESS_TEXT = "usermgmt.logout.success";
 
     public LoginPage(Fluent browser) {
         super(browser, URL, LOGIN_FORM);
@@ -33,11 +33,11 @@ public class LoginPage extends AbstractPage {
     }
 
     public boolean hasError() {
-        return getBrowser().findFirst(ERROR).getText().equals(ERROR_TEXT);
+        return getBrowser().findFirst(ERROR).getText().equals(Messages.get(ERROR_TEXT));
     }
 
     public boolean hasSuccess() {
-        return getBrowser().findFirst(SUCCESS).getText().equals(SUCCESS_TEXT);
+        return getBrowser().findFirst(SUCCESS).getText().equals(Messages.get(SUCCESS_TEXT));
     }
 
     public boolean submitCredentials(String userName, String password){

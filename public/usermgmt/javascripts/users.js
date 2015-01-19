@@ -10,25 +10,8 @@ function usersModel() {
             none: "transparent"
         },
         message = {
-            success: "Completed successfully!",
             validation: "User Name and Password are required",
-            none: "",
-            getError: function(errorStatus) {
-                var message;
-
-                switch(errorStatus) {
-                    case 500:
-                        message = "User name already exist!";
-                        break;
-                    case 404:
-                        message = "User not found! Please refresh page!";
-                        break;
-                    default:
-                        message = "Bad Request!";
-                }
-
-                return message;
-            }
+            none: ""
         };
 
     var wrapSelfUser = function(user){
@@ -134,20 +117,21 @@ function usersModel() {
             url: url,
             data: JSON.stringify(formUser),
             success: function(data) {
-                var user = new User(data.userName, data.fullName, data.role);
+                var jsonUser = data.user;
+                var user = new User(jsonUser.userName, jsonUser.fullName, jsonUser.role);
                 self.users.replace(currentUser, wrapSelfUser(user));
 
                 if(user.userName == self.currentUser.userName){
                     $("#logout span").text(user.fullName);
                 }
 
-                showDialogMessage(message.success, color.success);
+                showDialogMessage(data.message, color.success);
                 setTimeout(function() {
                     dialog.dialog( "destroy" );
                 },1500);
             },
             error: function(error) {
-                showDialogMessage(message.getError(error.status), color.error);
+                showDialogMessage(error.responseText, color.error);
             },
             contentType: "application/json",
             dataType: 'json'
@@ -167,15 +151,16 @@ function usersModel() {
                 url: '/users',
                 data: JSON.stringify(user),
                 success: function (data) {
-                    var user = new User(data.userName, data.fullName, data.role);
+                    var jsonUser = data.user;
+                    var user = new User(jsonUser.userName, jsonUser.fullName, jsonUser.role);
                     self.users.push(user);
-                    showDialogMessage(message.success, color.success);
+                    showDialogMessage(data.message, color.success);
                     setTimeout(function () {
                         dialog.dialog("destroy");
                     }, 1500);
                 },
                 error: function (error) {
-                    showDialogMessage(message.getError(error.status), color.error);
+                    showDialogMessage(error.responseText, color.error);
                 },
                 contentType: "application/json",
                 dataType: 'json'
@@ -195,8 +180,8 @@ function usersModel() {
             $.ajax({
                 url: url,
                 type: 'DELETE',
-                success: function (data) {
-                    showDialogMessage(message.success, color.success);
+                success: function (message) {
+                    showDialogMessage(message, color.success);
                     self.users.remove(user);
                     setTimeout(function () {
                         dialog.dialog("destroy");
@@ -204,7 +189,7 @@ function usersModel() {
 
                 },
                 error: function (error) {
-                    showDialogMessage(message.getError(error.status), color.error);
+                    showDialogMessage(error.responseText, color.error);
                 }
             });
         };

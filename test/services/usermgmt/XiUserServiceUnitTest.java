@@ -15,6 +15,7 @@ import formbeans.usermgmt.SecuredUserFormBean;
 import formbeans.usermgmt.UserFormBean;
 import static org.fest.assertions.Assertions.*;
 import static org.junit.Assert.assertTrue;
+import static services.usermgmt.XiUserService.*;
 import static usermgmt.Parameters.*;
 
 public class XiUserServiceUnitTest extends AbstractUnitTest {
@@ -63,7 +64,7 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 		YAML.GENERAL_USERS.load();
 
 		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("User name and password are required. They can not be empty.");
+		exception.expectMessage(REQUIRED_FIELDS);
 
 		SecuredUserFormBean bean = createUserFormBean(EMPTY_PARAMETER, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		service.create(bean);
@@ -74,7 +75,7 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 		YAML.GENERAL_USERS.load();
 
 		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("User name and password are required. They can not be empty.");
+		exception.expectMessage(REQUIRED_FIELDS);
 
 		SecuredUserFormBean bean = createUserFormBean(ADMIN_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, EMPTY_PARAMETER);
 		service.create(bean);
@@ -93,7 +94,7 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 		YAML.GENERAL_USERS.load();
 
         exception.expect(AlreadyExistsException.class);
-        exception.expectMessage(String.format("User name %s already exist.", ADMIN_USER_NAME));
+        exception.expectMessage(String.format(USER_ALREADY_EXIST, ADMIN_USER_NAME));
 
 		SecuredUserFormBean bean = createUserFormBean(ADMIN_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		service.create(bean);
@@ -106,7 +107,7 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 		YAML.GENERAL_USERS.load();
 
 		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("User name can not be changed.");
+		exception.expectMessage(NAME_CAN_NOT_BE_CHANGED);
 
 		SecuredUserFormBean bean = createUserFormBean(FIRST_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		service.update(FIRST_USER_UPDATED_USER_NAME, bean, false);
@@ -117,7 +118,7 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
         YAML.GENERAL_USERS.load();
 
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Current user role can not be changed.");
+        exception.expectMessage(CAN_NOT_BE_CHANGED_CURRENT_USER_ROLE);
 
         SecuredUserFormBean bean = createUserFormBean(ADMIN_USER_NAME, ADMIN_FULL_NAME, Role.USER, ADMIN_PASSWORD);
         service.update(ADMIN_USER_NAME, bean, true);
@@ -182,7 +183,7 @@ public class XiUserServiceUnitTest extends AbstractUnitTest {
 		YAML.GENERAL_USERS.load();
 
 		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("Can not be deleted current user.");
+		exception.expectMessage(CAN_NOT_BE_DELETED_CURRENT_USER);
 
 		service.delete(ADMIN_USER_NAME, true);
 	}

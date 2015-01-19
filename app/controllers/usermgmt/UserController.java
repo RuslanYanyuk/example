@@ -5,9 +5,11 @@ import be.objectify.deadbolt.java.actions.Dynamic;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import formbeans.usermgmt.SecuredUserFormBean;
 import formbeans.usermgmt.UserFormBean;
 import play.Logger;
+import play.i18n.Messages;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -20,10 +22,14 @@ import ximodels.usermgmt.Role;
 import java.io.IOException;
 import java.util.List;
 
-import static ximodels.usermgmt.Role.Names.*;
+import static ximodels.usermgmt.Role.Names.ADMIN;
 
 public class UserController extends Controller {
-	
+
+	private static final String SUCCESS_MESSAGE = "usermgmt.users.success";
+	private static final String BAD_REQUEST_MESSAGE = "usermgmt.users.badRequest";
+	private static final String NOT_FOUND_MESSAGE = "usermgmt.users.notFound";
+	private static final String ALREADY_EXIST_MESSAGE = "usermgmt.users.alreadyExist";
 	private UserService service = new XiUserService();
 
 	@Dynamic(ADMIN)
@@ -44,7 +50,7 @@ public class UserController extends Controller {
 		try {
 			bean = service.get(userName);
 		} catch (NotFoundException e) {
-			return notFound();
+			return notFound(Messages.get(NOT_FOUND_MESSAGE));
 		}
         return ok(Json.toJson(bean));
     }
@@ -54,14 +60,14 @@ public class UserController extends Controller {
 		UserFormBean bean;
 		JsonNode node = request().body().asJson();
 		if (node == null){
-			return badRequest();
+			return badRequest(Messages.get(BAD_REQUEST_MESSAGE));
 		}
 		try {
 			bean = service.create(getFormBeanFromRequest(node));
 		} catch (AlreadyExistsException e) {
-			return internalServerError();
+			return internalServerError(Messages.get(ALREADY_EXIST_MESSAGE));
 		}
-        return ok(Json.toJson(bean));
+        return ok(createSuccessJson(bean));
     }
 	
 	@Dynamic(ADMIN)
@@ -69,30 +75,39 @@ public class UserController extends Controller {
 		UserFormBean bean;
 		JsonNode node = request().body().asJson();
 		if (node == null){
-			return badRequest();
+			return badRequest(Messages.get(BAD_REQUEST_MESSAGE));
 		}
 		try {
 			bean = service.update(userName, getFormBeanFromRequest(node), isCurrentUser(userName));
 		} catch (NotFoundException e) {
-			return notFound();
-		} catch (AlreadyExistsException | IllegalArgumentException e) {
-			return internalServerError();
+			return notFound(Messages.get(NOT_FOUND_MESSAGE));
+		} catch (IllegalArgumentException e) {
+			return badRequest(Messages.get(BAD_REQUEST_MESSAGE));
+		} catch (AlreadyExistsException e) {
+			return internalServerError(Messages.get(ALREADY_EXIST_MESSAGE));
 		}
-        return ok(Json.toJson(bean));
+		return ok(createSuccessJson(bean));
     }
-	
+
 	@Dynamic(ADMIN)
 	public Result delete(String userName) {
 		try {
 			service.delete(userName, isCurrentUser(userName));
 		} catch (NotFoundException e) {
-			return notFound();
+			return notFound(Messages.get(NOT_FOUND_MESSAGE));
 		}catch (IllegalArgumentException e) {
-			return badRequest();
+			return badRequest(Messages.get(BAD_REQUEST_MESSAGE));
 		}
-		return ok();
+		return ok(Messages.get(SUCCESS_MESSAGE));
 	}
-	
+
+	private ObjectNode createSuccessJson(UserFormBean bean) {
+		ObjectNode jsonNodes = Json.newObject();
+		jsonNodes.put("user", Json.toJson(bean));
+		jsonNodes.put("message", Messages.get(SUCCESS_MESSAGE));
+		return jsonNodes;
+	}
+
 	private SecuredUserFormBean getFormBeanFromRequest(JsonNode node){
 		SecuredUserFormBean result = null;
         ObjectMapper mapper = new ObjectMapper();

@@ -5,9 +5,12 @@ import commons.AbstractUnitTest;
 
 import org.junit.Test;
 
+import play.i18n.Messages;
 import play.mvc.Result;
 import usermgmt.YAML;
 import formbeans.usermgmt.UserFormBean;
+
+import static controllers.usermgmt.AuthController.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static play.mvc.Http.Status.OK;
@@ -123,7 +126,7 @@ public class AuthControllerUnitTest extends AbstractUnitTest {
 
         assertThat(status(result), is(SEE_OTHER));
         assertThat(cookie("PLAY_SESSION", result).value(), is(""));
-        assertThat(flash(result).get("success"), is("You've been logged out"));
+        assertThat(flash(result).get("success"), is(Messages.get(LOGOUT_SUCCESS_MESSAGE)));
         assertThat(redirectLocation(result), is("/login"));
     }
 }

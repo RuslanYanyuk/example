@@ -1,10 +1,10 @@
 package views.usermgmt.pages;
 
+import commons.ui.pages.AbstractPage;
 import org.fluentlenium.core.Fluent;
 import org.fluentlenium.core.domain.FluentWebElement;
-
 import ximodels.usermgmt.Role;
-import commons.ui.pages.AbstractPage;
+
 import static org.fluentlenium.core.filter.FilterConstructor.withText;
 
 public class UserCreateUpdateDialog<P extends AbstractPage> extends Dialog<P> {
@@ -18,8 +18,8 @@ public class UserCreateUpdateDialog<P extends AbstractPage> extends Dialog<P> {
     private static final String SAVE = "Save";
     private static final String CANCEL = "Cancel";
     
-    public static final String ALREADY_EXIST_MESSAGE = "User name already exist!";
-    public static final String VALIDATION_MESSAGE = "User Name and Password are required";
+    public static final String ALREADY_EXIST_MESSAGE = "usermgmt.users.alreadyExist";
+    public static final String VALIDATION_MESSAGE = "usermgmt.users.validation";
     
     private FluentWebElement webElement;
 

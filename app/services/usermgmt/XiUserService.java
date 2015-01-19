@@ -12,6 +12,13 @@ import java.util.List;
 
 public class XiUserService implements UserService {
 
+	static final String NAME_CAN_NOT_BE_CHANGED = "User name can not be changed.";
+	static final String CAN_NOT_BE_CHANGED_CURRENT_USER_ROLE = "Current user role can not be changed.";
+	static final String CAN_NOT_BE_DELETED_CURRENT_USER = "Can not be deleted current user.";
+	static final String USER_NOT_EXIST = "User entity with user name %s doesn't exist.";
+	static final String USER_ALREADY_EXIST = "User name %s already exist.";
+	static final String REQUIRED_FIELDS = "User name and password are required. They can not be empty.";
+
 	@Override
 	public List<? extends UserFormBean> getAll() {
 		List<User> users = User.find.all();
@@ -40,13 +47,13 @@ public class XiUserService implements UserService {
 	@Override
 	public UserFormBean update(String userName, SecuredUserFormBean bean, boolean isCurrentUser) throws NotFoundException, AlreadyExistsException {
 		if (!userName.equals(bean.userName)){
-			throw new IllegalArgumentException("User name can not be changed.");
+			throw new IllegalArgumentException(NAME_CAN_NOT_BE_CHANGED);
 		}
 		User user = findUserByUserName(userName);
 
-        if (isCurrentUser && !user.role.toString().equals(bean.role)) {
-            throw new IllegalArgumentException("Current user role can not be changed.");
-        }
+		if (isCurrentUser && !user.role.toString().equals(bean.role)) {
+			throw new IllegalArgumentException(CAN_NOT_BE_CHANGED_CURRENT_USER_ROLE);
+		}
 
 		String passwordHash = user.passwordHash;
 		bean.populateModelWithData(user);
@@ -62,7 +69,7 @@ public class XiUserService implements UserService {
 	@Override
 	public void delete(String userName, boolean isCurrentUser) throws NotFoundException {
 		if(isCurrentUser){
-			throw new IllegalArgumentException("Can not be deleted current user.");
+			throw new IllegalArgumentException(CAN_NOT_BE_DELETED_CURRENT_USER);
 		}
 
 		findUserByUserName(userName).delete();
@@ -72,7 +79,7 @@ public class XiUserService implements UserService {
 		User user = User.findUserByUserName(userName);
 		if (user == null){
 			throw new NotFoundException(
-					String.format("User entity with user name %s doesn't exist.", userName));
+					String.format(USER_NOT_EXIST, userName));
 		}
 		return user;
 	}
@@ -81,13 +88,13 @@ public class XiUserService implements UserService {
 		isBlank(userName);
 		if (User.find.where().eq("userName", userName).findUnique() != null) {
 			throw new AlreadyExistsException(
-					String.format("User name %s already exist.", userName));
+					String.format(USER_ALREADY_EXIST, userName));
 		}
 	}
 
 	private void isBlank(String param) {
 		if (StringUtils.isBlank(param)) {
-			throw new IllegalArgumentException("User name and password are required. They can not be empty.");
+			throw new IllegalArgumentException(REQUIRED_FIELDS);
 		}
 	}
 

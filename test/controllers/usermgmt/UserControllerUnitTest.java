@@ -192,7 +192,7 @@ public class UserControllerUnitTest extends AbstractUnitTest {
 		JsonNode node = createUserJsonNode(ADMIN_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
 		Result result = callAction(controllers.usermgmt.routes.ref.UserController.update(FIRST_USER_NAME),
                 fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
-		checkResponse(result, INTERNAL_SERVER_ERROR);
+		checkResponse(result, BAD_REQUEST);
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(4);
 		User user = users.get(0);
@@ -206,7 +206,7 @@ public class UserControllerUnitTest extends AbstractUnitTest {
         JsonNode node = createUserJsonNode(ADMIN_USER_NAME, ADMIN_FULL_NAME, Role.USER, ADMIN_PASSWORD);
         Result result = callAction(controllers.usermgmt.routes.ref.UserController.update(ADMIN_USER_NAME),
                 fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
-        checkResponse(result, INTERNAL_SERVER_ERROR);
+        checkResponse(result, BAD_REQUEST);
         User user = User.findUserByUserName(ADMIN_USER_NAME);
 
         assertTrue(user.role == Role.ADMIN);
