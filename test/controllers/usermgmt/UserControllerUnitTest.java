@@ -133,13 +133,13 @@ public class UserControllerUnitTest extends AbstractUnitTest {
 	}
 	
 	@Test
-	public void create_ReturnsInternalServerErrorIfUserNameAlreadyExists(){
+	public void create_ReturnsBadRequestIfUserNameAlreadyExists(){
 		YAML.GENERAL_USERS.load();
 		
 		JsonNode node = createUserJsonNode(ADMIN_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_PASSWORD);
 		Result result = callAction(controllers.usermgmt.routes.ref.UserController.create(),
 				fakeRequest().withJsonBody(node).withSession("userName", ADMIN_USER_NAME));
-		checkResponse(result, INTERNAL_SERVER_ERROR);
+		checkResponse(result, BAD_REQUEST);
 		List<User> users = User.find.all();
 		assertThat(users.size()).isEqualTo(4);
 	}
@@ -186,7 +186,7 @@ public class UserControllerUnitTest extends AbstractUnitTest {
 	}
 	
 	@Test
-	public void update_ReturnsInternalServerErrorIfUserNameWasChanged(){
+	public void update_ReturnsBadRequestIfUserNameWasChanged(){
 		YAML.GENERAL_USERS.load();
 		
 		JsonNode node = createUserJsonNode(ADMIN_USER_NAME, FIRST_USER_FULLNAME, Role.ADMIN, FIRST_USER_UPDATED_PASSWORD);
@@ -200,7 +200,7 @@ public class UserControllerUnitTest extends AbstractUnitTest {
 	}
 
     @Test
-    public void update_ReturnsInternalServerErrorIfCurrentUserRoleWasChanged(){
+    public void update_ReturnsBadRequestIfCurrentUserRoleWasChanged(){
         YAML.GENERAL_USERS.load();
 
         JsonNode node = createUserJsonNode(ADMIN_USER_NAME, ADMIN_FULL_NAME, Role.USER, ADMIN_PASSWORD);

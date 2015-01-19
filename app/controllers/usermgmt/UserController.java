@@ -65,7 +65,7 @@ public class UserController extends Controller {
 		try {
 			bean = service.create(getFormBeanFromRequest(node));
 		} catch (AlreadyExistsException e) {
-			return internalServerError(Messages.get(ALREADY_EXIST_MESSAGE));
+			return badRequest(Messages.get(ALREADY_EXIST_MESSAGE));
 		}
         return ok(createSuccessJson(bean));
     }
@@ -84,7 +84,7 @@ public class UserController extends Controller {
 		} catch (IllegalArgumentException e) {
 			return badRequest(Messages.get(BAD_REQUEST_MESSAGE));
 		} catch (AlreadyExistsException e) {
-			return internalServerError(Messages.get(ALREADY_EXIST_MESSAGE));
+			return badRequest(Messages.get(ALREADY_EXIST_MESSAGE));
 		}
 		return ok(createSuccessJson(bean));
     }
