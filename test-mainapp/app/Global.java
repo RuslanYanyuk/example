@@ -9,8 +9,8 @@ public class Global extends GlobalSettings {
 
 	@Override
     public void onStart(Application app) {
-		AuthTemplates.getInstance().setLoginTemplate(createCustomTemplate());
-		AuthTemplates.getInstance().setLogoutTemplate(createCustomTemplate());
+		AuthTemplates.setLoginTemplate(createCustomTemplate());
+		AuthTemplates.setLogoutTemplate(createCustomTemplate());
 	}
 	
 	private static PageTemplate createCustomTemplate(){

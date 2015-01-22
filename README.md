@@ -63,8 +63,8 @@ public class Global extends GlobalSettings {
     	PageTemplate customLoginTemplate = ...
     	PageTemplate customLogoutTemplate = ...
     	
-		AuthTemplates.getInstance().setLoginTemplate(customLoginTemplate);
-		AuthTemplates.getInstance().setLogoutTemplate(customLogoutTemplate);
+		AuthTemplates.setLoginTemplate(customLoginTemplate);
+		AuthTemplates.setLogoutTemplate(customLogoutTemplate);
 	}
 
 }

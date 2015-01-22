@@ -8,49 +8,50 @@ import play.twirl.api.Html;
 import views.html.usermgmt.main;
 
 public class AuthTemplates {
-
-	private static AuthTemplates instance = new AuthTemplates();
 	
 	private static final String LOGIN_TITLE = "Login";
 	
 	private static final String LOGOUT_TITLE = "Logout";
 	
-	private PageTemplate loginTemplate;
+	private static PageTemplate loginTemplate;
 	
-	private PageTemplate logoutTemplate;
+	private static PageTemplate logoutTemplate;
+	
+	private static Object loginTemplateMutex = new Object();
+	
+	private static Object logoutTemplateMutex = new Object();
 	
 	private AuthTemplates(){
 	}
-	
-	synchronized void initialize(){
-		if (loginTemplate == null) loginTemplate = createDefaultLoginTemplate();
-		if (logoutTemplate == null) logoutTemplate = createDefaultLogoutTemplate();
-	}
-	
-	PageTemplate getLoginTemplate(){
+		
+	static PageTemplate getLoginTemplate(){
+		if (loginTemplate == null){
+			synchronized (loginTemplateMutex) {
+				loginTemplate = createDefaultLoginTemplate();
+			}
+		}
 		return loginTemplate;
 	}
 	
-	PageTemplate getLogoutTemplate(){
+	static PageTemplate getLogoutTemplate(){
+		if (logoutTemplate == null){
+			synchronized (logoutTemplateMutex) {
+				logoutTemplate = createDefaultLogoutTemplate();
+			}
+		}
 		return logoutTemplate;
 	}
 	
-	public synchronized void setLoginTemplate(PageTemplate loginTemplate){
-		if (loginTemplate == null){
-			loginTemplate = createDefaultLoginTemplate();
+	public static void setLoginTemplate(PageTemplate loginTemplate){
+		synchronized (loginTemplateMutex) {
+			AuthTemplates.loginTemplate = loginTemplate;			
 		}
-		this.loginTemplate = loginTemplate;
 	}
 	
-	public synchronized void setLogoutTemplate(PageTemplate logoutTemplate){
-		if (logoutTemplate == null){
-			logoutTemplate = createDefaultLogoutTemplate();
+	public static void setLogoutTemplate(PageTemplate logoutTemplate){
+		synchronized (logoutTemplateMutex) {
+			AuthTemplates.logoutTemplate = logoutTemplate;			
 		}
-		this.logoutTemplate = logoutTemplate;
-	}
-	
-	public static AuthTemplates getInstance(){
-		return instance;
 	}
 	
 	private static PageTemplate createDefaultLoginTemplate(){

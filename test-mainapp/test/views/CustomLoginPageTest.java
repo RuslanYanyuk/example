@@ -43,11 +43,11 @@ public class CustomLoginPageTest extends XiAbstractUITest {
 		return new GlobalSettings(){
 			@Override
 			public void onStart(Application app){
-				AuthTemplates.getInstance().setLoginTemplate(createLoginPageTemplate());
+				AuthTemplates.setLoginTemplate(createLoginPageTemplate());
 			}
 			@Override
 			public void onStop(Application app){
-				AuthTemplates.getInstance().setLoginTemplate(null);
+				AuthTemplates.setLoginTemplate(null);
 			}
 		};
 	}

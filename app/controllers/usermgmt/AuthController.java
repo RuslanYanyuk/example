@@ -12,28 +12,21 @@ import static utils.usermgmt.Constants.*;
 import static ximodels.usermgmt.Role.Names.*;
 
 public class AuthController extends Controller {
-
-	static {
-		templates = AuthTemplates.getInstance();
-		AuthTemplates.getInstance().initialize();
-	}
 	
 	static final String LOGOUT_SUCCESS_MESSAGE = "usermgmt.logout.success";
-	
-	private static AuthTemplates templates;
 	
     public static Result loginForm() {
         if (session().get("userName") != null) {
             return redirect(INDEX_PAGE);
         }
-        return ok(templates.getLoginTemplate().render(login.render(form(LoginFormBean.class))));
+        return ok(AuthTemplates.getLoginTemplate().render(login.render(form(LoginFormBean.class))));
     }
 
     public static Result login() {
         Form<LoginFormBean> loginForm = form(LoginFormBean.class).bindFromRequest();
         if (loginForm.hasErrors()) {
         	//TODO return another status code (not bad request)
-            return badRequest(templates.getLoginTemplate().render(login.render(loginForm)));
+            return badRequest(AuthTemplates.getLoginTemplate().render(login.render(loginForm)));
         }
         String redirectUrl = session().get("redirect");
         session().clear();
@@ -43,7 +36,7 @@ public class AuthController extends Controller {
 
     @Dynamic(LOGGED_IN)
     public static Result logoutForm() {
-        return ok(templates.getLogoutTemplate().render(logout.render()));
+        return ok(AuthTemplates.getLogoutTemplate().render(logout.render()));
     }
 
     public static Result logout() {
