@@ -37,7 +37,7 @@ password: password
 
 * Create your own scala template with ```defaultContent: Html``` parameter and inject base template throw ```@defaultContent``` expression
 ```
-@(content: Html)
+@(defaultContent: Html)
 
 <!DOCTYPE html>
 
@@ -47,13 +47,13 @@ password: password
     </head>
     <body>
         ...
-        <div>@content</div>
+        <div>@defaultContent</div>
         ...
     </body>
 </html>
 ```
 
-* Implement controllers.usermgmt.PageTemplate java interface for login (or logout) page like:
+* Implement pages.usermgmt.PageTemplate java interface for login (or logout) page like:
 ```
 	import pages.usermgmt.PageTemplate;
 	...
