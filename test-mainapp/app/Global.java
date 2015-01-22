@@ -1,5 +1,6 @@
-import controllers.usermgmt.AuthTemplates;
-import controllers.usermgmt.PageTemplate;
+import pages.usermgmt.LoginPageTemplateContainer;
+import pages.usermgmt.LogoutPageTemplateContainer;
+import pages.usermgmt.PageTemplate;
 import play.Application;
 import play.GlobalSettings;
 import play.twirl.api.Html;
@@ -9,8 +10,8 @@ public class Global extends GlobalSettings {
 
 	@Override
     public void onStart(Application app) {
-		AuthTemplates.setLoginTemplate(createCustomTemplate());
-		AuthTemplates.setLogoutTemplate(createCustomTemplate());
+		LoginPageTemplateContainer.getInstance().setPageTemplate(createCustomTemplate());
+		LogoutPageTemplateContainer.getInstance().setPageTemplate(createCustomTemplate());
 	}
 	
 	private static PageTemplate createCustomTemplate(){

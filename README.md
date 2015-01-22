@@ -36,9 +36,28 @@ password: password
 ## How to create custom login (or logout) page
 
 * Create your own scala template with ```defaultContent: Html``` parameter and inject base template throw ```@defaultContent``` expression
+```
+@(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>        
+        ...
+    </head>
+    <body>
+        ...
+        <div>@content</div>
+        ...
+    </body>
+</html>
+```
 
 * Implement controllers.usermgmt.PageTemplate java interface for login (or logout) page like:
 ```
+	import pages.usermgmt.PageTemplate;
+	...
+	
 	private static PageTemplate createCustomTemplate(){
 		return new PageTemplate() {
 				@Override
@@ -52,8 +71,9 @@ where ```defaultContent``` injects into your own scala template
 
 * Create (if necessary) Global class at default package and set your custom templates on app start:
 ```
-import controllers.usermgmt.AuthTemplates;
-import controllers.usermgmt.PageTemplate;
+import pages.usermgmt.LoginPageTemplateContainer;
+import pages.usermgmt.LogoutPageTemplateContainer;
+import pages.usermgmt.PageTemplate;
 ...
 
 public class Global extends GlobalSettings {
@@ -63,8 +83,8 @@ public class Global extends GlobalSettings {
     	PageTemplate customLoginTemplate = ...
     	PageTemplate customLogoutTemplate = ...
     	
-		AuthTemplates.setLoginTemplate(customLoginTemplate);
-		AuthTemplates.setLogoutTemplate(customLogoutTemplate);
+		LoginPageTemplateContainer.getInstance().setPageTemplate(customLoginTemplate);
+		LogoutPageTemplateContainer.getInstance().setPageTemplate(customLogoutTemplate);
 	}
 
 }

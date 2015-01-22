@@ -14,9 +14,8 @@ import play.twirl.api.Html;
 import views.html.main;
 import views.usermgmt.XiAbstractUITest;
 import views.usermgmt.pages.LoginPage;
-import controllers.usermgmt.AuthController;
-import controllers.usermgmt.AuthTemplates;
-import controllers.usermgmt.PageTemplate;
+import pages.usermgmt.LoginPageTemplateContainer;
+import pages.usermgmt.PageTemplate;
 
 public class CustomLoginPageTest extends XiAbstractUITest {
 	
@@ -43,11 +42,11 @@ public class CustomLoginPageTest extends XiAbstractUITest {
 		return new GlobalSettings(){
 			@Override
 			public void onStart(Application app){
-				AuthTemplates.setLoginTemplate(createLoginPageTemplate());
+				LoginPageTemplateContainer.getInstance().setPageTemplate(createLoginPageTemplate());
 			}
 			@Override
 			public void onStop(Application app){
-				AuthTemplates.setLoginTemplate(null);
+				LoginPageTemplateContainer.getInstance().setPageTemplate(null);
 			}
 		};
 	}

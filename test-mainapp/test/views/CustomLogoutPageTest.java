@@ -17,9 +17,8 @@ import usermgmt.YAML;
 import views.html.main;
 import views.usermgmt.XiAbstractUITest;
 import views.usermgmt.pages.LogoutPage;
-import controllers.usermgmt.AuthController;
-import controllers.usermgmt.AuthTemplates;
-import controllers.usermgmt.PageTemplate;
+import pages.usermgmt.LogoutPageTemplateContainer;
+import pages.usermgmt.PageTemplate;
 
 public class CustomLogoutPageTest extends XiAbstractUITest {
 	
@@ -47,11 +46,11 @@ public class CustomLogoutPageTest extends XiAbstractUITest {
 		return new GlobalSettings(){
 			@Override
 			public void onStart(Application app){
-				AuthTemplates.setLogoutTemplate(createLogoutPageTemplate());
+				LogoutPageTemplateContainer.getInstance().setPageTemplate(createLogoutPageTemplate());
 			}
 			@Override
 			public void onStop(Application app){
-				AuthTemplates.setLogoutTemplate(null);
+				LogoutPageTemplateContainer.getInstance().setPageTemplate(null);
 			}
 		};
 	}

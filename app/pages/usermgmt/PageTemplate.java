@@ -1,4 +1,4 @@
-package controllers.usermgmt;
+package pages.usermgmt;
 
 import play.twirl.api.Html;
 

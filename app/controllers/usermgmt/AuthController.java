@@ -1,6 +1,8 @@
 package controllers.usermgmt;
 
 import be.objectify.deadbolt.java.actions.Dynamic;
+import pages.usermgmt.LoginPageTemplateContainer;
+import pages.usermgmt.LogoutPageTemplateContainer;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
@@ -19,14 +21,14 @@ public class AuthController extends Controller {
         if (session().get("userName") != null) {
             return redirect(INDEX_PAGE);
         }
-        return ok(AuthTemplates.getLoginTemplate().render(login.render(form(LoginFormBean.class))));
+        return ok(LoginPageTemplateContainer.getInstance().render(login.render(form(LoginFormBean.class))));
     }
 
     public static Result login() {
         Form<LoginFormBean> loginForm = form(LoginFormBean.class).bindFromRequest();
         if (loginForm.hasErrors()) {
         	//TODO return another status code (not bad request)
-            return badRequest(AuthTemplates.getLoginTemplate().render(login.render(loginForm)));
+            return badRequest(LoginPageTemplateContainer.getInstance().render(login.render(loginForm)));
         }
         String redirectUrl = session().get("redirect");
         session().clear();
@@ -36,7 +38,7 @@ public class AuthController extends Controller {
 
     @Dynamic(LOGGED_IN)
     public static Result logoutForm() {
-        return ok(AuthTemplates.getLogoutTemplate().render(logout.render()));
+        return ok(LogoutPageTemplateContainer.getInstance().render(logout.render()));
     }
 
     public static Result logout() {
