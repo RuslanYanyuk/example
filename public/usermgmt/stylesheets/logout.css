@@ -9,6 +9,12 @@
     border: 1px solid rgba(214, 219, 223, 0.8);
     margin: 0px auto;
     width: 380px;
+    font-family: "Open Sans", Arial, sans-serif;
+}
+
+#logout-title {
+	font-size: 14px;
+    color: #34495E;
 }
 
 input[type=button], input[type=submit] {
