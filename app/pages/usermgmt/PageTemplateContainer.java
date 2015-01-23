@@ -4,14 +4,16 @@ import play.twirl.api.Html;
 
 public abstract class PageTemplateContainer implements PageTemplate {
 
-	private PageTemplate pageTemplate;
+	private volatile PageTemplate pageTemplate;
 	
 	private final Object mutex = new Object();
 	
 	private PageTemplate getPageTemplate(){
 		if (pageTemplate == null){
 			synchronized (mutex) {
-				pageTemplate = createPageTemplate();
+				if (pageTemplate == null){
+					pageTemplate = createPageTemplate();
+				}
 			}
 		}
 		return pageTemplate;

@@ -56,6 +56,7 @@ password: password
 * Implement pages.usermgmt.PageTemplate java interface for login (or logout) page like:
 ```
 	import pages.usermgmt.PageTemplate;
+	import play.twirl.api.Html;
 	...
 	
 	private static PageTemplate createCustomTemplate(){
@@ -90,6 +91,6 @@ public class Global extends GlobalSettings {
 }
 ```
 
-UML Sequence diagrams:
+UML sequence diagrams:
 ![alt tag](custom_login.png)
 ![alt tag](custom_logout.png)
