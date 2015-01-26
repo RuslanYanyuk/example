@@ -12,6 +12,7 @@
 
     <target name="apply-properties-tests" depends="apply-remote-properties">
         <property name="no.formatted.output" value="-Dsbt.log.noformat=true"/>
+    	<property name="suffix" value="--warn"/>
     </target>
 
     <target name="list-params-tests" depends="apply-properties-tests">
@@ -25,7 +26,7 @@
         </exec>
         <exec executable="bash" failonerror="true">
             <arg value="-c"/>
-            <arg value="${local.play.home}/play ${no.formatted.output} test"/>
+            <arg value="${local.play.home}/play ${no.formatted.output} test ${suffix}"/>
         </exec>
     </target>
 
@@ -35,8 +36,9 @@
         <exec executable="${local.play.home}/play">
             <arg value="clean-all"/>
         </exec>
-        <exec executable="${local.play.home}/play" failonerror="true">
-            <arg value="publish-local"/>
+		<exec executable="bash" failonerror="true">
+            <arg value="-c"/>
+            <arg value="${local.play.home}/play ${no.formatted.output} publish-local ${suffix}"/>
         </exec>
 	</target>
     <target name="run-mainapp-tests" depends="publish-module">
@@ -45,7 +47,7 @@
         </exec>
         <exec dir="test-mainapp" executable="bash" failonerror="true">
             <arg value="-c"/>
-            <arg value="${local.play.home}/play ${no.formatted.output} test"/>
+            <arg value="${local.play.home}/play ${no.formatted.output} test ${suffix}"/>
         </exec>
     </target>
 	
