@@ -78,7 +78,7 @@ public class AuthControllerUnitTest extends AbstractUnitTest {
                         "userName", FIRST_USER_NAME,
                         "password", INCORRECT_PASSWORD)));
 
-        assertThat(status(result), is(BAD_REQUEST));
+        assertThat(status(result), is(OK));
         assertThat(contentType(result), is("text/html"));
         assertTrue(contentAsString(result).contains("login-form"));
         assertTrue(contentAsString(result).contains("error"));
@@ -95,7 +95,7 @@ public class AuthControllerUnitTest extends AbstractUnitTest {
                         "userName", NOT_EXISTED_USER_NAME,
                         "password", FIRST_USER_PASSWORD)));
 
-        assertThat(status(result), is(BAD_REQUEST));
+        assertThat(status(result), is(OK));
         assertThat(contentType(result), is("text/html"));
         assertTrue(contentAsString(result).contains("login-form"));
         assertTrue(contentAsString(result).contains("error"));
