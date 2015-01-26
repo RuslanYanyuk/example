@@ -27,8 +27,7 @@ public class AuthController extends Controller {
     public static Result login() {
         Form<LoginFormBean> loginForm = form(LoginFormBean.class).bindFromRequest();
         if (loginForm.hasErrors()) {
-        	//TODO return another status code (not bad request)
-            return badRequest(LoginPageTemplateContainer.getInstance().render(login.render(loginForm)));
+            return ok(LoginPageTemplateContainer.getInstance().render(login.render(loginForm)));
         }
         String redirectUrl = session().get("redirect");
         session().clear();
