@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.support.Color;
 
 import play.test.FakeApplication;
 import usermgmt.YAML;
@@ -19,6 +20,7 @@ import commons.XiTestHelper;
 
 public class ExternalHtmlContentOnLogoutPageTest extends XiAbstractUITest {
 
+	private static final String BACKGROUND_COLOR = "#008800";
     private static final String LOGO_TEXT = "External logo";
     private static final String EXTERNAL_CONTENT_TEXT = "This is external content";
 
@@ -42,8 +44,9 @@ public class ExternalHtmlContentOnLogoutPageTest extends XiAbstractUITest {
 
     @Test
     public void canSeeCustomStyleOnLogoutPage(){
-    	//TODO doesn't work on Firefox Driver because of firefox returns value on rgba (not rgb) format
-        assertTrue(getBrowser().findFirst(".test-class").getElement().getCssValue("background-color").equals("rgb(0, 136, 0)"));
+    	String currentBackgroundColor = getBrowser().findFirst(".test-class").getElement().getCssValue("background-color");
+    	currentBackgroundColor = Color.fromString(currentBackgroundColor).asHex();
+        assertTrue(currentBackgroundColor.equals(BACKGROUND_COLOR));
     }
 
     @Override
