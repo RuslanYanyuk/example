@@ -11,7 +11,7 @@ libraryDependencies ++= Seq(
   javaWs,
   "org.seleniumhq.selenium" % "selenium-java" % "2.44.0" % "test",
   "org.fluentlenium" % "fluentlenium-festassert" % "0.9.0" % "test",
-  "co.wds" %% "usermgmt" % "0.1" classifier "" classifier "assets" classifier "tests",
+  "co.wds" %% "usermgmt" % "1.0-SNAPSHOT" classifier "" classifier "tests",
   "cpsuite" % "cpsuite" % "1.2.5" % "test"
 )
 

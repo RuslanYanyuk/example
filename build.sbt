@@ -1,37 +1,19 @@
 import play.PlayImport.PlayKeys._
+import NativePackagerHelper._
 
 name := "usermgmt"
 
 organization := "co.wds"
 
-version := "0.1"
+version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
-packagedArtifacts in publishLocal := {
-  val artifacts: Map[sbt.Artifact, java.io.File] = (packagedArtifacts in publishLocal).value
-  val assets: java.io.File = (playPackageAssets in Compile).value
-  artifacts + (Artifact(moduleName.value, "jar", "jar", "assets") -> assets)
-}
+mappings in (Compile, packageBin) ++= directory("public")
 
+publishArtifact in Test := true
 
 publishTo := Some("WDS Xi Snapshots" at "s3://xi-repository/snapshot")
-
-packagedArtifacts in publish := {
-  val artifacts: Map[sbt.Artifact, java.io.File] = (packagedArtifacts in publish).value
-  val assets: java.io.File = (playPackageAssets in Compile).value
-  artifacts + (Artifact(moduleName.value, "jar", "jar", "assets") -> assets)
-}
-
-
-// enable publishing the jar produced by `test:package`
-publishArtifact in (Test, packageBin) := true
-
-// enable publishing the test API jar
-publishArtifact in (Test, packageDoc) := true
-
-// enable publishing the test sources jar
-publishArtifact in (Test, packageSrc) := true
 
 libraryDependencies ++= Seq(
   javaJdbc,
