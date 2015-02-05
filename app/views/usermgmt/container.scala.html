@@ -1,0 +1,41 @@
+@(title: String, logo: String, content: Html)
+
+@import controllers.usermgmt._
+@import play.libs.Json
+
+@userFullName = @{
+    val login = play.mvc.Http.Context.current().session().get("userName")
+    new services.usermgmt.XiUserService().get(login).fullName
+    //TODO move logout button to another template
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>@title</title>
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/container.css")">
+		<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+    </head>
+    <body>
+    	<form id="logout" action="/logout" method="post">
+		    <span>@userFullName</span>
+		    <input type="image" name="logout" src="@routes.Assets.at("images/logout.png")" alt="Logout" onclick="$('#logout' ).submit()">
+		</form>
+		<div id="header">
+            @if(logo != null){
+                <div id="logo-banner">
+                    <span>@logo</span>
+                </div>
+            }
+            <div id="header-banner">
+                <h2>@title</h2>
+            </div>
+		</div>
+
+       	<div id="content">@content</div>
+
+		<div id="footer">
+			<div id="footer-img">
+			</div>
+		</div>
+    </body>
+</html>

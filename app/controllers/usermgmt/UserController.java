@@ -4,10 +4,11 @@ import be.objectify.deadbolt.java.actions.Dynamic;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import formbeans.usermgmt.SecuredUserFormBean;
 import formbeans.usermgmt.UserFormBean;
+import pages.usermgmt.AdministrationPageTemplateContainer;
 import play.Logger;
 import play.i18n.Messages;
 import play.libs.Json;
@@ -36,7 +37,8 @@ public class UserController extends Controller {
 	@Dynamic(ADMIN)
 	public static Result getAdministration() {
 		Role[] roles = Role.values();
-		return ok(views.html.usermgmt.users.render(roles));
+		return ok(AdministrationPageTemplateContainer.getInstance().render(
+				views.html.usermgmt.users.render(roles)));
 	}
 
 	@Dynamic(ADMIN)

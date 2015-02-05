@@ -7,85 +7,72 @@
     Json.toJson( new services.usermgmt.XiUserService().get(login))
 }
 
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/jquery-ui.css")">
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/users.css")">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <head>
-        <title>Users administration</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/jquery-ui.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/users.css")">
-		<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
-		<script src="@routes.Assets.at("javascripts/jquery-ui.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.at("javascripts/knockout-3.0.0.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.at("javascripts/users.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/jquery-ui.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/knockout-3.0.0.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/users.js")" type="text/javascript"></script>
 
-        <script>
-            $(function() {
-                users.currentUser = @Html(Json.stringify(user));
-            })
-        </script>
+<script>
+$(function() {
+    users.currentUser = @Html(Json.stringify(user));
+})
+</script>
 
-    </head>
-    <body>
-        <form id="logout" action="/logout" method="post">
-            <span>@{user.get("fullName").textValue()}</span>
-            <input type="image" name="logout" src="@routes.Assets.at("images/logout.png")" alt="Logout" onclick="$('#logout' ).submit()">
-        </form>
+<div id="users-container">
+    <input id="add" type="image" src="@routes.Assets.at("images/add_user.png")" alt="Create user" data-bind="click: $root.createDialog">
 
-        <div id="users-container">
-            <input id="add" type="image" src="@routes.Assets.at("images/add_user.png")" alt="Create user" data-bind="click: $root.createDialog">
+    <div id="title">
+        <p>
+            <span>User name</span>
+            <span>Full name</span>
+            <span>Role</span>
+        </p>
+    </div>
 
-            <div id="title">
-                <p>
-                    <span>User name</span>
-                    <span>Full name</span>
-                    <span>Role</span>
-                </p>
-            </div>
-
-            <div class="users" data-bind="foreach: users">
-                <div class="row">
-                    <p>
-                        <span data-bind="text: userName" name="userName"></span>
-                        <span data-bind="text: fullName" name="fullName"></span>
-                        <span data-bind="text: role" name="role"></span>
-                    </p>
-                    <div class="buttons">
-                        <input type="image" name="edit" src="@routes.Assets.at("images/edit.png")" alt="Edit user" data-bind="click: $root.editDialog">
-                        <input type="image" name="delete" src="@routes.Assets.at("images/bucket2.png")" alt="Remove user" data-bind="click: $root.remove.bind($data, $index()), css: { disabled: $data.self }">
-                    </div>
-                </div>
+    <div class="users" data-bind="foreach: users">
+        <div class="row">
+            <p>
+                <span data-bind="text: userName" name="userName"></span>
+                <span data-bind="text: fullName" name="fullName"></span>
+                <span data-bind="text: role" name="role"></span>
+            </p>
+            <div class="buttons">
+                <input type="image" name="edit" src="@routes.Assets.at("images/edit.png")" alt="Edit user" data-bind="click: $root.editDialog">
+                <input type="image" name="delete" src="@routes.Assets.at("images/bucket2.png")" alt="Remove user" data-bind="click: $root.remove.bind($data, $index()), css: { disabled: $data.self }">
             </div>
         </div>
+    </div>
+</div>
 
-        <div id="dialog-form">
-            <div class="message">
-                <span></span>
-            </div>
-            <form>
-                <fieldset>
-                    <label for="name">User name</label>
-                    <input type="text" name="userName">
-                    <label for="fullName">Full name</label>
-                    <input type="text" name="fullName">
-                    <label for="password">Password</label>
-                    <input type="password" name="password"
-                    onfocus="if (this.value == 'd.e.f.a.u.l.t') {this.value = '';}">
-                    <label for="role">Role</label>
-                    <select  name="role">
-                        @for(role <- roles){
-                            <option>@role</option>
-                        }
-                    </select>
-                </fieldset>
-            </form>
-        </div>
+<div id="dialog-form" hidden="">
+    <div class="message">
+        <span></span>
+    </div>
+    <form>
+        <fieldset>
+            <label for="name">User name</label>
+            <input type="text" name="userName">
+            <label for="fullName">Full name</label>
+            <input type="text" name="fullName">
+            <label for="password">Password</label>
+            <input type="password" name="password"
+            onfocus="if (this.value == 'd.e.f.a.u.l.t') {this.value = '';}">
+            <label for="role">Role</label>
+            <select  name="role">
+                @for(role <- roles){
+                    <option>@role</option>
+                }
+            </select>
+        </fieldset>
+    </form>
+</div>
 
-        <div id="dialog-confirm-delete">
-            <div class="message">
-                <span></span>
-            </div>
-            <span>Do you want to delete user <strong class="user"></strong> ?</span>
-        </div>
-
-    </body>
-</html>
+<div id="dialog-confirm-delete">
+    <div class="message">
+        <span></span>
+    </div>
+    <span>Do you want to delete user <strong class="user"></strong> ?</span>
+</div>

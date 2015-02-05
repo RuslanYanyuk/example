@@ -1,5 +1,6 @@
 import pages.usermgmt.LoginPageTemplateContainer;
 import pages.usermgmt.LogoutPageTemplateContainer;
+import pages.usermgmt.AdministrationPageTemplateContainer;
 import pages.usermgmt.PageTemplate;
 import play.Application;
 import play.GlobalSettings;
@@ -10,8 +11,10 @@ public class Global extends GlobalSettings {
 
 	@Override
     public void onStart(Application app) {
-		LoginPageTemplateContainer.getInstance().setPageTemplate(createCustomTemplate());
-		LogoutPageTemplateContainer.getInstance().setPageTemplate(createCustomTemplate());
+		PageTemplate customTemplate = createCustomTemplate();
+		LoginPageTemplateContainer.getInstance().setPageTemplate(customTemplate);
+		LogoutPageTemplateContainer.getInstance().setPageTemplate(customTemplate);
+		AdministrationPageTemplateContainer.getInstance().setPageTemplate(customTemplate);
 	}
 	
 	private static PageTemplate createCustomTemplate(){

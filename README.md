@@ -33,7 +33,17 @@ password: password
 
 * Change the password at ```/administration``` page
 
-## How to create custom login (or logout) page
+## Page customization
+
+### How to add app name (as logo) on default (out-of-the-box) templates
+
+Just add to your application.conf file line:
+
+```
+usermgmt.logo.text="My awesome app"
+```
+
+### How to create your own custom login, logout and/or administration pages instead of using default
 
 * Create your own scala template with ```defaultContent: Html``` parameter and inject base template throw ```@defaultContent``` expression
 ```
@@ -53,7 +63,7 @@ password: password
 </html>
 ```
 
-* Implement pages.usermgmt.PageTemplate java interface for login (or logout) page like:
+* Implement pages.usermgmt.PageTemplate java interface for login (logout, administration) page like:
 ```
 	import pages.usermgmt.PageTemplate;
 	import play.twirl.api.Html;
@@ -72,9 +82,10 @@ where ```defaultContent``` injects into your own scala template
 
 * Create (if necessary) Global class at default package and set your custom templates on app start:
 ```
+import pages.usermgmt.PageTemplate;
 import pages.usermgmt.LoginPageTemplateContainer;
 import pages.usermgmt.LogoutPageTemplateContainer;
-import pages.usermgmt.PageTemplate;
+import pages.usermgmt.AdministrationPageTemplateContainer;
 ...
 
 public class Global extends GlobalSettings {
@@ -83,9 +94,11 @@ public class Global extends GlobalSettings {
     public void onStart(Application app) {
     	PageTemplate customLoginTemplate = ...
     	PageTemplate customLogoutTemplate = ...
+    	PageTemplate customAdministrationTemplate = ...
     	
 		LoginPageTemplateContainer.getInstance().setPageTemplate(customLoginTemplate);
 		LogoutPageTemplateContainer.getInstance().setPageTemplate(customLogoutTemplate);
+		AdministrationPageTemplateContainer.getInstance().setPageTemplate(customAdministrationTemplate);
 	}
 
 }
