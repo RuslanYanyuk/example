@@ -74,18 +74,13 @@ public class AdministrationPageTest extends XiAbstractUITest{
     }
 
     @Test
-    public void adminSeeErrorIfDeletesAlreadyDeletedUser() {
+    public void adminSeeErrorIfTriesToDeleteAlreadyEliminatedUser() {
     	AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
-        int usersCount = page.getUsersCount();
 
         UserRow<AdministrationPage> user = page.getUserByUserName(FIRST_USER_NAME);
-
         assertTrue(user.isDeleteButtonDisplayed());
-
         UserDeleteDialog<AdministrationPage> dialog = user.delete();
-        
         User.findUserByUserName(FIRST_USER_NAME).delete();
-        
         dialog.submit(USER_NOT_FOUND);
     }
 
@@ -238,7 +233,7 @@ public class AdministrationPageTest extends XiAbstractUITest{
     }
 
     @Test
-    public void adminCanEditUserWithoutPasswordChange() {
+    public void adminCanEditUserAndEmptyPasswordDoesntAffect() {
         AdministrationPage page = loginAndLoad(ADMIN_USER_NAME, ADMIN_PASSWORD, AdministrationPage.class);
         int usersCount = page.getUsersCount();
 

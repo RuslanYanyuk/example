@@ -20,6 +20,13 @@ public class AdministrationPage extends AbstractPage{
         super(browser, URL, USER);
     }
 
+    @Override
+    public AbstractPage load() {
+    	super.load();
+    	waitUntilAjaxCompleted();
+    	return this;
+    }
+    
     public int getUsersCount(){
     	waitUntilAjaxCompleted();
         return getBrowser().$(USER).size();

@@ -1,8 +1,6 @@
 package pages.usermgmt;
 
-import static utils.usermgmt.ApplicationConf.LOGIN_HTML;
 import static utils.usermgmt.ApplicationConf.LOGO_TEXT;
-import static utils.usermgmt.Helper.readText;
 import play.twirl.api.Html;
 import views.html.usermgmt.container;
 

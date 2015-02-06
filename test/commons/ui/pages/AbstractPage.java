@@ -76,7 +76,7 @@ public abstract class AbstractPage {
     			
 			    public Boolean apply(WebDriver driver) {
 			        JavascriptExecutor js = (JavascriptExecutor) driver;
-			        return (Boolean)js.executeScript("return jQuery.active == 0");
+			        return (Boolean)js.executeScript("return $.active == 0");
 			    }
 			    
 			});
